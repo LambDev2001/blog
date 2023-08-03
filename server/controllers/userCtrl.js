@@ -25,7 +25,7 @@ const userCtrl = {
 
   checkInfoUser: async (req, res) => {
     try {
-      const userId = req.params.userId;
+      const userId = req.params.id;
       if (!userId) return res.status(400).json({ msg: "userId is required" });
 
       const user = await Users.findById({ _id: userId }).select([
@@ -44,26 +44,7 @@ const userCtrl = {
 
   getUsers: async (req, res) => {
     try {
-      const users = await Users.find({ role: "user" }).select([
-        "username",
-        "account",
-        "avatar",
-        "role",
-        "createdAt",
-      ]);
-
-      return res.status(200).json(users);
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  getAdmins: async (req, res) => {
-    try {
-      if (req.user.role !== "admin")
-        return res.status(403).json({ msg: "Only admin is allowed" });
-
-      const users = await Users.find({ role: "admin" }).select([
+      const users = await Users.find({}).select([
         "username",
         "account",
         "avatar",
@@ -79,7 +60,7 @@ const userCtrl = {
 
   updateUser: async (req, res) => {
     try {
-      if (req.user.id !== req.params.userId)
+      if (req.user.id !== req.params.id)
         return res.status(403).json({ msg: "You are not owner" });
 
       const { username, avatar } = req.body;
@@ -108,171 +89,9 @@ const userCtrl = {
     }
   },
 
-  deleteUser: async (req, res) => {
-    try {
-      const adminId = req.user.id;
-      const userId = req.params.userId;
-
-      const admin = await Users.findById({ _id: adminId });
-      if (!admin || admin.role !== "admin")
-        return res
-          .status(403)
-          .json({ msg: "you don't have permission to delete this user" });
-
-      const user = await Users.findOne({ _id: userId });
-      if (!user) return res.status(403).json({ msg: "User not found" });
-
-      await Users.findOneAndDelete({ _id: userId });
-
-      return res
-        .status(200)
-        .json({ msg: `Delete ${user.account} successfully` });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  manageRole: async (req, res) => {
-    try {
-      const adminId = req.user.id;
-      const { userId, role } = req.body;
-
-      const admin = await Users.findById({ _id: adminId });
-      if (!admin || admin.role !== "admin")
-        return res
-          .status(403)
-          .json({ msg: "you don't have permission to delete this user" });
-
-      const user = await Users.findOne({ _id: userId });
-      if (!user) return res.status(403).json({ msg: "User not found" });
-
-      await Users.findByIdAndUpdate({ _id: userId }, { role });
-
-      return res.status(200).json({ msg: `Change ${user.account} to ${role}` });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  sendRequestFriend: async (req, res) => {
-    try {
-      if (req.user.id === req.body.id)
-        return res.status(400).json({ msg: "You do not send friend to you" });
-
-      const user = await Users.findById({ _id: req.body.id });
-      if (!user) return res.status(403).json({ msg: "User not found" });
-
-      // check has been friend
-      const friends = user.friends;
-      if (friends.indexOf(req.user.id) !== -1) {
-        return res.status(400).json({ msg: "They has been add friend before" });
-      }
-
-      // check id in the requestFriends
-      const requestFriends = user.requestFriends;
-      if (requestFriends.indexOf(req.user.id) !== -1) {
-        return res.status(400).json({ msg: "Friend request already sent" });
-      }
-
-      await Users.findByIdAndUpdate(
-        { _id: req.user.id },
-        { $push: { sendingRequestFriends: req.body.id } }
-      );
-
-      await Users.findByIdAndUpdate(
-        { _id: req.body.id },
-        { $push: { requestFriends: req.user.id } }
-      );
-
-      return res
-        .status(200)
-        .json({ msg: "Send request add friend successfully" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  declineFriend: async (req, res) => {
-    try {
-      if (req.user.id === req.body.id)
-        return res
-          .status(400)
-          .json({ msg: "Your id duplicate with id send request" });
-
-      const user = await Users.findById({ _id: req.user.id });
-      if (!user) return res.status(403).json({ msg: "User not found" });
-
-      // check id in the requestFriends
-      const requestFriends = user.requestFriends;
-      console.log(user.username);
-      if (requestFriends.indexOf(req.body.id) !== -1) {
-        await Users.findByIdAndUpdate(
-          { _id: req.body.id },
-          { $pull: { sendingRequestFriends: req.user.id } }
-        );
-
-        await Users.findByIdAndUpdate(
-          { _id: req.user.id },
-          { $pull: { requestFriends: req.body.id } }
-        );
-        return res
-          .status(200)
-          .json({ msg: "you declined the request successfully" });
-      } else {
-        return res
-          .status(400)
-          .json({ msg: "Not found the request add friend" });
-      }
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  acceptFriend: async (req, res) => {
-    try {
-      if (req.user.id === req.body.id)
-        return res.status(400).json({ msg: "You do not accept friend to you" });
-
-      const user = await Users.findById({ _id: req.body.id });
-      if (!user) return res.status(403).json({ msg: "User not found" });
-
-      const requestFriends = user.requestFriends;
-      if (requestFriends.indexOf(req.user.id) !== -1) {
-        return res
-          .status(400)
-          .json({ msg: "You are not send request add friend" });
-      }
-
-      // check has been friend
-      const friends = user.friends;
-      if (friends.indexOf(req.user.id) !== -1) {
-        return res.status(400).json({ msg: "They has been add friend before" });
-      }
-
-      await Users.findByIdAndUpdate(
-        { _id: req.body.id },
-        { $pull: { sendingRequestFriends: req.user.id } }
-      );
-
-      await Users.findByIdAndUpdate(
-        { _id: req.user.id },
-        { $pull: { requestFriends: req.body.id } }
-      );
-
-      await Users.findByIdAndUpdate(
-        { _id: req.user.id },
-        { $push: { friends: req.body.id } }
-      );
-
-      return res.status(200).json({ msg: "They are add friend successfully" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
   removeFriend: async (req, res) => {
     try {
-      if (req.user.id === req.body.id)
+      if (req.user.id === req.params.id)
         return res
           .status(400)
           .json({ msg: "Your id duplicate with id send request" });
@@ -282,7 +101,7 @@ const userCtrl = {
 
       // check id in the requestFriends
       const requestFriends = user.friends;
-      if (requestFriends.indexOf(req.body.id) !== -1) {
+      if (requestFriends.indexOf(req.params.id) !== -1) {
         await Users.findByIdAndUpdate(
           { _id: req.user.id },
           { $pull: { friends: req.body.id } }
@@ -301,7 +120,7 @@ const userCtrl = {
   listFriends: async (req, res) => {
     try {
       const { friends } = await Users.findById({
-        _id: req.params.idUser,
+        _id: req.user.id,
       }).select("friends");
       return res.status(200).json(friends);
     } catch (err) {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const friendRequest = new mongoose.Schema(
+const friendRequestSchema = new mongoose.Schema(
   {
     idUser: {
       type: String,
@@ -18,4 +18,4 @@ const friendRequest = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("friendRequest", friendRequest);
+export default mongoose.model("friendRequest", friendRequestSchema);

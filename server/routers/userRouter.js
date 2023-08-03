@@ -5,21 +5,14 @@ import auth from "../middleware/auth.js"
 
 const router = express.Router();
 
-router.get("/getUser", auth, userCtrl.getUser);
-router.get("/checkInfoUser/:userId", userCtrl.checkInfoUser);
-router.get("/getListUsers", userCtrl.getUsers);
-router.get("/getListAdmins", auth, userCtrl.getAdmins);
-router.get("/resetPassword/:token", userCtrl.resetPassword);
-router.get("/listFriends/:idUser", userCtrl.listFriends);
+router.get("/get-user", auth, userCtrl.getUser);
+router.get("/get-list-users", userCtrl.getUsers);
+router.get("/check-info-user/:id", userCtrl.checkInfoUser);
+router.get("/reset-password/:token", userCtrl.resetPassword);
+router.get("/list-friends",auth,  userCtrl.listFriends);
 
-router.post("/sendRequestFriend", auth, userCtrl.sendRequestFriend)
-router.post("/declineFriend", auth, userCtrl.declineFriend)
-router.post("/acceptFriend",auth, userCtrl.acceptFriend)
-router.post("/removeFriend",auth, userCtrl.removeFriend)
+router.post("/remove-friend/:id",auth, userCtrl.removeFriend)
 
-router.patch("/updateUser/:userId", auth, userCtrl.updateUser);
-router.patch("/manageRole", auth, userCtrl.manageRole);
-
-router.delete("/deleteUser/:userId", auth, userCtrl.deleteUser);
+router.patch("/update-user/:id", auth, userCtrl.updateUser);
 
 export default router;
