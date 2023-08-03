@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "./config/access.env.js"
 
 import express from "express";
 import { createServer } from "http";
@@ -23,12 +22,12 @@ import "./config/database.js";
 // routers
 app.use("/api", routers);
 
-// const httpServer = createServer();
-// const io = new Server(httpServer, {
-//   cors: {
-//     origin: ["http://localhost:5000"],
-//   },
-// });
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["http://localhost:5000"],
+  },
+});
 
 // io.on("connection", (socket) => {
 //   console.log("login");
