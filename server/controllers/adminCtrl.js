@@ -31,7 +31,8 @@ const authCtrl = {
   refreshToken: async (req, res) => {
     try {
       const refreshToken = req.cookies.refreshtoken;
-      if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
+      if (!refreshToken)
+        return res.status(400).json({ msg: "Please login now!" });
 
       // Take refreshToken from cookie
       const decoded = jwt.verify(refreshToken, `${REFRESH_TOKEN_SECRET}`);
@@ -64,14 +65,11 @@ const authCtrl = {
   },
 
   logout: async (req, res) => {
-    if (!req.user)
-      return res.status(403).json({ msg: "Invalid Authorization" });
-
     try {
       res.clearCookie("refreshtoken", { path: `/api/refresh_token` });
 
       await Admins.findOneAndUpdate(
-        { _id: req.user._id },
+        { _id: req.user.id },
         {
           refreshToken: "",
         }

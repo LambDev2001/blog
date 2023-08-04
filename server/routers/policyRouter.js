@@ -1,18 +1,19 @@
 import express from "express";
 import policyCtrl from "../controllers/policyCtrl.js";
 import auth from "../middleware/auth.js"
+import admin from "../middleware/admin.js";
 
 const router = express.Router();
 
-router.get("/get-all-policies",auth, policyCtrl.getAllPolices)
-router.get("/get-policies",auth, policyCtrl.getPolices)
+router.get("/get-all-policies",admin, policyCtrl.getAllPolices) // for admin manager polices
+router.get("/get-policies",auth, policyCtrl.getPolices) // user can see and accept
 
-router.post("/create-policy",auth, policyCtrl.createPolicy)
+router.post("/create-policy",admin, policyCtrl.createPolicy)
 
-router.put("/edit-policy",auth, policyCtrl.editPolicy)
-router.put("/change-status-policy",auth, policyCtrl.changeStatusPolicy)
+router.put("/edit-policy",admin, policyCtrl.editPolicy)
+router.put("/change-status-policy",admin, policyCtrl.changeStatusPolicy)
 
-router.delete("/remove-policy",auth, policyCtrl.removePolicy)
-router.delete("/delete-policy",auth, policyCtrl.deletePolicy)
+router.delete("/remove-policy",admin, policyCtrl.removePolicy)
+router.delete("/delete-policy",admin, policyCtrl.deletePolicy)
 
 export default router;

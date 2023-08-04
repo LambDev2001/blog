@@ -6,12 +6,9 @@ const categoryCtrl = {
     try {
       const idAdmin = req.user.id;
       const admin = await Admins.findOne({ _id: req.user.id });
-      if (!idAdmin || !admin)
-        return res.status(403).json({ msg: "Admin not found" });
-
       const { name } = req.body;
-
       const newCategory = new Categories({ name });
+
       newCategory.save();
 
       return res.status(200).json({ msg: "Create category successfully" });
@@ -24,9 +21,6 @@ const categoryCtrl = {
     try {
       const idAdmin = req.user.id;
       const admin = await Admins.findOne({ _id: req.user.id });
-      if (!idAdmin || !admin)
-        return res.status(403).json({ msg: "Admin not found" });
-
       const listCategories = await Categories.find({});
 
       return res.status(200).json({ listCategories });
@@ -39,9 +33,6 @@ const categoryCtrl = {
     try {
       const idAdmin = req.user.id;
       const admin = await Admins.findOne({ _id: req.user.id });
-      if (!idAdmin || !admin)
-        return res.status(403).json({ msg: "Admin not found" });
-
       const listCategories = await Categories.findOne({ _id: req.params.id });
 
       return res.status(200).json({ listCategories });
@@ -54,9 +45,6 @@ const categoryCtrl = {
     try {
       const idAdmin = req.user.id;
       const admin = await Admins.findOne({ _id: req.user.id });
-      if (!idAdmin || !admin)
-        return res.status(403).json({ msg: "Admin not found" });
-
       const idCategory = req.params.id;
       const { name } = req.body;
 
@@ -72,9 +60,6 @@ const categoryCtrl = {
     try {
       const idAdmin = req.user.id;
       const admin = await Admins.findOne({ _id: req.user.id });
-      if (!idAdmin || !admin)
-        return res.status(403).json({ msg: "Admin not found" });
-
       const idCategory = req.params.id;
 
       await Categories.findOneAndDelete({ _id: idCategory });

@@ -1,16 +1,16 @@
-import express from "express"
+import express from "express";
 
 import friendRequestCtl from "../controllers/friendRequestCtrl.js";
-import auth from "../middleware/auth.js"
+import user from "../middleware/user.js";
 
 const router = express.Router();
 
-router.get("/list-sending-request-friend",auth, friendRequestCtl.listSendingRequest)
-router.get("/list-waiting-request-friend",auth, friendRequestCtl.listWaitingRequest)
+router.get("/list-sending-request-friend", user, friendRequestCtl.listSendingRequest);
+router.get("/list-waiting-request-friend", user, friendRequestCtl.listWaitingRequest);
 
-router.post("/send-request-friend",auth, friendRequestCtl.sendRequest)
-router.post("/accept-friend/:id",auth, friendRequestCtl.acceptRequest)
+router.post("/send-request-friend", user, friendRequestCtl.sendRequest);
+router.post("/accept-friend/:id", user, friendRequestCtl.acceptRequest);
 
-router.delete("/decline-friend/:id",auth, friendRequestCtl.declineRequest)
+router.delete("/decline-friend/:id", user, friendRequestCtl.declineRequest);
 
-export default router
+export default router;

@@ -4,8 +4,7 @@ const policyCtrl = {
   getAllPolices: async (req, res) => {
     try {
       const policies = await Policies.find({});
-      if (!policies)
-        return res.status(400).json({ msg: "Don't have any the policy" });
+      if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
 
       return res.status(200).json({ policies });
     } catch (err) {
@@ -16,8 +15,7 @@ const policyCtrl = {
   getPolices: async (req, res) => {
     try {
       const policies = await Policies.find({ status: "normal" });
-      if (!policies)
-        return res.status(400).json({ msg: "Don't have any the policy" });
+      if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
 
       return res.status(200).json({ policies });
     } catch (err) {
@@ -30,6 +28,7 @@ const policyCtrl = {
       const { content } = req.body;
       const newPolicy = new Policies({ content });
       await newPolicy.save();
+
       return res.status(200).json({ msg: "New policy create successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -63,9 +62,7 @@ const policyCtrl = {
       const { idPolicy } = req.body;
       await Policies.findByIdAndRemove({ _id: idPolicy });
 
-      return res
-        .status(200)
-        .json({ msg: "Remove policy successfully. You can check it in bin" });
+      return res.status(200).json({ msg: "Remove policy successfully. You can check it in bin" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

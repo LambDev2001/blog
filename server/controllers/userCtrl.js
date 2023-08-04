@@ -10,8 +10,6 @@ const userCtrl = {
   getUser: async (req, res) => {
     try {
       const id = req.user.id;
-      if (!id)
-        return res.status(400).json({ message: "Error when take user id" });
 
       const user = await Users.findById({ _id: id }).select("-password");
 
@@ -33,7 +31,6 @@ const userCtrl = {
         "account",
         "avatar",
       ]);
-
       if (!user) return res.status(403).json({ msg: "User not found" });
 
       return res.status(200).json(user);
@@ -122,12 +119,12 @@ const userCtrl = {
       const { friends } = await Users.findById({
         _id: req.user.id,
       }).select("friends");
+
       return res.status(200).json(friends);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
-
 };
 
 export default userCtrl;
