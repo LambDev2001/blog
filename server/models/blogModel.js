@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema(
   {
-    idUser: { type: string, require: true },
+    idUser: { type: String, require: true },
     title: {
       type: String,
       require: true,
@@ -13,7 +13,7 @@ const blogSchema = new mongoose.Schema(
     content: {
       type: String,
       require: true,
-      minLength: 2000,
+      minLength: 20,
     },
     thumbnail: {
       type: String,
@@ -32,10 +32,10 @@ const blogSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "normal",
+      default: "waiting",
     },
-    view: { type: Number },
-    permit: { type: String, require: true },
+    view: { type: Number, default: 0 },
+    permit: { type: String },
     comment: { type: [String], default: [] },
     report: {
       type: [String],

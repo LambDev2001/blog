@@ -4,6 +4,7 @@ import adminRouter from "./adminRouter.js";
 import policyRouter from "./policyRouter.js";
 import categoryRouter from "./categoryRouter.js";
 import friendRequestRouter from "./friendRequestRouter.js";
+import blogRouter from "./blogRouter.js";
 
 const routers = [
   authRouter,
@@ -12,6 +13,7 @@ const routers = [
   policyRouter,
   categoryRouter,
   friendRequestRouter,
+  blogRouter,
 ];
 
 export default routers;

@@ -20,6 +20,7 @@
 		"body": [
 			"try {",
 			"\t$1",
+			"",
 			"  return res.status(200).json({msg: ''})",
 			"} catch (err) {",
 			"\treturn res.status(500).json({ msg: err.message });",
