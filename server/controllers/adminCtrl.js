@@ -4,10 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import Admins from "../models/adminModel.js";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../config/generateToken.js";
+import { generateAccessToken, generateRefreshToken } from "../config/generateToken.js";
 
 const { REFRESH_TOKEN_SECRET } = process.env;
 
@@ -31,20 +28,15 @@ const authCtrl = {
   refreshToken: async (req, res) => {
     try {
       const refreshToken = req.cookies.refreshtoken;
-      if (!refreshToken)
-        return res.status(400).json({ msg: "Please login now!" });
+      if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
 
       // Take refreshToken from cookie
       const decoded = jwt.verify(refreshToken, `${REFRESH_TOKEN_SECRET}`);
-      if (!decoded.id)
-        return res.status(400).json({ msg: "Please login now!" });
+      if (!decoded.id) return res.status(400).json({ msg: "Please login now!" });
 
-      const user = await Admins.findById(decoded.id).select(
-        "-password +refreshToken"
-      );
+      const user = await Admins.findById(decoded.id).select("-password +refreshToken");
 
-      if (!user)
-        return res.status(400).json({ msg: "This account does not exist." });
+      if (!user) return res.status(400).json({ msg: "This account does not exist." });
       if (refreshToken !== user.refreshToken)
         return res.status(400).json({ msg: "Please login now!" });
 
@@ -85,18 +77,12 @@ const authCtrl = {
 const loginUser = async (user, password, res) => {
   try {
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res
-        .status(400)
-        .json({ msg: "The account or password is incorrect" });
+    if (!isMatch) return res.status(400).json({ msg: "The account or password is incorrect" });
 
     const accessToken = generateAccessToken({ id: user._id });
     const refreshToken = generateRefreshToken({ id: user._id }, res);
 
-    await Admins.findByIdAndUpdate(
-      { _id: user._id },
-      { refreshToken: refreshToken }
-    );
+    await Admins.findByIdAndUpdate({ _id: user._id }, { refreshToken: refreshToken });
 
     res.status(200).json({
       msg: "Login Success!",

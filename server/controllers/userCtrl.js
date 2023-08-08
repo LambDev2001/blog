@@ -26,11 +26,7 @@ const userCtrl = {
       const userId = req.params.id;
       if (!userId) return res.status(400).json({ msg: "userId is required" });
 
-      const user = await Users.findById({ _id: userId }).select([
-        "username",
-        "account",
-        "avatar",
-      ]);
+      const user = await Users.findById({ _id: userId }).select(["username", "account", "avatar"]);
       if (!user) return res.status(403).json({ msg: "User not found" });
 
       return res.status(200).json(user);
@@ -57,8 +53,7 @@ const userCtrl = {
 
   updateUser: async (req, res) => {
     try {
-      if (req.user.id !== req.params.id)
-        return res.status(403).json({ msg: "You are not owner" });
+      if (req.user.id !== req.params.id) return res.status(403).json({ msg: "You are not owner" });
 
       const { username, avatar } = req.body;
       await Users.findByIdAndUpdate({ _id: req.user.id }, { username, avatar });
@@ -75,10 +70,7 @@ const userCtrl = {
       const newInfo = jwt.verify(token, `${process.env.TEMP_TOKEN}`); // change this
       const passwordHash = await bcrypt.hash(newInfo.password, 12);
 
-      await Users.findOneAndUpdate(
-        { _id: newInfo.id },
-        { password: passwordHash }
-      );
+      await Users.findOneAndUpdate({ _id: newInfo.id }, { password: passwordHash });
 
       return res.status(200).json({ msg: "Update password successfully" });
     } catch (err) {
@@ -89,9 +81,7 @@ const userCtrl = {
   removeFriend: async (req, res) => {
     try {
       if (req.user.id === req.params.id)
-        return res
-          .status(400)
-          .json({ msg: "Your id duplicate with id send request" });
+        return res.status(400).json({ msg: "Your id duplicate with id send request" });
 
       const user = await Users.findById({ _id: req.user.id });
       if (!user) return res.status(403).json({ msg: "User not found" });
@@ -99,13 +89,8 @@ const userCtrl = {
       // check id in the requestFriends
       const requestFriends = user.friends;
       if (requestFriends.indexOf(req.params.id) !== -1) {
-        await Users.findByIdAndUpdate(
-          { _id: req.user.id },
-          { $pull: { friends: req.body.id } }
-        );
-        return res
-          .status(200)
-          .json({ msg: "you declined the request successfully" });
+        await Users.findByIdAndUpdate({ _id: req.user.id }, { $pull: { friends: req.body.id } });
+        return res.status(200).json({ msg: "you declined the request successfully" });
       } else {
         return res.status(400).json({ msg: "Not found your friend" });
       }

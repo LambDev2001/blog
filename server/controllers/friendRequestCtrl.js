@@ -43,7 +43,7 @@ const friendRequestCtl = {
       if (oldRequest) return res.status(400).json({ msg: "Request has been create" });
 
       const newRequest = new Requests({ idUser, receiver });
-      newRequest.save();
+      await newRequest.save();
 
       return res.status(200).json({ msg: `Sent request add friend to ${receiverUser.username}` });
     } catch (err) {

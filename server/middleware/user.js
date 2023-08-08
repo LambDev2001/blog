@@ -10,7 +10,7 @@ const user = async (req, res, next) => {
     const decode = jwt.decode(token, `${process.env.ACCESS_TOKEN_SECRET}`);
     if (!decode) return res.status(403).json("Invalid Authorization when decoding token");
 
-    const user = await Users.findOne({ _id: decode.id }).select("-password");
+    const user = await Users.findOne({ _id: decode.id }, { projection: { password: 0 } });
     if (!user) return res.status(403).json("User not found");
 
     req.user = user;

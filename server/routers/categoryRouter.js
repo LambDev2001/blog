@@ -5,8 +5,10 @@ import auth from "../middleware/auth.js"
 import admin from "../middleware/admin.js"
 
 const router = express.Router()
-
+// auth
 router.get("/get-all-categories", auth, categoryCtrl.getAllCategories)
+
+// admin
 router.get("/get-category/:id", admin, categoryCtrl.getCategory)
 
 router.post("/create-category", admin, categoryCtrl.createCategory)

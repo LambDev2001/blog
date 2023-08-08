@@ -4,7 +4,7 @@ import friendRequestCtl from "../controllers/friendRequestCtrl.js";
 import user from "../middleware/user.js";
 
 const router = express.Router();
-
+// user
 router.get("/list-sending-request-friend", user, friendRequestCtl.listSendingRequest);
 router.get("/list-waiting-request-friend", user, friendRequestCtl.listWaitingRequest);
 

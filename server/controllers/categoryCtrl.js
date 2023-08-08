@@ -9,7 +9,7 @@ const categoryCtrl = {
       const { name } = req.body;
       const newCategory = new Categories({ name });
 
-      newCategory.save();
+      await newCategory.save();
 
       return res.status(200).json({ msg: "Create category successfully" });
     } catch (err) {

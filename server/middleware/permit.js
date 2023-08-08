@@ -1,8 +1,7 @@
-import Users from "../models/userModel.js";
 import Admins from "../models/adminModel.js";
 import jwt from "jsonwebtoken";
 
-const auth = async (req, res, next) => {
+const permit = async (req, res, next) => {
   try {
     const token = req.header("Authorization"); // token = user._id
     if (!token) {
@@ -11,20 +10,24 @@ const auth = async (req, res, next) => {
     const decode = jwt.decode(token, `${process.env.ACCESS_TOKEN_SECRET}`);
     if (!decode) return res.status(403).json("Invalid Authorization when decoding token");
 
-    const user =
-      (await Users.findOne({ _id: decode.id }, { projection: { password: 0 } })) ||
-      (await Admins.findOne({ _id: decode.id }, { projection: { password: 0 } }));
-
-    if (user) {
-      req.user = user;
-    } else {
-      return res.status(403).json("Account not found");
+    const adminIdExists = await Admins.distinct("_id", { _id: decode.id });
+    if (!adminIdExists) {
+      return res.status(403).json("Admin not found");
     }
 
+    const admin = await Admins.findOne(
+      {
+        _id: decode.id,
+        role: { $in: ["permit", "admin"] },
+      },
+      { projection: { password: 0 } }
+    );
+
+    req.user = admin;
     next();
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }
 };
 
-export default auth;
+export default permit;
