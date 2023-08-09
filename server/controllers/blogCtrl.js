@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import checkData from "../config/checkData.js";
 import Blogs from "../models/blogModel.js";
 import Admins from "../models/adminModel.js";
