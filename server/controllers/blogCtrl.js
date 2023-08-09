@@ -111,7 +111,6 @@ const blogCtrl = {
 
           const newBlog = new Object({...blog._doc, likes: countLikes, dislikes: countDislikes});
           
-          console.log(newBlog);
           return newBlog;
         })
       );
