@@ -1,7 +1,11 @@
+import _ from "lodash";
+
 import checkData from "../config/checkData.js";
 import Blogs from "../models/blogModel.js";
 import Admins from "../models/adminModel.js";
 import Users from "../models/userModel.js";
+import Likes from "../models/likeModel.js";
+import Categories from "../models/categoryModel.js";
 
 const blogCtrl = {
   createBlog: async (req, res) => {
@@ -81,12 +85,44 @@ const blogCtrl = {
   listBlogs: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
-      const listBlogs = await Blogs.find({ status: "normal" });
+      const listCategories = await Categories.find({});
+      let listBlogs = await Promise.all(
+        listCategories.map(async (category) => {
+          const blogs = await Blogs.find({ status: "normal", category: category._id }).limit(10);
+
+          if (blogs.length > 0) {
+            blogs.map((blog) => (blog.category = category.name));
+          }
+          return blogs;
+        })
+      );
+      listBlogs = listBlogs.filter((n) => n.length !== 0).flat(); // remove empty array and [[value], [value, value]] -> [value, value]
+
+      const listIdBlogs = await Promise.all(
+        listBlogs.map(async (blog) => {
+          const countLikes = await Likes.count({
+            idBlog: blog._id,
+            like: true,
+          });
+          const countDislikes = await Likes.count({
+            idBlog: blog._id,
+            like: false,
+          });
+
+          const newBlog = new Object({...blog._doc, likes: countLikes, dislikes: countDislikes});
+          
+          console.log(newBlog);
+          return newBlog;
+        })
+      );
 
       if (countBlogs === 0) {
         return res.status(200).json({ msg: "Not have any blog" });
       } else {
-        return res.status(200).json({ listBlogs });
+        listIdBlogs.sort((a, b) => {
+          return b.createdAt - a.createdAt;
+        });
+        return res.status(200).json(listIdBlogs);
       }
     } catch (err) {
       return res.status(500).json({ msg: err.message });

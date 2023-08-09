@@ -11,7 +11,7 @@ const likeSchema = new mongoose.Schema(
       require: [true, "The category must have id blog"],
     },
     like: {
-      type: String,
+      type: Boolean,
       require: [true, "Must have like or dislike"]
     }
   }
