@@ -6,6 +6,7 @@ import categoryRouter from "./categoryRouter.js";
 import friendRequestRouter from "./friendRequestRouter.js";
 import blogRouter from "./blogRouter.js";
 import likeRouter from "./likeRouter.js";
+import reportRouter from "./reportRouter.js";
 
 const routers = [
   authRouter,
@@ -16,6 +17,7 @@ const routers = [
   friendRequestRouter,
   blogRouter,
   likeRouter,
+  reportRouter,
 ];
 
 export default routers;
