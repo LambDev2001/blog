@@ -1,23 +1,23 @@
-import express from "express"
+import express from "express";
 
-import reportCtrl from "../controllers/reportCtrl.js"
-import user from "../middleware/user.js"
-import permit from "../middleware/permit.js"
-import auth from "../middleware/auth.js"
+import reportCtrl from "../controllers/reportCtrl.js";
+import user from "../middleware/user.js";
+import permit from "../middleware/permit.js";
+import auth from "../middleware/auth.js";
 
-const router = express.Router()
+const router = express.Router();
 // auth
-router.delete("/delete-report/:id", auth, reportCtrl.deleteReport)
+router.delete("/delete-report/:id", auth, reportCtrl.deleteReport);
 
 // user
-router.post("/create-report", user, reportCtrl.createReport)
+router.post("/create-report", user, reportCtrl.createReport);
 
-router.patch("/edit-report/:id", user, reportCtrl.editReport)
+router.patch("/edit-report/:id", user, reportCtrl.editReport);
 
 // permit
-router.get("/get-report/:ids", permit, reportCtrl.getReport)
-router.get("/get-reports", permit, reportCtrl.getReports)
+router.get("/get-report/:ids", permit, reportCtrl.getReport);
+router.get("/get-reports", permit, reportCtrl.getReports);
 
-router.post("/accept-report/:idReport", permit, reportCtrl.acceptReport)
+router.post("/accept-report/:idReport", permit, reportCtrl.acceptReport);
 
-export default router
+export default router;

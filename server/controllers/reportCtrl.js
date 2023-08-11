@@ -76,7 +76,7 @@ const reportCtrl = {
       const idUser = req.user.id;
       const admin = await Admins.findOne({ _id: idUser }).projection({ password: 0 });
       const report = await Reports.findOne({ _id: idReport });
-      if(!report) return res.status(400).json({ msg: "Report not found" });
+      if (!report) return res.status(400).json({ msg: "Report not found" });
 
       if (idUser !== report.idUser || !admin)
         return res.status(400).json({ msg: "You do not have permission to delete this report" });
@@ -92,7 +92,7 @@ const reportCtrl = {
     try {
       const idReport = req.params.idReport;
       const report = await Reports.findOne({ _id: idReport });
-      if(!report) return res.status(400).json({ msg: "Report not found" });
+      if (!report) return res.status(400).json({ msg: "Report not found" });
 
       switch (report.type) {
         case "user":
@@ -109,11 +109,11 @@ const reportCtrl = {
 
       await Reports.findOneAndDelete({ _id: idReport });
 
-      return res.status(200).json({msg: 'Accept report success'});
+      return res.status(200).json({ msg: "Accept report success" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
-  }
+  },
 };
 
 export default reportCtrl;
