@@ -7,15 +7,15 @@ import user from "../middleware/user.js";
 
 const router = express.Router();
 // auth
-router.get("/check-info-user/:id", auth, userCtrl.checkInfoUser);
+router.get("/check-info-user/:idUser", auth, userCtrl.checkInfoUser);
 
 // user
 router.get("/reset-password/:token", userCtrl.resetPassword);
 router.get("/list-friends", user, userCtrl.listFriends);
 
-router.post("/remove-friend/:id", user, userCtrl.removeFriend);
+router.post("/remove-friend/:idUser", user, userCtrl.removeFriend);
 
-router.patch("/update-user/:id", user, userCtrl.updateUser);
+router.patch("/update-user/:idUser", user, userCtrl.updateUser);
 
 // admin
 router.get("/get-user", admin, userCtrl.getUser);

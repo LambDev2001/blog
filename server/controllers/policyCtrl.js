@@ -1,9 +1,10 @@
 import Policies from "../models/policyModel.js";
 
 const policyCtrl = {
-  getAllPolices: async (req, res) => {
+  // auth
+  getPolices: async (req, res) => {
     try {
-      const policies = await Policies.find({});
+      const policies = await Policies.find({ status: "normal" });
       if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
 
       return res.status(200).json({ policies });
@@ -11,10 +12,11 @@ const policyCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
-  getPolices: async (req, res) => {
+  
+  // admin
+  getAllPolices: async (req, res) => {
     try {
-      const policies = await Policies.find({ status: "normal" });
+      const policies = await Policies.find({});
       if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
 
       return res.status(200).json({ policies });

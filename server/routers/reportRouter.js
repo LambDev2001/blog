@@ -7,12 +7,12 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 // auth
-router.delete("/delete-report/:id", auth, reportCtrl.deleteReport);
+router.delete("/delete-report/:idReport", auth, reportCtrl.deleteReport);
 
 // user
 router.post("/create-report", user, reportCtrl.createReport);
 
-router.patch("/edit-report/:id", user, reportCtrl.editReport);
+router.patch("/edit-report/:idReport", user, reportCtrl.editReport);
 
 // permit
 router.get("/get-report/:ids", permit, reportCtrl.getReport);

@@ -9,23 +9,9 @@ import { generateAccessToken, generateRefreshToken } from "../config/generateTok
 const { REFRESH_TOKEN_SECRET } = process.env;
 
 const authCtrl = {
-  login: async (req, res) => {
-    try {
-      const { account, password } = req.body;
-      if (!account || !password) {
-        return res.status(400).json({ msg: "Fill all fields" });
-      }
-      const user = await Admins.findOne({ account });
-      if (!user) return res.status(400).json({ msg: "Account not found" });
-
-      loginUser(user, password, res);
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    }
-  },
-
-  // refresh access and refresh token when expired
+  // none auth
   refreshToken: async (req, res) => {
+    // refresh access and refresh token when expired
     try {
       const refreshToken = req.cookies.refreshtoken;
       if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
@@ -56,6 +42,22 @@ const authCtrl = {
     }
   },
 
+  login: async (req, res) => {
+    try {
+      const { account, password } = req.body;
+      if (!account || !password) {
+        return res.status(400).json({ msg: "Fill all fields" });
+      }
+      const user = await Admins.findOne({ account });
+      if (!user) return res.status(400).json({ msg: "Account not found" });
+
+      loginUser(user, password, res);
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+
+  // admin
   logout: async (req, res) => {
     try {
       res.clearCookie("refreshtoken", { path: `/api/refresh_token` });

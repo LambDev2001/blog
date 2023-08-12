@@ -4,6 +4,26 @@ import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
 
 const reportCtrl = {
+  // auth
+  deleteReport: async (req, res) => {
+    try {
+      const idReport = req.params.idReport;
+      const idUser = req.user.id;
+      const admin = await Admins.findOne({ _id: idUser }).projection({ password: 0 });
+      const report = await Reports.findOne({ _id: idReport });
+      if (!report) return res.status(400).json({ msg: "Report not found" });
+
+      if (idUser !== report.idUser || !admin)
+        return res.status(400).json({ msg: "You do not have permission to delete this report" });
+      await Reports.findOneAndDelete({ _id: id });
+
+      return res.status(200).json({ msg: "Delete report success" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  // user
   createReport: async (req, res) => {
     try {
       const idUser = req.user.id;
@@ -30,32 +50,10 @@ const reportCtrl = {
     }
   },
 
-  getReports: async (req, res) => {
-    try {
-      const reports = await Reports.find();
-
-      return res.status(200).json(reports);
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  getReport: async (req, res) => {
-    try {
-      const ids = req.params.id;
-
-      const reports = await Reports.find({ ids });
-
-      return res.status(200).json(reports);
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
   editReport: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idReport = req.params.id;
+      const idReport = req.params.idReport;
       const { content } = req.body;
 
       const report = await Reports.findOne({ _id: idReport });
@@ -70,19 +68,24 @@ const reportCtrl = {
     }
   },
 
-  deleteReport: async (req, res) => {
+  // permit
+  getReport: async (req, res) => {
     try {
-      const idReport = req.params.id;
-      const idUser = req.user.id;
-      const admin = await Admins.findOne({ _id: idUser }).projection({ password: 0 });
-      const report = await Reports.findOne({ _id: idReport });
-      if (!report) return res.status(400).json({ msg: "Report not found" });
+      const ids = req.params.ids;
 
-      if (idUser !== report.idUser || !admin)
-        return res.status(400).json({ msg: "You do not have permission to delete this report" });
-      await Reports.findOneAndDelete({ _id: id });
+      const reports = await Reports.find({ ids });
 
-      return res.status(200).json({ msg: "Delete report success" });
+      return res.status(200).json(reports);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getReports: async (req, res) => {
+    try {
+      const reports = await Reports.find();
+
+      return res.status(200).json(reports);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

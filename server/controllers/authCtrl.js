@@ -16,29 +16,36 @@ import { validateEmail } from "../config/valid.js";
 const { ACTIVE_TOKEN_SECRET, REFRESH_TOKEN_SECRET, BASE_URL, PORT } = process.env;
 
 const authCtrl = {
-  register: async (req, res) => {
+  // none auth
+  refreshToken: async (req, res) => {
+    // refresh access and refresh token when expired
     try {
-      const { username, account, password } = req.body;
-      if (!username || !account || !password) {
-        return res.status(400).json({ msg: "Fill all fields" });
-      }
+      const refreshToken = req.cookies.refreshtoken;
+      if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
 
-      const user = await Users.findOne({ account });
-      if (user) return res.status(400).json({ msg: "User already exists" });
+      // Take refreshToken from cookie
+      const decoded = jwt.verify(refreshToken, `${REFRESH_TOKEN_SECRET}`);
+      if (!decoded.id) return res.status(400).json({ msg: "Please login now!" });
 
-      const passwordHash = await bcrypt.hash(password, 12);
-      const newUser = { username, account, password: passwordHash };
-      const encodeNewUser = generateActiveToken({ newUser });
-      const url = `${BASE_URL}:${PORT}/api/active/${encodeNewUser}`; // have frond-end delete api
-      console.log(url);
-      if (validateEmail(account)) {
-        sendMail(account, url, "Verify your account", "register");
-        return res.status(200).json({ msg: "Click button on the email to active this account" });
-      } else {
-        return res.status(400).json({ msg: "Your mail address is not valid" });
-      }
-    } catch (error) {
-      return res.json({ msg: error.message });
+      const user = await Users.findById(decoded.id).select("-password +refreshToken");
+
+      if (!user) return res.status(400).json({ msg: "This account does not exist." });
+      if (refreshToken !== user.refreshToken)
+        return res.status(400).json({ msg: "Please login now!" });
+
+      const access_token = generateAccessToken({ id: user._id });
+      const refresh_token = generateRefreshToken({ id: user._id }, res);
+
+      await Users.findOneAndUpdate(
+        { _id: user._id },
+        {
+          refreshToken: refresh_token,
+        }
+      );
+
+      res.json({ access_token, user });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
     }
   },
 
@@ -83,58 +90,32 @@ const authCtrl = {
     }
   },
 
-  // refresh access and refresh token when expired
-  refreshToken: async (req, res) => {
+  register: async (req, res) => {
     try {
-      const refreshToken = req.cookies.refreshtoken;
-      if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
+      const { username, account, password } = req.body;
+      if (!username || !account || !password) {
+        return res.status(400).json({ msg: "Fill all fields" });
+      }
 
-      // Take refreshToken from cookie
-      const decoded = jwt.verify(refreshToken, `${REFRESH_TOKEN_SECRET}`);
-      if (!decoded.id) return res.status(400).json({ msg: "Please login now!" });
+      const user = await Users.findOne({ account });
+      if (user) return res.status(400).json({ msg: "User already exists" });
 
-      const user = await Users.findById(decoded.id).select("-password +refreshToken");
-
-      if (!user) return res.status(400).json({ msg: "This account does not exist." });
-      if (refreshToken !== user.refreshToken)
-        return res.status(400).json({ msg: "Please login now!" });
-
-      const access_token = generateAccessToken({ id: user._id });
-      const refresh_token = generateRefreshToken({ id: user._id }, res);
-
-      await Users.findOneAndUpdate(
-        { _id: user._id },
-        {
-          refreshToken: refresh_token,
-        }
-      );
-
-      res.json({ access_token, user });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      const passwordHash = await bcrypt.hash(password, 12);
+      const newUser = { username, account, password: passwordHash };
+      const encodeNewUser = generateActiveToken({ newUser });
+      const url = `${BASE_URL}:${PORT}/api/active/${encodeNewUser}`; // have frond-end delete api
+      console.log(url);
+      if (validateEmail(account)) {
+        sendMail(account, url, "Verify your account", "register");
+        return res.status(200).json({ msg: "Click button on the email to active this account" });
+      } else {
+        return res.status(400).json({ msg: "Your mail address is not valid" });
+      }
+    } catch (error) {
+      return res.json({ msg: error.message });
     }
   },
 
-  logout: async (req, res) => {
-    if (!req.user) return res.status(403).json({ msg: "Invalid Authorization" });
-
-    try {
-      res.clearCookie("refreshtoken", { path: `/api/refresh_token` });
-
-      await Users.findOneAndUpdate(
-        { _id: req.user._id },
-        {
-          refreshToken: "",
-        }
-      );
-
-      return res.json({ msg: "Logged out!" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  // forgot password
   forgotPassword: async (req, res) => {
     try {
       const { account, password } = req.body;
@@ -149,6 +130,26 @@ const authCtrl = {
       sendMail(account, url, "Reset your password", "forgotPassword");
 
       return res.status(200).json({ msg: "Check your email and follow link" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  // user
+  logout: async (req, res) => {
+    if (!req.user) return res.status(403).json({ msg: "Invalid Authorization" });
+
+    try {
+      res.clearCookie("refreshtoken", { path: `/api/refresh_token` });
+
+      await Users.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          refreshToken: "",
+        }
+      );
+
+      return res.json({ msg: "Logged out!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

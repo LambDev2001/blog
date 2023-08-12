@@ -2,6 +2,34 @@ import Rooms from "../models/roomModel.js";
 import Users from "../models/userModel.js";
 
 const groupCtrl = {
+  // user
+  listRoom: async (req, res) => {
+    try {
+      const idUser = req.user.id;
+
+      const rooms = await Rooms.find({ member: idUser });
+
+      return res.status(200).json(rooms);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  listMember: async (req, res) => {
+    try {
+      const idRoom = req.params.idRoom;
+      const idUser = req.user.id;
+
+      const room = await Rooms.findOne({ _id: idRoom });
+      if (!room) return res.status(400).json({ msg: "Room not found" });
+      if (room.member.indexOf(idUser) === -1)
+        return res.status(400).json({ msg: "You are not a member of this room" });
+
+      return res.status(200).json(room.member);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   createRoom: async (req, res) => {
     try {
       const idUser = req.user.id;
@@ -12,18 +40,6 @@ const groupCtrl = {
       await newGroup.save();
 
       return res.status(200).json({ msg: "Create new room successfully!" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  listRoom: async (req, res) => {
-    try {
-      const idUser = req.user.id;
-
-      const rooms = await Rooms.find({ member: idUser });
-
-      return res.status(200).json(rooms);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -99,21 +115,6 @@ const groupCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
-  listMember: async (req, res) => {
-    try {
-      const idRoom = req.params.idRoom;
-      const idUser = req.user.id
-
-      const room = await Rooms.findOne({ _id: idRoom });
-      if(!room) return res.status(400).json({ msg: "Room not found" });
-      if(room.member.indexOf(idUser) === -1) return res.status(400).json({ msg: "You are not a member of this room" });      
-    
-      return res.status(200).json(room.member)
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  }
 };
 
 export default groupCtrl;

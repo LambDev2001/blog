@@ -8,6 +8,6 @@ const router = express.Router();
 router.get("/most-view", auth, viewCtrl.mostView);
 router.get("/most-view-monthly", auth, viewCtrl.mostViewMonthly);
 
-router.post("/increase-view/:id", auth, viewCtrl.increaseView);
+router.post("/increase-view/:idBlog", auth, viewCtrl.increaseView);
 
 export default router;

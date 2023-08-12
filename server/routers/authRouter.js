@@ -4,12 +4,12 @@ import user from "../middleware/user.js";
 
 const router = express.Router();
 // none auth
-router.get("/refresh_token", authCtrl.refreshToken);
+router.get("/refresh-token", authCtrl.refreshToken);
 router.get("/active/:token", authCtrl.activeAccount);
 
 router.post("/login", authCtrl.login);
 router.post("/register", authCtrl.register);
-router.post("/forgotPassword", authCtrl.forgotPassword);
+router.post("/forgot-password", authCtrl.forgotPassword);
 
 // user
 router.get("/logout", user, authCtrl.logout);

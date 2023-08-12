@@ -5,11 +5,11 @@ import admin from "../middleware/admin.js";
 
 const router = express.Router();
 // none auth
-router.get("/refresh_token/admin", adminCtrl.refreshToken);
+router.get("/refresh-token/admin", adminCtrl.refreshToken);
 
-router.post("/loginAdmin", adminCtrl.login);
+router.post("/login-admin", adminCtrl.login);
 
 // admin
-router.get("/logoutAdmin", admin, adminCtrl.logout);
+router.get("/logout-admin", admin, adminCtrl.logout);
 
 export default router;

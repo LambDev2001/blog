@@ -7,7 +7,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 // auth
-router.delete("/delete-blog/:id", auth, blogCtrl.deleteBlog);
+router.delete("/delete-blog/:idBlog", auth, blogCtrl.deleteBlog);
 
 // user
 router.get("/list-blogs", user, blogCtrl.listBlogs);
@@ -15,11 +15,11 @@ router.get("/list-friends-blogs", user, blogCtrl.listFriendsBlogs);
 
 router.post("/create-blog", user, blogCtrl.createBlog);
 
-router.patch("/update-blog/:id", user, blogCtrl.updateBlog);
+router.patch("/update-blog/:idBlog", user, blogCtrl.updateBlog);
 
 // permit
 router.get("/list-blogs-admin", permit, blogCtrl.listBlogsAdmin);
 
-router.patch("/status-blog/:id", permit, blogCtrl.statusBlog);
+router.patch("/status-blog/:idBlog", permit, blogCtrl.statusBlog);
 
 export default router;

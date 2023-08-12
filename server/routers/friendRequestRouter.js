@@ -9,8 +9,8 @@ router.get("/list-sending-request-friend", user, friendRequestCtl.listSendingReq
 router.get("/list-waiting-request-friend", user, friendRequestCtl.listWaitingRequest);
 
 router.post("/send-request-friend", user, friendRequestCtl.sendRequest);
-router.post("/accept-friend/:id", user, friendRequestCtl.acceptRequest);
+router.post("/accept-friend/:idRequest", user, friendRequestCtl.acceptRequest);
 
-router.delete("/decline-friend/:id", user, friendRequestCtl.declineRequest);
+router.delete("/decline-friend/:idRequest", user, friendRequestCtl.declineRequest);
 
 export default router;

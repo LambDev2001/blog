@@ -9,12 +9,12 @@ const router = express.Router()
 router.get("/get-all-categories", auth, categoryCtrl.getAllCategories)
 
 // admin
-router.get("/get-category/:id", admin, categoryCtrl.getCategory)
+router.get("/get-category/:idCategory", admin, categoryCtrl.getCategory)
 
 router.post("/create-category", admin, categoryCtrl.createCategory)
 
-router.patch("/update-category/:id", admin, categoryCtrl.updateCategory)
+router.patch("/update-category/:idCategory", admin, categoryCtrl.updateCategory)
 
-router.delete("/delete-category/:id", admin, categoryCtrl.deleteCategory)
+router.delete("/delete-category/:idCategory", admin, categoryCtrl.deleteCategory)
 
 export default router

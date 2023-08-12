@@ -7,65 +7,10 @@ import Categories from "../models/categoryModel.js";
 import Views from "../models/viewModel.js";
 
 const blogCtrl = {
-  createBlog: async (req, res) => {
-    try {
-      const idUser = req.user.id;
-      const valid = checkData(req.body, "title", "content", "thumbnail", "description", "category");
-
-      if (valid !== true) return res.status(400).json({ valid });
-      const newBlog = new Blogs({ idUser, ...req.body });
-      await newBlog.save();
-
-      const newView = new Views({ idBlog: newBlog._id });
-      await newView.save();
-
-      return res.status(200).json({ msg: "Create blog successfully" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  statusBlog: async (req, res) => {
-    try {
-      const idBlog = req.params.id;
-      const data = checkData(req.body, "status");
-      if (data !== true) return res.status(400).json({ data });
-
-      const blog = await Blogs.findOneAndUpdate(
-        { _id: idBlog },
-        { status: req.body.status },
-        { new: true }
-      );
-
-      return blog
-        ? res.status(200).json({ msg: "Status blog has change" })
-        : res.status(400).json({ msg: "Blog not found" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  updateBlog: async (req, res) => {
-    try {
-      const idBlog = req.params.id;
-
-      const ownerBlog = await Blogs.findOne({ _id: idBlog });
-      if (ownerBlog.idUser !== req.user.id)
-        return res.status(400).json({ msg: "You are not owner" });
-
-      const blog = await Blogs.findOneAndUpdate({ _id: idBlog }, { ...req.body }, { new: true });
-
-      return blog
-        ? res.status(200).json({ msg: "The information blog has change" })
-        : res.status(400).json({ msg: "Blog not found" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
+  // auth
   deleteBlog: async (req, res) => {
     try {
-      const idBlog = req.params.id;
+      const idBlog = req.params.idBlog;
 
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
       const isAdmin = await Admins.findOne({ _id: req.user.id });
@@ -85,6 +30,7 @@ const blogCtrl = {
     }
   },
 
+  // user
   listBlogs: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
@@ -162,6 +108,43 @@ const blogCtrl = {
     }
   },
 
+  createBlog: async (req, res) => {
+    try {
+      const idUser = req.user.id;
+      const valid = checkData(req.body, "title", "content", "thumbnail", "description", "category");
+
+      if (valid !== true) return res.status(400).json({ valid });
+      const newBlog = new Blogs({ idUser, ...req.body });
+      await newBlog.save();
+
+      const newView = new Views({ idBlog: newBlog._id });
+      await newView.save();
+
+      return res.status(200).json({ msg: "Create blog successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  updateBlog: async (req, res) => {
+    try {
+      const idBlog = req.params.idBlog;
+
+      const ownerBlog = await Blogs.findOne({ _id: idBlog });
+      if (ownerBlog.idUser !== req.user.id)
+        return res.status(400).json({ msg: "You are not owner" });
+
+      const blog = await Blogs.findOneAndUpdate({ _id: idBlog }, { ...req.body }, { new: true });
+
+      return blog
+        ? res.status(200).json({ msg: "The information blog has change" })
+        : res.status(400).json({ msg: "Blog not found" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  // permit
   listBlogsAdmin: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
@@ -177,6 +160,25 @@ const blogCtrl = {
     }
   },
 
+  statusBlog: async (req, res) => {
+    try {
+      const idBlog = req.params.idBlog;
+      const data = checkData(req.body, "status");
+      if (data !== true) return res.status(400).json({ data });
+
+      const blog = await Blogs.findOneAndUpdate(
+        { _id: idBlog },
+        { status: req.body.status },
+        { new: true }
+      );
+
+      return blog
+        ? res.status(200).json({ msg: "Status blog has change" })
+        : res.status(400).json({ msg: "Blog not found" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 export default blogCtrl;

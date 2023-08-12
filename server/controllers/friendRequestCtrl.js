@@ -2,6 +2,7 @@ import Users from "../models/userModel.js";
 import Requests from "../models/friendRequestModel.js";
 
 const friendRequestCtl = {
+  // user
   listSendingRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
@@ -54,20 +55,19 @@ const friendRequestCtl = {
   acceptRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const receiver = req.params.id;
+      const idRequest = req.params.idRequest;
 
       const request = await Requests.findOne({
-        idUser: receiver,
-        receiver: idUser,
+        _id: idRequest,
       });
       if (!request) return res.status(400).json({ msg: "This quest does not exit" });
 
       const sender = await Users.findByIdAndUpdate(
         { _id: idUser },
-        { $push: { friends: receiver } }
+        { $push: { friends: request.receiver } }
       );
       const userReceiver = await Users.findByIdAndUpdate(
-        { _id: receiver },
+        { _id: request.receiver },
         { $push: { friends: idUser } }
       );
       if (!sender || !userReceiver) return res.status(400).json({ msg: "Some err from back-end" });
@@ -81,11 +81,10 @@ const friendRequestCtl = {
   declineRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const receiver = req.params.id;
+      const idRequest = req.params.idRequest;
 
       const result = await Requests.findOneAndDelete({
-        idUser: receiver,
-        receiver: idUser,
+        _id: idRequest,
       });
       if (!result) return res.status(400).json({ msg: "This quest does not exit" });
 

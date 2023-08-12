@@ -2,21 +2,7 @@ import Categories from "../models/categoryModel.js";
 import Admins from "../models/adminModel.js";
 
 const categoryCtrl = {
-  createCategory: async (req, res) => {
-    try {
-      const idAdmin = req.user.id;
-      const admin = await Admins.findOne({ _id: req.user.id });
-      const { name } = req.body;
-      const newCategory = new Categories({ name });
-
-      await newCategory.save();
-
-      return res.status(200).json({ msg: "Create category successfully" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
+  // auth
   getAllCategories: async (req, res) => {
     try {
       const idAdmin = req.user.id;
@@ -29,9 +15,10 @@ const categoryCtrl = {
     }
   },
 
+  // admin
   getCategory: async (req, res) => {
     try {
-      const idAdmin = req.user.id;
+      const idAdmin = req.user.idCategory;
       const admin = await Admins.findOne({ _id: req.user.id });
       const listCategories = await Categories.findOne({ _id: req.params.id });
 
@@ -41,11 +28,26 @@ const categoryCtrl = {
     }
   },
 
+  createCategory: async (req, res) => {
+    try {
+      const idAdmin = req.user.id;
+      const { name } = req.body;
+      const admin = await Admins.findOne({ _id: req.user.id });
+      const newCategory = new Categories({ name });
+
+      await newCategory.save();
+
+      return res.status(200).json({ msg: "Create category successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   updateCategory: async (req, res) => {
     try {
       const idAdmin = req.user.id;
+      const idCategory = req.params.idCategory;
       const admin = await Admins.findOne({ _id: req.user.id });
-      const idCategory = req.params.id;
       const { name } = req.body;
 
       await Categories.findOneAndUpdate({ _id: idCategory }, { name });
@@ -59,8 +61,8 @@ const categoryCtrl = {
   deleteCategory: async (req, res) => {
     try {
       const idAdmin = req.user.id;
+      const idCategory = req.params.idCategory;
       const admin = await Admins.findOne({ _id: req.user.id });
-      const idCategory = req.params.id;
 
       await Categories.findOneAndDelete({ _id: idCategory });
 
