@@ -4,6 +4,7 @@ import Admins from "../models/adminModel.js";
 import Users from "../models/userModel.js";
 import Likes from "../models/likeModel.js";
 import Categories from "../models/categoryModel.js";
+import Views from "../models/viewModel.js";
 
 const blogCtrl = {
   createBlog: async (req, res) => {
@@ -14,6 +15,9 @@ const blogCtrl = {
       if (valid !== true) return res.status(400).json({ valid });
       const newBlog = new Blogs({ idUser, ...req.body });
       await newBlog.save();
+
+      const newView = new Views({ idBlog: newBlog._id });
+      await newView.save();
 
       return res.status(200).json({ msg: "Create blog successfully" });
     } catch (err) {
@@ -70,6 +74,7 @@ const blogCtrl = {
         return res.status(400).json({ msg: "You are not owner" });
       }
 
+      await Views.findByIdAndDelete({ _id: idBlog });
       const blog = await Blogs.findOneAndDelete({ _id: idBlog });
 
       return blog
@@ -107,8 +112,8 @@ const blogCtrl = {
             like: false,
           });
 
-          const newBlog = new Object({...blog._doc, likes: countLikes, dislikes: countDislikes});
-          
+          const newBlog = new Object({ ...blog._doc, likes: countLikes, dislikes: countDislikes });
+
           return newBlog;
         })
       );
@@ -172,19 +177,6 @@ const blogCtrl = {
     }
   },
 
-  increaseView: async (req, res) => {
-    try {
-      const idBlog = req.params.id;
-      const blog = await Blogs.findById(idBlog);
-
-      blog.view++;
-      await blog.save();
-
-      return res.status(200).json({ msg: "increased view" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
 };
 
 export default blogCtrl;

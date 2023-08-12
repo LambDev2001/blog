@@ -8,6 +8,7 @@ import blogRouter from "./blogRouter.js";
 import likeRouter from "./likeRouter.js";
 import reportRouter from "./reportRouter.js";
 import roomRouter from "./roomRouter.js";
+import viewRouter from "./viewRouter.js";
 
 const routers = [
   authRouter,
@@ -20,6 +21,7 @@ const routers = [
   likeRouter,
   reportRouter,
   roomRouter,
+  viewRouter,
 ];
 
 export default routers;

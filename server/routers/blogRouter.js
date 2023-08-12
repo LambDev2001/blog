@@ -7,7 +7,6 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 // auth
-router.post("/increase-view/:id", auth, blogCtrl.increaseView);
 router.delete("/delete-blog/:id", auth, blogCtrl.deleteBlog);
 
 // user

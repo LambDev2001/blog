@@ -34,7 +34,6 @@ const blogSchema = new mongoose.Schema(
       type: String,
       default: "waiting",
     },
-    view: { type: Number, default: 0 },
     permit: { type: String },
     comment: { type: [String], default: [] },
     report: {
