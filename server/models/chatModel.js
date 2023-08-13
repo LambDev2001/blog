@@ -8,7 +8,7 @@ const chatSchema = new mongoose.Schema(
     },
     idUser: {
       type: String,
-      require: true,
+      require: [true, "The chat must have to user id"],
     },
     message: {
       type: String,
@@ -19,4 +19,3 @@ const chatSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("chat", chatSchema);
-
