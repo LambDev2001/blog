@@ -21,15 +21,17 @@ import "./config/database.js";
 // routers
 app.use("/api", routers);
 
+// socket io
 const http = createServer(app);
 export const io = new Server(http);
 
-import socketServer from "./config/socket/socket.js";
+import socketServer from "./config/socket.js";
 
 io.on("connection", (socket) => {
   socketServer(socket);
 });
 
+// start server
 http.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}/api`);
 });

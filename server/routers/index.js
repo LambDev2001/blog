@@ -9,6 +9,7 @@ import likeRouter from "./likeRouter.js";
 import reportRouter from "./reportRouter.js";
 import roomRouter from "./roomRouter.js";
 import viewRouter from "./viewRouter.js";
+import chatRouter from "./chatRouter.js";
 
 const routers = [
   authRouter,
@@ -22,6 +23,7 @@ const routers = [
   reportRouter,
   roomRouter,
   viewRouter,
+  chatRouter,
 ];
 
 export default routers;
