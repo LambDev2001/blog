@@ -8,19 +8,20 @@ const commentSchema = new mongoose.Schema(
     },
     idBlog: {
       type: String,
+      require: [true, "The comment must have to id blog"],
     },
     replyCM: {
       type: [String],
       default: [],
     },
-    content: {
+    message: {
       type: String,
       require: [true, "You the content fried"],
     },
 
     status: {
       type: String,
-      require: "normal",
+      default: "normal",
     },
     report: {
       type: [String],
