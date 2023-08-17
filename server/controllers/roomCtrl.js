@@ -14,6 +14,7 @@ const groupCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
   listMember: async (req, res) => {
     try {
       const idRoom = req.params.idRoom;

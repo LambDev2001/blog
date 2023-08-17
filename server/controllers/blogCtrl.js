@@ -7,6 +7,40 @@ import Categories from "../models/categoryModel.js";
 import Views from "../models/viewModel.js";
 
 const blogCtrl = {
+  // none auth
+  searchBlog: async (req, res) => {
+    try {
+      console.log(req.query.title);
+      const blogs = await Blogs.aggregate([
+        {
+          $search: {
+            index: "searchBlog",
+            autocomplete: {
+              query: `${req.query.search}`,
+              path: "title",
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            title: 1,
+            description: 1,
+            thumbnail: 1,
+            createdAt: 1,
+          },
+        },
+      ]);
+
+      if (blogs.length < 1) return res.status(400).json({ msg: "No Blogs." });
+
+      return res.status(200).json(blogs);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // auth
   deleteBlog: async (req, res) => {
     try {

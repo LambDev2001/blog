@@ -8,6 +8,7 @@ import user from "../middleware/user.js";
 const router = express.Router();
 // auth
 router.get("/check-info-user/:idUser", auth, userCtrl.checkInfoUser);
+router.get("/search-user", auth, userCtrl.searchUser);
 
 // user
 router.get("/reset-password/:token", userCtrl.resetPassword);

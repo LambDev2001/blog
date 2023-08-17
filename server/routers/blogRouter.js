@@ -6,6 +6,9 @@ import permit from "../middleware/permit.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
+// none auth
+router.get("/search-blog", blogCtrl.searchBlog);
+
 // auth
 router.delete("/delete-blog/:idBlog", auth, blogCtrl.deleteBlog);
 

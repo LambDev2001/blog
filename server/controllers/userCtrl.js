@@ -22,6 +22,58 @@ const userCtrl = {
     }
   },
 
+  searchUser: async (req, res) => {
+    try {
+      var users = await Users.aggregate([
+        {
+          $search: {
+            index: "searchUser",
+            autocomplete: {
+              query: `${req.query.search}`,
+              path: "username",
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        { $limit: 10 },
+        {
+          $project: {
+            username: 1,
+            account: 1,
+            avatar: 1,
+          },
+        },
+      ]);
+
+      if (users.length < 1) {
+        users = await Users.aggregate([
+          {
+            $search: {
+              index: "searchUser",
+              autocomplete: {
+                query: `${req.query.search}`,
+                path: "account",
+              },
+            },
+          },
+          { $sort: { createdAt: -1 } },
+          { $limit: 10 },
+          {
+            $project: {
+              username: 1,
+              account: 1,
+              avatar: 1,
+            },
+          },
+        ]);
+      }
+
+      return res.status(200).json(users);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // user
   resetPassword: async (req, res) => {
     try {
