@@ -139,7 +139,7 @@ const userCtrl = {
   // admin
   getUser: async (req, res) => {
     try {
-      const id = req.user.id;
+      const idUser = req.params.idUser;
 
       const user = await Users.findById({ _id: id }).select("-password");
 

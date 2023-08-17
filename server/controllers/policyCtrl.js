@@ -12,7 +12,7 @@ const policyCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-  
+
   // admin
   getAllPolices: async (req, res) => {
     try {
@@ -54,17 +54,6 @@ const policyCtrl = {
       await Policies.findByIdAndUpdate({ _id: idPolicy }, { status });
 
       return res.status(200).json({ msg: "Change status policy successfully" });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  removePolicy: async (req, res) => {
-    try {
-      const { idPolicy } = req.body;
-      await Policies.findByIdAndRemove({ _id: idPolicy });
-
-      return res.status(200).json({ msg: "Remove policy successfully. You can check it in bin" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

@@ -7,18 +7,18 @@ import user from "../middleware/user.js";
 
 const router = express.Router();
 // auth
-router.get("/check-info-user/:idUser", auth, userCtrl.checkInfoUser);
+router.get("/info-user/:idUser", auth, userCtrl.checkInfoUser);
 router.get("/search-user", auth, userCtrl.searchUser);
 
 // user
 router.get("/reset-password/:token", userCtrl.resetPassword);
-router.get("/list-friends", user, userCtrl.listFriends);
+router.get("/friends", user, userCtrl.listFriends);
 
 router.post("/remove-friend/:idUser", user, userCtrl.removeFriend);
 
-router.patch("/update-user/:idUser", user, userCtrl.updateUser);
+router.patch("/user/:idUser", user, userCtrl.updateUser);
 
 // admin
-router.get("/get-user", admin, userCtrl.getUser);
-router.get("/get-list-users", admin, userCtrl.getUsers);
+router.get("/user/:idUser", admin, userCtrl.getUser);
+router.get("/users", admin, userCtrl.getUsers);
 export default router;

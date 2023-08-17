@@ -6,13 +6,13 @@ import user from "../middleware/user.js";
 const router = express.Router();
 
 // user
-router.get("/list-room", user, roomCtrl.listRoom);
-router.get("/list-member-room/:idRoom", user, roomCtrl.listMember);
+router.get("/rooms", user, roomCtrl.listRoom);
+router.get("/room-member/:idRoom", user, roomCtrl.listMember);
 
-router.post("/create-room", user, roomCtrl.createRoom);
+router.post("/room", user, roomCtrl.createRoom);
 router.post("/add-member/:idRoom", user, roomCtrl.addMember);
-router.post("/remove-member-room/:idRoom", user, roomCtrl.removeMember);
+router.post("/remove-member/:idRoom", user, roomCtrl.removeMember);
 
-router.delete("/delete-room/:idRoom", user, roomCtrl.deleteRoom);
+router.delete("/room/:idRoom", user, roomCtrl.deleteRoom);
 
 export default router;

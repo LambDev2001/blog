@@ -35,16 +35,23 @@ const chatCtrl = {
 
   deleteChat: async (req, res) => {
     try {
-      const { idMessage, idRoom } = req.body;
+      const { idRoom } = req.body;
+      const idChat = req.params.idChat;
       const idUser = req.user.id;
 
-      const chat = await Chats.findOneAndDelete({ _id: idMessage, idUser });
+      const chat = await Chats.findOne({ _id: idChat });
       if (!chat) {
-        socket.to(idRoom).emit("recover-message-server", { err: "Message not found" });
+        socket.to(idRoom).emit("delete-chat-server", { err: "Message not found" });
+        return res.status(200).json({ msg: "Delete message failed" });
+      }
+      if (chat.idUser !== idUser) {
+        socket.to(idRoom).emit("delete-chat-server", { err: "You are not owner" });
         return res.status(200).json({ msg: "Delete message failed" });
       }
 
-      socket.broadcast.to(idRoom).emit("recover-message-server", { idMessage });
+      await Chats.findOneAndDelete({ _id: idChat, idUser });
+
+      socket.broadcast.to(idRoom).emit("delete-message-server", { idMessage });
       return res.status(200).json({ msg: "Delete message successfully!" });
     } catch (err) {
       console.log({ smg: err });

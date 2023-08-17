@@ -6,10 +6,10 @@ import chatCtrl from "../controllers/chatCtrl.js";
 const router = express.Router();
 
 // user
-router.get("list-chat", user, chatCtrl.listChat);
+router.get("/chats", user, chatCtrl.listChat);
 
-router.post("create-chat", user, chatCtrl.createChat);
+router.post("/chat", user, chatCtrl.createChat);
 
-router.delete("delete-chat", user, chatCtrl.deleteChat);
+router.delete("/chat/:idChat", user, chatCtrl.deleteChat);
 
 export default router;

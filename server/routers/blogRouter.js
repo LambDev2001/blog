@@ -13,15 +13,15 @@ router.get("/search-blog", blogCtrl.searchBlog);
 router.delete("/delete-blog/:idBlog", auth, blogCtrl.deleteBlog);
 
 // user
-router.get("/list-blogs", user, blogCtrl.listBlogs);
-router.get("/list-friends-blogs", user, blogCtrl.listFriendsBlogs);
+router.get("/blogs", user, blogCtrl.listBlogs);
+router.get("/blogs-friends", user, blogCtrl.listFriendsBlogs);
 
-router.post("/create-blog", user, blogCtrl.createBlog);
+router.post("/blog", user, blogCtrl.createBlog);
 
-router.patch("/update-blog/:idBlog", user, blogCtrl.updateBlog);
+router.patch("/blog/:idBlog", user, blogCtrl.updateBlog);
 
 // permit
-router.get("/list-blogs-admin", permit, blogCtrl.listBlogsAdmin);
+router.get("/blogs-admin", permit, blogCtrl.listBlogsAdmin);
 
 router.patch("/status-blog/:idBlog", permit, blogCtrl.statusBlog);
 

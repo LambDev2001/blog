@@ -1,20 +1,20 @@
-import express from "express"
+import express from "express";
 
-import categoryCtrl from "../controllers/categoryCtrl.js"
-import auth from "../middleware/auth.js"
-import admin from "../middleware/admin.js"
+import categoryCtrl from "../controllers/categoryCtrl.js";
+import auth from "../middleware/auth.js";
+import admin from "../middleware/admin.js";
 
-const router = express.Router()
+const router = express.Router();
 // auth
-router.get("/get-all-categories", auth, categoryCtrl.getAllCategories)
+router.get("/categories", auth, categoryCtrl.getAllCategories);
 
 // admin
-router.get("/get-category/:idCategory", admin, categoryCtrl.getCategory)
+router.get("/category/:idCategory", admin, categoryCtrl.getCategory);
 
-router.post("/create-category", admin, categoryCtrl.createCategory)
+router.post("/category", admin, categoryCtrl.createCategory);
 
-router.patch("/update-category/:idCategory", admin, categoryCtrl.updateCategory)
+router.patch("/category/:idCategory", admin, categoryCtrl.updateCategory);
 
-router.delete("/delete-category/:idCategory", admin, categoryCtrl.deleteCategory)
+router.delete("/category/:idCategory", admin, categoryCtrl.deleteCategory);
 
-export default router
+export default router;
