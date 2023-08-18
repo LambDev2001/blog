@@ -35,7 +35,7 @@ const blogSchema = new mongoose.Schema(
       default: "waiting",
     },
     permit: { type: String },
-    comment: { type: [String], default: [] },
+    share: { type: Number, default: 0 },
     report: {
       type: [String],
       default: [],

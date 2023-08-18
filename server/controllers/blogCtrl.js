@@ -10,7 +10,6 @@ const blogCtrl = {
   // none auth
   searchBlog: async (req, res) => {
     try {
-      console.log(req.query.title);
       const blogs = await Blogs.aggregate([
         {
           $search: {
@@ -36,6 +35,21 @@ const blogCtrl = {
       if (blogs.length < 1) return res.status(400).json({ msg: "No Blogs." });
 
       return res.status(200).json(blogs);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  increaseShare: async (req, res) => {
+    try {
+      const { idBlog } = req.params;
+      const blog = await Blogs.findById(idBlog);
+      if (!blog) return res.status(400).json({ msg: "Blog not found" });
+
+      blog.share += 1;
+      await blog.save();
+
+      return res.status(200).json({ msg: "Increased share" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -68,44 +82,39 @@ const blogCtrl = {
   listBlogs: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
-      const listCategories = await Categories.find({});
-      let listBlogs = await Promise.all(
-        listCategories.map(async (category) => {
-          const blogs = await Blogs.find({ status: "normal", category: category._id }).limit(10);
+      const allBlogs = await Blogs.find({
+        status: "normal",
+      }).select("-report -status -content");
 
-          if (blogs.length > 0) {
-            blogs.map((blog) => (blog.category = category.name));
-          }
-          return blogs;
-        })
-      );
-      listBlogs = listBlogs.filter((n) => n.length !== 0).flat(); // remove empty array and [[value], [value, value]] -> [value, value]
+      let blogs = await Promise.all(
+        allBlogs.map(async (blog) => {
+          const category = await Categories.findById(blog.category);
 
-      const listIdBlogs = await Promise.all(
-        listBlogs.map(async (blog) => {
-          const countLikes = await Likes.count({
+          const likes = await Likes.count({
             idBlog: blog._id,
             like: true,
           });
-          const countDislikes = await Likes.count({
+          const dislikes = await Likes.count({
             idBlog: blog._id,
             like: false,
           });
+          const views = await Views.findOne({ idBlog: blog._id });
 
-          const newBlog = new Object({ ...blog._doc, likes: countLikes, dislikes: countDislikes });
-
-          return newBlog;
+          return { ...blog._doc, category: category.name, likes, dislikes, views: views.view };
         })
       );
 
+      blogs = blogs.filter((n) => n.length !== 0).flat(); // remove empty array and [[value], [value, value]] -> [value, value]
+
       if (countBlogs === 0) {
         return res.status(200).json({ msg: "Not have any blog" });
-      } else {
-        listIdBlogs.sort((a, b) => {
-          return b.createdAt - a.createdAt;
-        });
-        return res.status(200).json(listIdBlogs);
       }
+
+      blogs.sort((a, b) => {
+        return b.createdAt - a.createdAt;
+      });
+
+      return res.status(200).json(blogs);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -119,11 +128,30 @@ const blogCtrl = {
 
       const listBlogs = await Promise.all(
         friendsIds.map(async (friendId) => {
-          const friendBlogs = await Blogs.find({
+          const allBlogs = await Blogs.find({
             idUser: friendId,
             status: "normal",
-          });
-          return friendBlogs;
+          }).select("-report -status -content");
+
+          let blogs = await Promise.all(
+            allBlogs.map(async (blog) => {
+              const category = await Categories.findById(blog.category);
+
+              const likes = await Likes.count({
+                idBlog: blog._id,
+                like: true,
+              });
+              const dislikes = await Likes.count({
+                idBlog: blog._id,
+                like: false,
+              });
+              const views = await Views.findOne({ idBlog: blog._id });
+
+              return { ...blog._doc, category: category.name, likes, dislikes, views: views.view };
+            })
+          );
+
+          return blogs;
         })
       ); // [[{blog}, ...]]
 

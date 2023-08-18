@@ -9,6 +9,8 @@ const router = express.Router();
 // none auth
 router.get("/search-blog", blogCtrl.searchBlog);
 
+router.patch("/increase-share/:idBlog", blogCtrl.increaseShare);
+
 // auth
 router.delete("/delete-blog/:idBlog", auth, blogCtrl.deleteBlog);
 

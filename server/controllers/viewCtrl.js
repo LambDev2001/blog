@@ -1,11 +1,30 @@
 import Views from "../models/viewModel.js";
+import Blogs from "../models/blogModel.js";
+import Categories from "../models/categoryModel.js";
 
 const viewCtrl = {
   // auth
   mostView: async (req, res) => {
     try {
-      const view = await Views.find().sort({ view: -1 }).limit(5);
-      return res.status(200).json(view);
+      const listIdBlogs = await Views.find().sort({ view: -1 }).select("idBlog view").limit(5);
+      const listBlogs = await Promise.all(
+        listIdBlogs.map(async (idBlog) => {
+          const blog = await Blogs.findById(idBlog.idBlog);
+          const category = await Categories.findById(blog.category);
+          const { _id, idUser, title, thumbnail, description } = blog._doc;
+          return {
+            _id,
+            idUser,
+            title,
+            thumbnail,
+            description,
+            category: category.name,
+            view: idBlog.view,
+          };
+        })
+      );
+
+      return res.status(200).json(listBlogs);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -13,8 +32,28 @@ const viewCtrl = {
 
   mostViewMonthly: async (req, res) => {
     try {
-      const view = await Views.find().sort({ viewMonthly: -1 }).limit(5);
-      return res.status(200).json(view);
+      const listIdBlogs = await Views.find()
+        .sort({ viewMonthly: -1 })
+        .select("idBlog viewMonthly")
+        .limit(5);
+      const listBlogs = await Promise.all(
+        listIdBlogs.map(async (idBlog) => {
+          const blog = await Blogs.findById(idBlog.idBlog);
+          const category = await Categories.findById(blog.category);
+          const { _id, idUser, title, thumbnail, description } = blog._doc;
+          return {
+            _id,
+            idUser,
+            title,
+            thumbnail,
+            description,
+            category: category.name,
+            viewMonthly: idBlog.viewMonthly,
+          };
+        })
+      );
+
+      return res.status(200).json(listBlogs);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
