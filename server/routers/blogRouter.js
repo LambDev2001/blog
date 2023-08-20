@@ -12,6 +12,7 @@ router.get("/search-blog", blogCtrl.searchBlog);
 router.patch("/increase-share/:idBlog", blogCtrl.increaseShare);
 
 // auth
+router.get("/blog/:idBlog", blogCtrl.getBlog);
 router.delete("/delete-blog/:idBlog", auth, blogCtrl.deleteBlog);
 
 // user

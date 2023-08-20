@@ -15,7 +15,7 @@ router.post("/report", user, reportCtrl.createReport);
 router.patch("/report/:idReport", user, reportCtrl.editReport);
 
 // permit
-router.get("/report/:ids", permit, reportCtrl.getReport);
+router.get("/report/:idReport", permit, reportCtrl.getReport);
 router.get("/reports", permit, reportCtrl.getReports);
 
 router.post("/accept-report/:idReport", permit, reportCtrl.acceptReport);

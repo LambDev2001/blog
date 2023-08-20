@@ -1,6 +1,8 @@
 import Views from "../models/viewModel.js";
 import Blogs from "../models/blogModel.js";
 import Categories from "../models/categoryModel.js";
+import Likes from "../models/likeModel.js";
+import Comments from "../models/commentModel.js";
 
 const viewCtrl = {
   // auth
@@ -9,9 +11,22 @@ const viewCtrl = {
       const listIdBlogs = await Views.find().sort({ view: -1 }).select("idBlog view").limit(5);
       const listBlogs = await Promise.all(
         listIdBlogs.map(async (idBlog) => {
+          console.log(idBlog)
           const blog = await Blogs.findById(idBlog.idBlog);
           const category = await Categories.findById(blog.category);
-          const { _id, idUser, title, thumbnail, description } = blog._doc;
+          const { _id, idUser, title, thumbnail, description, share } = blog._doc;
+          const countComment = await Comments.count({
+            idBlog: idBlog.idBlog,
+          });
+          const countLikes = await Likes.count({
+            idBlog: idBlog.idBlog,
+            like: true,
+          });
+
+          const countDislikes = await Likes.count({
+            idBlog: idBlog.idBlog,
+            like: false,
+          });
           return {
             _id,
             idUser,
@@ -19,6 +34,10 @@ const viewCtrl = {
             thumbnail,
             description,
             category: category.name,
+            countLikes,
+            countDislikes,
+            countComment,
+            share,
             view: idBlog.view,
           };
         })
@@ -32,15 +51,24 @@ const viewCtrl = {
 
   mostViewMonthly: async (req, res) => {
     try {
-      const listIdBlogs = await Views.find()
-        .sort({ viewMonthly: -1 })
-        .select("idBlog viewMonthly")
-        .limit(5);
+      const listIdBlogs = await Views.find().sort({ viewMonthly: -1 }).select("idBlog viewMonthly").limit(5);
       const listBlogs = await Promise.all(
         listIdBlogs.map(async (idBlog) => {
           const blog = await Blogs.findById(idBlog.idBlog);
           const category = await Categories.findById(blog.category);
-          const { _id, idUser, title, thumbnail, description } = blog._doc;
+          const { _id, idUser, title, thumbnail, description, share } = blog._doc;
+          const countComment = await Comments.count({
+            idBlog: _id,
+          });
+          const countLikes = await Likes.count({
+            idBlog: _id,
+            like: true,
+          });
+
+          const countDislikes = await Likes.count({
+            idBlog: _id,
+            like: false,
+          });
           return {
             _id,
             idUser,
@@ -48,6 +76,10 @@ const viewCtrl = {
             thumbnail,
             description,
             category: category.name,
+            countLikes,
+            countDislikes,
+            countComment,
+            share,
             viewMonthly: idBlog.viewMonthly,
           };
         })

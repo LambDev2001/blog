@@ -2,6 +2,8 @@ import Reports from "../models/reportModel.js";
 import Users from "../models/userModel.js";
 import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
+import Comments from "../models/commentModel.js";
+import Rooms from "../models/roomModel.js";
 
 const reportCtrl = {
   // auth
@@ -40,8 +42,10 @@ const reportCtrl = {
           await Blogs.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
           break;
         case "comment":
+          await Comments.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
           break;
-        case "group":
+        case "room":
+          await Rooms.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
           break;
       }
       return res.status(200).json({ msg: "Report success" });
@@ -71,9 +75,9 @@ const reportCtrl = {
   // permit
   getReport: async (req, res) => {
     try {
-      const ids = req.params.ids;
+      const idReport = req.params.idReport;
 
-      const reports = await Reports.find({ ids });
+      const reports = await Reports.findById( idReport ).select("-__v");
 
       return res.status(200).json(reports);
     } catch (err) {
@@ -83,7 +87,7 @@ const reportCtrl = {
 
   getReports: async (req, res) => {
     try {
-      const reports = await Reports.find();
+      const reports = await Reports.find().select("idUser ids type content updatedAt");
 
       return res.status(200).json(reports);
     } catch (err) {

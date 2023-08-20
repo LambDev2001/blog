@@ -5,6 +5,7 @@ import Users from "../models/userModel.js";
 import Likes from "../models/likeModel.js";
 import Categories from "../models/categoryModel.js";
 import Views from "../models/viewModel.js";
+import Comments from "../models/commentModel.js";
 
 const blogCtrl = {
   // none auth
@@ -56,6 +57,35 @@ const blogCtrl = {
   },
 
   // auth
+  getBlog: async (req, res) => {
+    try {
+      const idBlog = req.params.idBlog;
+      const blog = await Blogs.findById(idBlog).select("-report -__v");
+      if (!blog) return res.status(400).json({ msg: "Blog not found" });
+
+      const countLike = await Likes.count({
+        idBlog: blog._id,
+        like: true,
+      });
+      const countDislike = await Likes.count({
+        idBlog: blog._id,
+        like: false,
+      });
+
+      const countComment = await Comments.count({
+        idBlog: blog._id,
+      });
+
+      const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
+
+      return res
+        .status(200)
+        .json({ ...blog._doc, countLike, countDislike, countComment, view, viewMonthly });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   deleteBlog: async (req, res) => {
     try {
       const idBlog = req.params.idBlog;
