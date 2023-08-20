@@ -5,11 +5,9 @@ const categoryCtrl = {
   // auth
   getAllCategories: async (req, res) => {
     try {
-      const idAdmin = req.user.id;
-      const admin = await Admins.findOne({ _id: req.user.id });
-      const listCategories = await Categories.find({});
+      const listCategories = await Categories.find({}).select("name");
 
-      return res.status(200).json({ listCategories });
+      return res.status(200).json(listCategories);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -18,11 +16,10 @@ const categoryCtrl = {
   // admin
   getCategory: async (req, res) => {
     try {
-      const idAdmin = req.user.idCategory;
-      const admin = await Admins.findOne({ _id: req.user.id });
-      const listCategories = await Categories.findOne({ _id: req.params.id });
+      const { idCategory } = req.params;
+      const listCategories = await Categories.findById(idCategory).select("name");
 
-      return res.status(200).json({ listCategories });
+      return res.status(200).json(listCategories);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

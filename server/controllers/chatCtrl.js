@@ -4,13 +4,13 @@ import Rooms from "../models/roomModel.js";
 const chatCtrl = {
   listChat: async (req, res) => {
     try {
-      const { idRoom } = req.body;
+      const { idRoom } = req.params;
       const room = await Rooms.findOne({ _id: idRoom });
       if (!room) return res.status(400).json({ msg: "Room not found" });
       if (room.member.indexOf(req.user.id) === -1)
         return res.status(400).json({ msg: "You are not a member of this room" });
 
-      const listChat = await Chats.find({ idRoom: idRoom });
+      const listChat = await Chats.find({ idRoom: idRoom }).select("-__v -updatedAt");
 
       return res.status(200).json(listChat);
     } catch (err) {

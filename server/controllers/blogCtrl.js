@@ -215,7 +215,7 @@ const blogCtrl = {
       if (countBlogs === 0) {
         return res.status(200).json({ msg: "Not have any blog" });
       } else {
-        return res.status(200).json({ listBlogs });
+        return res.status(200).json(listBlogs);
       }
     } catch (err) {
       return res.status(500).json({ msg: err.message });

@@ -7,8 +7,8 @@ const friendRequestCtl = {
     try {
       const idUser = req.user.id;
 
-      const listRequest = await Requests.find({ idUser });
-      return res.status(200).json({ listRequest });
+      const listRequest = await Requests.find({ idUser }).select("idUser receiver");
+      return res.status(200).json(listRequest);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -17,9 +17,8 @@ const friendRequestCtl = {
   listWaitingRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-
-      const listRequest = await Requests.find({ receiver: idUser });
-      return res.status(200).json({ listRequest });
+      const listRequest = await Requests.find({ receiver: idUser }).select("idUser receiver");
+      return res.status(200).json(listRequest);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

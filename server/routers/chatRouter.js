@@ -6,7 +6,7 @@ import chatCtrl from "../controllers/chatCtrl.js";
 const router = express.Router();
 
 // user
-router.get("/chats", user, chatCtrl.listChat);
+router.get("/chats/:idRoom", user, chatCtrl.listChat);
 
 router.post("/chat", user, chatCtrl.createChat);
 

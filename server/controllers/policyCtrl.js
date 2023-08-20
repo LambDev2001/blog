@@ -4,10 +4,10 @@ const policyCtrl = {
   // auth
   getPolices: async (req, res) => {
     try {
-      const policies = await Policies.find({ status: "normal" });
+      const policies = await Policies.find({ status: "normal" }).select("content updatedAt");
       if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
 
-      return res.status(200).json({ policies });
+      return res.status(200).json(policies);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -16,10 +16,10 @@ const policyCtrl = {
   // admin
   getAllPolices: async (req, res) => {
     try {
-      const policies = await Policies.find({});
+      const policies = await Policies.find({}).select("content status updatedAt");
       if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
 
-      return res.status(200).json({ policies });
+      return res.status(200).json(policies);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

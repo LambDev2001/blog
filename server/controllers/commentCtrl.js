@@ -6,15 +6,21 @@ const commentCtrl = {
   // none auth
   getComments: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
-      const comments = await Comments.find({ idBlog }).limit(10);
+      const { idBlog } = req.params;
+      const comments = await Comments.find({ idBlog, status: "normal" })
+        .select("idUser message replyCM updatedAt")
+        .limit(10);
       if (comments.length === 0) return res.status(200).json({ msg: "This blog has no comment" });
 
-      const listComment = await Promise.all(
-        comments.map((comment) => {
-          return { ...comment._doc, countReplyComment: comment.replyCM.length };
-        })
-      );
+      const listComment = comments.map((comment) => {
+        return {
+          _id: comment._id,
+          idUser: comment.idUser,
+          message: comment.message,
+          countReplyComment: comment.replyCM.length,
+          updatedAt: comment.updatedAt,
+        };
+      });
 
       return res.status(200).json(listComment);
     } catch (err) {
@@ -25,20 +31,27 @@ const commentCtrl = {
   showReplyComments: async (req, res) => {
     try {
       const idComment = req.params.idComment;
-      const comments = await Comments.find({ _id: idComment }).select(
-        "_id idUser message replyCM createdAt"
-      );
+      const comment = await Comments.findById(idComment);
+      if (!comment) return res.status(400).json({ msg: "Comment not found" });
+      if (comment.replyCM.length === 0)
+        return res.status(200).json({ msg: "This comment has no reply" });
 
-      if (!comments) return res.status(400).json({ msg: "Comment not found" });
-      if (comments.length === 0) return res.status(200).json({ msg: "This comment has no reply" });
-
-      const listComment = await Promise.all(
-        comments.map((comment) => {
-          return { ...comment._doc, countReplyComment: comment.replyCM.length };
+      const listReplyComment = await Promise.all(
+        comment.replyCM.map(async (idReplyComment) => {
+          const replyComment = await Comments.findById(idReplyComment).select(
+            "idUser message replyCM updatedAt"
+          );
+          return {
+            _id: replyComment._id,
+            idUser: replyComment.idUser,
+            message: replyComment.message,
+            countReplyComment: replyComment.replyCM.length,
+            updatedAt: replyComment.updatedAt,
+          };
         })
       );
 
-      return res.status(200).json(listComment);
+      return res.status(200).json(listReplyComment);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
