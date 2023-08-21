@@ -1,11 +1,15 @@
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PageRender from "./PageRender";
 
 function App() {
   return (
-    <div class="d-flex flex-column mb-3">
-  <div class="d-flex flex-end">Flex item 1</div>
-  <div class="p-2">Flex item 2</div>
-  <div class="p-2">Flex item 3</div>
-</div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={PageRender} />
+        <Route exact path="/:page" component={PageRender} />
+        <Route exact path="/:page/:slug" component={PageRender} />
+      </Switch>
+    </Router>
   );
 }
 
