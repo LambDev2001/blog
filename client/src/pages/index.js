@@ -1,8 +1,16 @@
+import React, {useEffect} from "react";
+import { getAPI } from "../utils/FetchData";
 
-const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+const App = () => {
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getAPI("users");
+      console.log(response);
+    }
+    fetchData();
+  }, []);
 
-export default Home
+  return <div>Loading</div>;
+};
+
+export default App;
