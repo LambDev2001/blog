@@ -9,7 +9,7 @@ const reportCtrl = {
   // auth
   deleteReport: async (req, res) => {
     try {
-      const idReport = req.params.idReport;
+      const { idReport } = req.params;
       const idUser = req.user.id;
       const admin = await Admins.findOne({ _id: idUser }).projection({ password: 0 });
       const report = await Reports.findOne({ _id: idReport });
@@ -57,7 +57,7 @@ const reportCtrl = {
   editReport: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idReport = req.params.idReport;
+      const { idReport } = req.params;
       const { content } = req.body;
 
       const report = await Reports.findOne({ _id: idReport });
@@ -75,9 +75,9 @@ const reportCtrl = {
   // permit
   getReport: async (req, res) => {
     try {
-      const idReport = req.params.idReport;
+      const { idReport } = req.params;
 
-      const reports = await Reports.findById( idReport ).select("-__v");
+      const reports = await Reports.findById(idReport).select("-__v");
 
       return res.status(200).json(reports);
     } catch (err) {
@@ -97,7 +97,7 @@ const reportCtrl = {
 
   acceptReport: async (req, res) => {
     try {
-      const idReport = req.params.idReport;
+      const { idReport } = req.params;
       const report = await Reports.findOne({ _id: idReport });
       if (!report) return res.status(400).json({ msg: "Report not found" });
 

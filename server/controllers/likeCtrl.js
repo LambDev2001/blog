@@ -5,7 +5,7 @@ const likeCtrl = {
   // user
   like: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
+      const { idBlog } = req.params;
 
       const blog = await Blogs.findById(idBlog);
       if (!blog) return res.status(400).json({ msg: "Blog not found" });
@@ -31,7 +31,7 @@ const likeCtrl = {
 
   dislike: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
+      const { idBlog } = req.params;
 
       const blog = await Blogs.findById(idBlog);
       if (!blog) return res.status(400).json({ msg: "Blog not found" });

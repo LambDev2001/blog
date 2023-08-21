@@ -10,7 +10,9 @@ const chatCtrl = {
       if (room.member.indexOf(req.user.id) === -1)
         return res.status(400).json({ msg: "You are not a member of this room" });
 
-      const listChat = await Chats.find({ idRoom: idRoom }).select("-__v -updatedAt");
+      let listChat = await Chats.find({ idRoom: idRoom })
+        .sort({ createdAt: 1 })
+        .select("-__v -updatedAt");
 
       return res.status(200).json(listChat);
     } catch (err) {
@@ -36,7 +38,7 @@ const chatCtrl = {
   deleteChat: async (req, res) => {
     try {
       const { idRoom } = req.body;
-      const idChat = req.params.idChat;
+      const { idChat } = req.params;
       const idUser = req.user.id;
 
       const chat = await Chats.findOne({ _id: idChat });

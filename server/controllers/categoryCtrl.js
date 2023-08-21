@@ -43,7 +43,7 @@ const categoryCtrl = {
   updateCategory: async (req, res) => {
     try {
       const idAdmin = req.user.id;
-      const idCategory = req.params.idCategory;
+      const { idCategory } = req.params;
       const admin = await Admins.findOne({ _id: req.user.id });
       const { name } = req.body;
 
@@ -58,7 +58,7 @@ const categoryCtrl = {
   deleteCategory: async (req, res) => {
     try {
       const idAdmin = req.user.id;
-      const idCategory = req.params.idCategory;
+      const { idCategory } = req.params;
       const admin = await Admins.findOne({ _id: req.user.id });
 
       await Categories.findOneAndDelete({ _id: idCategory });

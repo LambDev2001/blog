@@ -59,7 +59,7 @@ const blogCtrl = {
   // auth
   getBlog: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
+      const { idBlog } = req.params;
       const blog = await Blogs.findById(idBlog).select("-report -__v");
       if (!blog) return res.status(400).json({ msg: "Blog not found" });
 
@@ -88,7 +88,7 @@ const blogCtrl = {
 
   deleteBlog: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
+      const { idBlog } = req.params;
 
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
       const isAdmin = await Admins.findOne({ _id: req.user.id });
@@ -220,7 +220,7 @@ const blogCtrl = {
 
   updateBlog: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
+      const { idBlog } = req.params;
 
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
       if (ownerBlog.idUser !== req.user.id)
@@ -254,7 +254,7 @@ const blogCtrl = {
 
   statusBlog: async (req, res) => {
     try {
-      const idBlog = req.params.idBlog;
+      const { idBlog } = req.params;
       const data = checkData(req.body, "status");
       if (data !== true) return res.status(400).json({ data });
 

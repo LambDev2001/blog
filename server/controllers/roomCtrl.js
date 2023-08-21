@@ -7,7 +7,9 @@ const groupCtrl = {
     try {
       const idUser = req.user.id;
 
-      const rooms = await Rooms.find({ member: idUser }).select("-idUser -member -report -__v -createdAt -updatedAt");
+      const rooms = await Rooms.find({ member: idUser }).select(
+        "-idUser -member -report -__v -createdAt -updatedAt"
+      );
 
       return res.status(200).json(rooms);
     } catch (err) {
@@ -17,7 +19,7 @@ const groupCtrl = {
 
   listMember: async (req, res) => {
     try {
-      const idRoom = req.params.idRoom;
+      const { idRoom } = req.params;
       const idUser = req.user.id;
 
       const room = await Rooms.findOne({ _id: idRoom });
@@ -49,7 +51,7 @@ const groupCtrl = {
   addMember: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idRoom = req.params.idRoom;
+      const { idRoom } = req.params;
       const { idMember } = req.body;
       const member = await Users.findOne({ _id: idMember });
       if (!member) return res.status(400).json({ msg: "User not found" });
@@ -72,7 +74,7 @@ const groupCtrl = {
   removeMember: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idRoom = req.params.idRoom;
+      const { idRoom } = req.params;
       const { idMember } = req.body;
 
       const room = await Rooms.findOne({ _id: idRoom });
@@ -98,7 +100,7 @@ const groupCtrl = {
   deleteRoom: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idRoom = req.params.idRoom;
+      const { idRoom } = req.params;
       const { idMember } = req.body;
 
       const room = await Rooms.findOne({ _id: idRoom });

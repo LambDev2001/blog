@@ -54,7 +54,7 @@ const friendRequestCtl = {
   acceptRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idRequest = req.params.idRequest;
+      const { idRequest } = req.params;
 
       const request = await Requests.findOne({
         _id: idRequest,
@@ -80,7 +80,7 @@ const friendRequestCtl = {
   declineRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const idRequest = req.params.idRequest;
+      const { idRequest } = req.params;
 
       const result = await Requests.findOneAndDelete({
         _id: idRequest,

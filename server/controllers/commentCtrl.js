@@ -30,7 +30,7 @@ const commentCtrl = {
 
   showReplyComments: async (req, res) => {
     try {
-      const idComment = req.params.idComment;
+      const { idComment } = req.params;
       const comment = await Comments.findById(idComment);
       if (!comment) return res.status(400).json({ msg: "Comment not found" });
       if (comment.replyCM.length === 0)
@@ -80,7 +80,7 @@ const commentCtrl = {
 
   replyComment: async (req, res) => {
     try {
-      const idComment = req.params.idComment;
+      const { idComment } = req.params;
       const { message } = req.body;
 
       const comment = await Comments.findOne({ _id: idComment });
@@ -105,7 +105,7 @@ const commentCtrl = {
 
   updateComment: async (req, res) => {
     try {
-      const idComment = req.params.idComment;
+      const { idComment } = req.params;
       const { message } = req.body;
       const comment = await Comments.findOne({ _id: idComment });
 
@@ -123,7 +123,7 @@ const commentCtrl = {
 
   deleteComment: async (req, res) => {
     try {
-      const idComment = req.params.idComment;
+      const { idComment } = req.params;
       const comment = await Comments.findOne({ _id: idComment });
 
       if (!comment) return res.status(400).json({ msg: "Comment not found" });

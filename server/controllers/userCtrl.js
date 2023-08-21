@@ -10,10 +10,10 @@ const userCtrl = {
   // auth
   checkInfoUser: async (req, res) => {
     try {
-      const userId = req.params.idUser;
-      if (!userId) return res.status(400).json({ msg: "userId is required" });
+      const { idUser } = req.params;
+      if (!idUser) return res.status(400).json({ msg: "idUser is required" });
 
-      const user = await Users.findById({ _id: userId }).select(["username", "account", "avatar"]);
+      const user = await Users.findById({ _id: idUser }).select(["username", "account", "avatar"]);
       if (!user) return res.status(403).json({ msg: "User not found" });
 
       return res.status(200).json(user);
@@ -139,9 +139,9 @@ const userCtrl = {
   // admin
   getUser: async (req, res) => {
     try {
-      const idUser = req.params.idUser;
+      const { idUser } = req.params;
 
-      const user = await Users.findById({ _id: id }).select("-password");
+      const user = await Users.findById({ _id: idUser }).select("-password -__v");
 
       res.status(200).json(user);
 
