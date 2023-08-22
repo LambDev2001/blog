@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-// import NotFound from './components/global/NotFound';
+import NotFound from './components/global/NotFound.jsx';
 
 const generatePage = (name) => {
   const component = () => require(`./pages/${name}`).default;
@@ -8,8 +8,7 @@ const generatePage = (name) => {
   try {
     return React.createElement(component());
   } catch (error) {
-    return;
-    // <NotFound />
+    return <NotFound />
   }
 };
 
