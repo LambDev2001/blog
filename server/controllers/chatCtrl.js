@@ -6,9 +6,9 @@ const chatCtrl = {
     try {
       const { idRoom } = req.params;
       const room = await Rooms.findOne({ _id: idRoom });
-      if (!room) return res.status(400).json({ msg: "Room not found" });
+      if (!room) return res.json({ msg: "Room not found" });
       if (room.member.indexOf(req.user.id) === -1)
-        return res.status(400).json({ msg: "You are not a member of this room" });
+        return res.json({ msg: "You are not a member of this room" });
 
       let listChat = await Chats.find({ idRoom: idRoom })
         .sort({ createdAt: 1 })

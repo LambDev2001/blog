@@ -6,7 +6,7 @@ import { login, register } from '../../redux/actions/authAction.js'
 import { Text } from '../form/Input.jsx'
 
 const LoginPass = () => {
-  const [userLogin, setUserLogin] = useState({
+  const [infoUser, setInfoUser] = useState({
     username: '',
     account: '',
     password: '',
@@ -18,14 +18,19 @@ const LoginPass = () => {
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target
-    setUserLogin({ ...userLogin, [name]: value }) // update new name: account or password = value
+    setInfoUser({ ...infoUser, [name]: value }) // update new name: account or password = value
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    Object.keys(infoUser).forEach(key => {
+      if (infoUser[key] === "") {
+        delete infoUser[key];
+      }
+    });
     isRegister
-      ? dispatch(register(userLogin))
-      : dispatch(login(userLogin))
+      ? dispatch(register(infoUser))
+      : dispatch(login(infoUser))
 
   }
 

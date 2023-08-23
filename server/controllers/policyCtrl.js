@@ -5,7 +5,7 @@ const policyCtrl = {
   getPolices: async (req, res) => {
     try {
       const policies = await Policies.find({ status: "normal" }).select("content updatedAt");
-      if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
+      if (!policies) return res.json({ msg: "Don't have any the policy" });
 
       return res.status(200).json(policies);
     } catch (err) {
@@ -17,7 +17,7 @@ const policyCtrl = {
   getAllPolices: async (req, res) => {
     try {
       const policies = await Policies.find({}).select("content status updatedAt");
-      if (!policies) return res.status(400).json({ msg: "Don't have any the policy" });
+      if (!policies) return res.json({ msg: "Don't have any the policy" });
 
       return res.status(200).json(policies);
     } catch (err) {

@@ -23,9 +23,9 @@ const groupCtrl = {
       const idUser = req.user.id;
 
       const room = await Rooms.findOne({ _id: idRoom });
-      if (!room) return res.status(400).json({ msg: "Room not found" });
+      if (!room) return res.json({ msg: "Room not found" });
       if (room.member.indexOf(idUser) === -1)
-        return res.status(400).json({ msg: "You are not a member of this room" });
+        return res.json({ msg: "You are not a member of this room" });
 
       return res.status(200).json(room.member);
     } catch (err) {
@@ -54,13 +54,13 @@ const groupCtrl = {
       const { idRoom } = req.params;
       const { idMember } = req.body;
       const member = await Users.findOne({ _id: idMember });
-      if (!member) return res.status(400).json({ msg: "User not found" });
+      if (!member) return res.json({ msg: "User not found" });
 
       const room = await Rooms.findOne({ _id: idRoom });
       if (room.member.indexOf(idUser) === -1)
-        return res.status(400).json({ msg: "You are not a member of this room" });
+        return res.json({ msg: "You are not a member of this room" });
       if (room.member.indexOf(idMember) !== -1)
-        return res.status(400).json({ msg: "You are already member of this room" });
+        return res.json({ msg: "You are already member of this room" });
 
       await Rooms.findOneAndUpdate({ _id: idRoom }, { $push: { member: idMember } });
 
@@ -78,12 +78,12 @@ const groupCtrl = {
       const { idMember } = req.body;
 
       const room = await Rooms.findOne({ _id: idRoom });
-      if (!room) return res.status(400).json({ msg: "Room not found" });
+      if (!room) return res.json({ msg: "Room not found" });
       if (room.member.indexOf(idUser) === -1)
-        return res.status(400).json({ msg: "You are not a member of this room" });
+        return res.json({ msg: "You are not a member of this room" });
 
       if (idUser !== room.idUser && idUser !== idMember)
-        return res.status(400).json({ msg: "You are not owner" });
+        return res.json({ msg: "You are not owner" });
 
       if (room.member.length <= 2) {
         await Rooms.findOneAndDelete({ _id: idRoom });
@@ -104,12 +104,12 @@ const groupCtrl = {
       const { idMember } = req.body;
 
       const room = await Rooms.findOne({ _id: idRoom });
-      if (!room) return res.status(400).json({ msg: "Room not found" });
+      if (!room) return res.json({ msg: "Room not found" });
       if (room.member.indexOf(idUser) === -1)
-        return res.status(400).json({ msg: "You are not a member of this room" });
+        return res.json({ msg: "You are not a member of this room" });
 
       if (idUser !== room.idUser && idUser !== idMember)
-        return res.status(400).json({ msg: "You are not owner" });
+        return res.json({ msg: "You are not owner" });
 
       await Rooms.findOneAndUpdate({ _id: idRoom }, { $pull: { member: idMember } });
 

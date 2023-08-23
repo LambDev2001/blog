@@ -21,17 +21,17 @@ const authCtrl = {
     // refresh access and refresh token when expired
     try {
       const refreshToken = req.cookies.refreshtoken;
-      if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
+      if (!refreshToken) return res.json({ msg: "Please login now!" });
 
       // Take refreshToken from cookie
       const decoded = jwt.verify(refreshToken, `${REFRESH_TOKEN_SECRET}`);
-      if (!decoded.id) return res.status(400).json({ msg: "Please login now!" });
+      if (!decoded.id) return res.json({ msg: "Please login now!" });
 
       const user = await Users.findById(decoded.id).select("-password +refreshToken");
 
-      if (!user) return res.status(400).json({ msg: "This account does not exist." });
+      if (!user) return res.json({ msg: "This account does not exist." });
       if (refreshToken !== user.refreshToken)
-        return res.status(400).json({ msg: "Please login now!" });
+        return res.json({ msg: "Please login now!" });
 
       const access_token = generateAccessToken({ id: user._id });
       const refresh_token = generateRefreshToken({ id: user._id }, res);
@@ -53,19 +53,19 @@ const authCtrl = {
     try {
       const encodeNewUser = req.params.token; // change to req.body when have frond-end
       if (!encodeNewUser) {
-        return res.status(400).json({ msg: "The frond-end not send active token or not valid" });
+        return res.json({ msg: "The frond-end not send active token or not valid" });
       }
 
       const decoded = jwt.verify(encodeNewUser, `${ACTIVE_TOKEN_SECRET}`);
       if (!decoded) {
-        return res.status(400).json({ msg: "The error when decoding the active token" });
+        return res.json({ msg: "The error when decoding the active token" });
       }
 
       const { newUser } = decoded;
       const user = await Users.findOne({ account: newUser.account });
 
       if (user) {
-        return res.status(403).json({ msg: "Token has been active" });
+        return res.json({ msg: "Token has been active" });
       } else {
         registerUser(newUser, res);
       }
@@ -78,11 +78,11 @@ const authCtrl = {
     try {
       const { account, password } = req.body;
       if (!account || !password) {
-        return res.status(400).json({ msg: "Fill all fields" });
+        return res.json({ msg: "Fill all fields" });
       }
 
       const user = await Users.findOne({ account });
-      if (!user) return res.status(400).json({ msg: "Account not found" });
+      if (!user) return res.json({ msg: "Account not found" });
 
       loginUser(user, password, res);
     } catch (error) {
@@ -94,11 +94,11 @@ const authCtrl = {
     try {
       const { username, account, password } = req.body;
       if (!username || !account || !password) {
-        return res.status(400).json({ msg: "Fill all fields" });
+        return res.json({ msg: "Fill all fields" });
       }
 
       const user = await Users.findOne({ account });
-      if (user) return res.status(400).json({ msg: "User already exists" });
+      if (user) return res.json({ msg: "User already exists" });
 
       const passwordHash = await bcrypt.hash(password, 12);
       const newUser = { username, account, password: passwordHash };
@@ -109,7 +109,7 @@ const authCtrl = {
         sendMail(account, url, "Verify your account", "register");
         return res.status(200).json({ msg: "Click button on the email to active this account" });
       } else {
-        return res.status(400).json({ msg: "Your mail address is not valid" });
+        return res.json({ msg: "Your mail address is not valid" });
       }
     } catch (error) {
       return res.json({ msg: error.message });
@@ -119,10 +119,10 @@ const authCtrl = {
   forgotPassword: async (req, res) => {
     try {
       const { account, password } = req.body;
-      if (!account) return res.status(403).json({ msg: "Password is required" });
+      if (!account) return res.json({ msg: "Password is required" });
 
       const user = await Users.findOne({ account });
-      if (!user) return res.status(403).json({ msg: "Account not found" });
+      if (!user) return res.json({ msg: "Account not found" });
 
       const token = generateToken({ id: user._id, password });
       const url = `${BASE_URL}:${PORT}/api/resetPassword/${token}`; // have frond-end delete api
@@ -137,7 +137,7 @@ const authCtrl = {
 
   // user
   logout: async (req, res) => {
-    if (!req.user) return res.status(403).json({ msg: "Invalid Authorization" });
+    if (!req.user) return res.json({ msg: "Invalid Authorization" });
 
     try {
       res.clearCookie("refreshtoken", { path: `/api/refresh_token` });
@@ -176,11 +176,12 @@ const registerUser = async (user, res) => {
 const loginUser = async (user, password, res) => {
   try {
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "The account or password is incorrect" });
+    if (!isMatch) {
+      return res.json({ msg: "The account or password is incorrect" });
+    }
 
     const accessToken = generateAccessToken({ id: user._id });
     const refreshToken = generateRefreshToken({ id: user._id }, res);
-
     await Users.findByIdAndUpdate({ _id: user._id }, { refreshToken: refreshToken });
 
     res.status(200).json({
@@ -189,6 +190,7 @@ const loginUser = async (user, password, res) => {
       user: { ...user._doc, password: "" },
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ msg: err.message });
   }
 };

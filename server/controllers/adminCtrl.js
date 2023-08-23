@@ -14,17 +14,17 @@ const authCtrl = {
     // refresh access and refresh token when expired
     try {
       const refreshToken = req.cookies.refreshtoken;
-      if (!refreshToken) return res.status(400).json({ msg: "Please login now!" });
+      if (!refreshToken) return res.json({ msg: "Please login now!" });
 
       // Take refreshToken from cookie
       const decoded = jwt.verify(refreshToken, `${REFRESH_TOKEN_SECRET}`);
-      if (!decoded.id) return res.status(400).json({ msg: "Please login now!" });
+      if (!decoded.id) return res.json({ msg: "Please login now!" });
 
       const user = await Admins.findById(decoded.id).select("-password +refreshToken");
 
-      if (!user) return res.status(400).json({ msg: "This account does not exist." });
+      if (!user) return res.json({ msg: "This account does not exist." });
       if (refreshToken !== user.refreshToken)
-        return res.status(400).json({ msg: "Please login now!" });
+        return res.json({ msg: "Please login now!" });
 
       const access_token = generateAccessToken({ id: user._id });
       const refresh_token = generateRefreshToken({ id: user._id }, res);
@@ -46,10 +46,10 @@ const authCtrl = {
     try {
       const { account, password } = req.body;
       if (!account || !password) {
-        return res.status(400).json({ msg: "Fill all fields" });
+        return res.json({ msg: "Fill all fields" });
       }
       const user = await Admins.findOne({ account });
-      if (!user) return res.status(400).json({ msg: "Account not found" });
+      if (!user) return res.json({ msg: "Account not found" });
 
       loginUser(user, password, res);
     } catch (error) {
@@ -79,7 +79,7 @@ const authCtrl = {
 const loginUser = async (user, password, res) => {
   try {
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "The account or password is incorrect" });
+    if (!isMatch) return res.json({ msg: "The account or password is incorrect" });
 
     const accessToken = generateAccessToken({ id: user._id });
     const refreshToken = generateRefreshToken({ id: user._id }, res);

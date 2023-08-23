@@ -32,7 +32,7 @@ const commentCtrl = {
     try {
       const { idComment } = req.params;
       const comment = await Comments.findById(idComment);
-      if (!comment) return res.status(400).json({ msg: "Comment not found" });
+      if (!comment) return res.json({ msg: "Comment not found" });
       if (comment.replyCM.length === 0)
         return res.status(200).json({ msg: "This comment has no reply" });
 
@@ -84,7 +84,7 @@ const commentCtrl = {
       const { message } = req.body;
 
       const comment = await Comments.findOne({ _id: idComment });
-      if (!comment) return res.status(400).json({ msg: "Comment not found" });
+      if (!comment) return res.json({ msg: "Comment not found" });
 
       const newReply = new Comments({ idUser: req.user.id, idBlog: comment.idBlog, message });
       await newReply.save();
@@ -109,8 +109,8 @@ const commentCtrl = {
       const { message } = req.body;
       const comment = await Comments.findOne({ _id: idComment });
 
-      if (!comment) return res.status(400).json({ msg: "Comment not found" });
-      if (comment.idUser !== req.user.id) return res.status(400).json({ msg: "You are not owner" });
+      if (!comment) return res.json({ msg: "Comment not found" });
+      if (comment.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
 
       await Comments.findOneAndUpdate({ _id: idComment }, { message });
 
@@ -126,8 +126,8 @@ const commentCtrl = {
       const { idComment } = req.params;
       const comment = await Comments.findOne({ _id: idComment });
 
-      if (!comment) return res.status(400).json({ msg: "Comment not found" });
-      if (comment.idUser !== req.user.id) return res.status(400).json({ msg: "You are not owner" });
+      if (!comment) return res.json({ msg: "Comment not found" });
+      if (comment.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
 
       await Comments.findOneAndDelete({ _id: idComment });
 

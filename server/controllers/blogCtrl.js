@@ -33,7 +33,7 @@ const blogCtrl = {
         },
       ]);
 
-      if (blogs.length < 1) return res.status(400).json({ msg: "No Blogs." });
+      if (blogs.length < 1) return res.json({ msg: "No Blogs." });
 
       return res.status(200).json(blogs);
     } catch (err) {
@@ -45,7 +45,7 @@ const blogCtrl = {
     try {
       const { idBlog } = req.params;
       const blog = await Blogs.findById(idBlog);
-      if (!blog) return res.status(400).json({ msg: "Blog not found" });
+      if (!blog) return res.json({ msg: "Blog not found" });
 
       blog.share += 1;
       await blog.save();
@@ -61,7 +61,7 @@ const blogCtrl = {
     try {
       const { idBlog } = req.params;
       const blog = await Blogs.findById(idBlog).select("-report -__v");
-      if (!blog) return res.status(400).json({ msg: "Blog not found" });
+      if (!blog) return res.json({ msg: "Blog not found" });
 
       const countLike = await Likes.count({
         idBlog: blog._id,
@@ -94,7 +94,7 @@ const blogCtrl = {
       const isAdmin = await Admins.findOne({ _id: req.user.id });
 
       if (ownerBlog.idUser !== req.user.id && !isAdmin) {
-        return res.status(400).json({ msg: "You are not owner" });
+        return res.json({ msg: "You are not owner" });
       }
 
       await Views.findByIdAndDelete({ _id: idBlog });
@@ -102,7 +102,7 @@ const blogCtrl = {
 
       return blog
         ? res.status(200).json({ msg: "The information blog has change" })
-        : res.status(400).json({ msg: "Blog not found" });
+        : res.json({ msg: "Blog not found" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -205,7 +205,7 @@ const blogCtrl = {
       const idUser = req.user.id;
       const valid = checkData(req.body, "title", "content", "thumbnail", "description", "category");
 
-      if (valid !== true) return res.status(400).json({ valid });
+      if (valid !== true) return res.json({ valid });
       const newBlog = new Blogs({ idUser, ...req.body });
       await newBlog.save();
 
@@ -224,13 +224,13 @@ const blogCtrl = {
 
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
       if (ownerBlog.idUser !== req.user.id)
-        return res.status(400).json({ msg: "You are not owner" });
+        return res.json({ msg: "You are not owner" });
 
       const blog = await Blogs.findOneAndUpdate({ _id: idBlog }, { ...req.body }, { new: true });
 
       return blog
         ? res.status(200).json({ msg: "The information blog has change" })
-        : res.status(400).json({ msg: "Blog not found" });
+        : res.json({ msg: "Blog not found" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -256,7 +256,7 @@ const blogCtrl = {
     try {
       const { idBlog } = req.params;
       const data = checkData(req.body, "status");
-      if (data !== true) return res.status(400).json({ data });
+      if (data !== true) return res.json({ data });
 
       const blog = await Blogs.findOneAndUpdate(
         { _id: idBlog },
@@ -266,7 +266,7 @@ const blogCtrl = {
 
       return blog
         ? res.status(200).json({ msg: "Status blog has change" })
-        : res.status(400).json({ msg: "Blog not found" });
+        : res.json({ msg: "Blog not found" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

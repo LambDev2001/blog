@@ -32,15 +32,15 @@ const friendRequestCtl = {
       const { receiver } = req.body;
       const receiverUser = await Users.findOne({ _id: receiver });
       if (!receiver || !receiverUser)
-        return res.status(403).json({ msg: "User receiver not found" });
+        return res.json({ msg: "User receiver not found" });
 
       const friends = user.friends;
       if (friends.indexOf(req.user.id) !== -1) {
-        return res.status(400).json({ msg: "They has been add friend before" });
+        return res.json({ msg: "They has been add friend before" });
       }
 
       const oldRequest = await Requests.findOne({ idUser, receiver });
-      if (oldRequest) return res.status(400).json({ msg: "Request has been create" });
+      if (oldRequest) return res.json({ msg: "Request has been create" });
 
       const newRequest = new Requests({ idUser, receiver });
       await newRequest.save();
@@ -59,7 +59,7 @@ const friendRequestCtl = {
       const request = await Requests.findOne({
         _id: idRequest,
       });
-      if (!request) return res.status(400).json({ msg: "This quest does not exit" });
+      if (!request) return res.json({ msg: "This quest does not exit" });
 
       const sender = await Users.findByIdAndUpdate(
         { _id: idUser },
@@ -69,7 +69,7 @@ const friendRequestCtl = {
         { _id: request.receiver },
         { $push: { friends: idUser } }
       );
-      if (!sender || !userReceiver) return res.status(400).json({ msg: "Some err from back-end" });
+      if (!sender || !userReceiver) return res.json({ msg: "Some err from back-end" });
 
       return res.status(200).json({ msg: "Accept the request" });
     } catch (err) {
@@ -85,7 +85,7 @@ const friendRequestCtl = {
       const result = await Requests.findOneAndDelete({
         _id: idRequest,
       });
-      if (!result) return res.status(400).json({ msg: "This quest does not exit" });
+      if (!result) return res.json({ msg: "This quest does not exit" });
 
       return res.status(200).json({ msg: "Declined the request" });
     } catch (err) {

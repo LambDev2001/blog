@@ -8,14 +8,14 @@ const likeCtrl = {
       const { idBlog } = req.params;
 
       const blog = await Blogs.findById(idBlog);
-      if (!blog) return res.status(400).json({ msg: "Blog not found" });
+      if (!blog) return res.json({ msg: "Blog not found" });
 
       const like = await Likes.findOne({
         idBlog,
         idUser: req.user.id,
         like: true,
       });
-      if (like) return res.status(400).json({ msg: "Wait a second" });
+      if (like) return res.json({ msg: "Wait a second" });
 
       await Likes.findOneAndUpdate(
         { idBlog, idUser: req.user.id },
@@ -34,14 +34,14 @@ const likeCtrl = {
       const { idBlog } = req.params;
 
       const blog = await Blogs.findById(idBlog);
-      if (!blog) return res.status(400).json({ msg: "Blog not found" });
+      if (!blog) return res.json({ msg: "Blog not found" });
 
       const like = await Likes.findOne({
         idBlog,
         idUser: req.user.id,
         like: false,
       });
-      if (like) return res.status(400).json({ msg: "Wait a second" });
+      if (like) return res.json({ msg: "Wait a second" });
 
       await Likes.findOneAndUpdate(
         { idBlog, idUser: req.user.id },

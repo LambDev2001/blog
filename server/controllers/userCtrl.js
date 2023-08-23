@@ -11,10 +11,10 @@ const userCtrl = {
   checkInfoUser: async (req, res) => {
     try {
       const { idUser } = req.params;
-      if (!idUser) return res.status(400).json({ msg: "idUser is required" });
+      if (!idUser) return res.json({ msg: "idUser is required" });
 
       const user = await Users.findById({ _id: idUser }).select(["username", "account", "avatar"]);
-      if (!user) return res.status(403).json({ msg: "User not found" });
+      if (!user) return res.json({ msg: "User not found" });
 
       return res.status(200).json(user);
     } catch (err) {
@@ -104,10 +104,10 @@ const userCtrl = {
   removeFriend: async (req, res) => {
     try {
       if (req.user.id === req.params.idUser)
-        return res.status(400).json({ msg: "Your id duplicate with id send request" });
+        return res.json({ msg: "Your id duplicate with id send request" });
 
       const user = await Users.findById({ _id: req.user.id });
-      if (!user) return res.status(403).json({ msg: "User not found" });
+      if (!user) return res.json({ msg: "User not found" });
 
       // check id in the requestFriends
       const requestFriends = user.friends;
@@ -115,7 +115,7 @@ const userCtrl = {
         await Users.findByIdAndUpdate({ _id: req.user.id }, { $pull: { friends: req.body.id } });
         return res.status(200).json({ msg: "you declined the request successfully" });
       } else {
-        return res.status(400).json({ msg: "Not found your friend" });
+        return res.json({ msg: "Not found your friend" });
       }
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -125,7 +125,7 @@ const userCtrl = {
   updateUser: async (req, res) => {
     try {
       if (req.user.id !== req.params.idUser)
-        return res.status(403).json({ msg: "You are not owner" });
+        return res.json({ msg: "You are not owner" });
 
       const { username, avatar } = req.body;
       await Users.findByIdAndUpdate({ _id: req.user.id }, { username, avatar });
