@@ -1,45 +1,55 @@
 
 import React, { useState } from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { login } from '../../redux/actions/authAction.js'
+import { login, register } from '../../redux/actions/authAction.js'
+import { Text } from '../form/Input.jsx'
 
 const LoginPass = () => {
   const [userLogin, setUserLogin] = useState({
+    username: '',
     account: '',
-    password: ''
+    password: '',
+    confirmPassword: "",
   })
+  const [isRegister, setIsRegister] = useState(false)
 
   const dispatch = useDispatch()
-  const { account, password } = userLogin;
 
   const handleChangeInput = (e) => {
-    const { value, name } = e.target
-    setUserLogin({ ...userLogin, [name]: value })
+    const { name, value } = e.target
+    setUserLogin({ ...userLogin, [name]: value }) // update new name: account or password = value
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(userLogin)
-    dispatch(login(userLogin))
+    isRegister
+      ? dispatch(register(userLogin))
+      : dispatch(login(userLogin))
+
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="form-group mb-3">
-          <label htmlFor="account" className='form-label'>Email</label>
-          <input type="text" className='form-control' id='account' name='account' value={account} onChange={handleChangeInput} />
-        </div>
+        {isRegister && <Text name="username" value="username" onChange={handleChangeInput} />}
+        <Text name="Account" value="account" onChange={handleChangeInput} />
+        <Text name='Password' type="password" value="password" onChange={handleChangeInput} />
+        {isRegister &&
+          <>
+            <Text name='Confirm password' type="password" value="confirmPassword" onChange={handleChangeInput} />
+            <small className='text-primary' onClick={() => setIsRegister(!isRegister)}>You have account. Login here</small>
+            <button type='submit' className='btn btn-dark w-100 mt-1'>Register</button>
 
-        <div className="form-group mb-3">
-          <label htmlFor="password" className='form-label'>Email</label>
-          <input type="text" className='form-control' id='password' name='password' value={password} onChange={handleChangeInput} />
-        </div>
-
-        <button type='submit' className='btn btn-dark w-100 mt-1'>Login</button>
-
-
+          </>
+        }
+        {
+          !isRegister &&
+          <>
+            <small className='text-primary' onClick={() => setIsRegister(!isRegister)}>You don't have account</small>
+            <button type="submit" className="btn btn-dark w-100 mt-1">Login</button>
+          </>
+        }
       </form>
     </div>
   )

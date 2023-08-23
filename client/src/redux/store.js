@@ -9,8 +9,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
+
+
+import storage from "redux-persist/lib/storage";
 import rootReducer from "./reducers/index";
 
 const persistConfig = {
@@ -27,6 +29,8 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+   
+
 });
 
 const persistor = persistStore(store);
