@@ -13,10 +13,12 @@ const userCtrl = {
       const { idUser } = req.params;
       if (!idUser) return res.json({ msg: "idUser is required" });
 
-      const user = await Users.findById({ _id: idUser }).select(["username", "account", "avatar"]);
+      const user = await Users.findById({ _id: idUser }).select("-password -__v -createdAt -updatedAt -report -status");
       if (!user) return res.json({ msg: "User not found" });
 
-      return res.status(200).json(user);
+      const friends = await Users.find({ _id: { $in: user.friends } }).select("-account -friends -password -__v -createdAt -updatedAt -report -status");
+
+      return res.status(200).json({...user._doc, friends});
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

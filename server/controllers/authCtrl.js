@@ -30,8 +30,7 @@ const authCtrl = {
       const user = await Users.findById(decoded.id).select("-password +refreshToken");
 
       if (!user) return res.json({ msg: "This account does not exist." });
-      if (refreshToken !== user.refreshToken)
-        return res.json({ msg: "Please login now!" });
+      if (refreshToken !== user.refreshToken) return res.json({ msg: "Please login now!" });
 
       const access_token = generateAccessToken({ id: user._id });
       const refresh_token = generateRefreshToken({ id: user._id }, res);
@@ -81,7 +80,7 @@ const authCtrl = {
         return res.json({ msg: "Fill all fields" });
       }
 
-      const user = await Users.findOne({ account });
+      const user = await Users.findOne({ account }).select("-__v -status -report -updatedAt");
       if (!user) return res.json({ msg: "Account not found" });
 
       loginUser(user, password, res);
@@ -149,7 +148,7 @@ const authCtrl = {
         }
       );
 
-      return res.json({ msg: "Logged out!" });
+      return res.status(200).json({ msg: "Logged out!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -184,10 +183,12 @@ const loginUser = async (user, password, res) => {
     const refreshToken = generateRefreshToken({ id: user._id }, res);
     await Users.findByIdAndUpdate({ _id: user._id }, { refreshToken: refreshToken });
 
+    const friends = await Users.find({ _id: { $in: user.friends } }).select("username avatar");
+
     res.status(200).json({
       msg: "Login Success!",
       accessToken,
-      user: { ...user._doc, password: "" },
+      user: { ...user._doc, password: "", friends },
     });
   } catch (err) {
     console.log(err);

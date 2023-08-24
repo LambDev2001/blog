@@ -5,6 +5,7 @@ export const getAPI = async (url, token) => {
     const res = await axios.get(`http://localhost:5000/api/${url}`, {
       headers: { Authorization: token || "" },
     });
+
     return res;
   } catch (err) {
     console.log({ smg: err });
