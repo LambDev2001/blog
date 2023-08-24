@@ -6,10 +6,10 @@ export const Text = ({ name, type, value, onChange }) => {
   switch (type) {
     case "show":
       return (
-        <div className="form-group mb-3">
-          <label htmlFor={value} className='form-label'>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+        <div className="form-group mt-3">
+          <label className='form-label'>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
           <div className='d-flex position-relative'>
-            <input className='form-control' id={value} name={value} value={value} onChange={onChange} disabled />
+            <input className='form-control' value={value} disabled />
           </div>
         </div>
       )

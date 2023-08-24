@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import NotFound from './components/global/NotFound.jsx';
+import NotFound from './components/user/global/NotFound.jsx';
 
 const generatePage = (name) => {
   const component = () => require(`./pages/${name}`).default;
@@ -13,12 +13,11 @@ const generatePage = (name) => {
 };
 
 const PageRender = () => {
-  const { page, slug } = useParams();
-  
+  const { role, page, slug } = useParams();
   let name = "";
 
   if (page) {
-    name = slug ? `${page}/[slug]` : `${page}`;
+    name = slug ? `${role}/${page}/[slug]` : `${role}/${page}`;
   }
 
   return generatePage(name);

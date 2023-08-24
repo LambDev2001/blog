@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from "react-router-dom"
-import { logout } from '../../redux/actions/authAction'
+import { logout } from '../../../redux/actions/authAction'
 
 const Header = () => {
   const token = useSelector(state => state.authReducer.accessToken)
@@ -24,7 +24,7 @@ const Header = () => {
       </div>
       {token && (
         <div className='d-flex' style={{ position: "relative" }}>
-          <Link to="/user" className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900"> {auth.user.username}</Link>
+          <Link to="/user/profile" className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900"> {auth.user.username}</Link>
           <div className='anv-item dropdown'>
             <img className='rounded-circle img-fluid'
               style={{ height: '40px', with: "40px" }}
@@ -35,8 +35,8 @@ const Header = () => {
               dropdown && (
                 <div className="dropdown-menu d-block" style={{ position: "absolute", right: 0 }}>
                   {
-                    [["Profile", `/profile/${auth.user._id}`]].map(([title, url]) => (
-                      <Link key={title} className="dropdown-item" to={url}>{title}</Link>
+                    [["Profile", `/user/profile/${auth.user._id}`]].map(([title, url]) => (
+                      <Link key={title} className="dropdown-item" to={url} onClick={() => setDropdown(false)} >{title}</Link>
                     ))
                   }
                   <div className="dropdown-divider"></div>
@@ -53,7 +53,7 @@ const Header = () => {
       {!token && (
         <div>
           {
-            [["Login", "/login"]].map(([title, url]) => (
+            [["Login", "/user/login"]].map(([title, url]) => (
               <Link key={title} to={url} className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900">{title}</Link>
             ))
           }
