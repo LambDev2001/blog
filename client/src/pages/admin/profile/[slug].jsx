@@ -17,14 +17,9 @@ const Profile = () => {
     if (!slug) return;
     const getInfoUser = async () => {
       dispatch(profile(slug, token))
-        .then((data) => {
-          if (!data) {
-            history.goBack();
-            return;
-          }
-          setUserInfo(data)
-        })
-        .catch((err) => console.log(err))
+      const data = await dispatch(profile(slug, token))
+      if (!data) history.goBack()
+      setUserInfo(data)
     }
     getInfoUser()
   }, [slug, token, dispatch, history])
