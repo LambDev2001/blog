@@ -2,10 +2,10 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { login, loginAdmin, register } from '../../../redux/actions/authAction.js'
-import { Text } from '../form/Input.jsx'
+import { login, register } from '../../../redux/actions/authAction.js'
+import { Text } from '../../global/form/Input'
 
-const LoginPass = ({ type }) => {
+const LoginPass = () => {
   const [infoUser, setInfoUser] = useState({
     username: '',
     account: '',
@@ -28,11 +28,6 @@ const LoginPass = ({ type }) => {
         delete infoUser[key];
       }
     });
-
-    if (type === "admin") {
-      dispatch(loginAdmin(infoUser))
-      return;
-    }
 
     isRegister
       ? dispatch(register(infoUser))

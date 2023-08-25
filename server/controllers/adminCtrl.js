@@ -59,17 +59,19 @@ const authCtrl = {
 
   // admin
   logout: async (req, res) => {
+    if (!req.user) return res.json({ msg: "Invalid Authorization" });
+
     try {
       res.clearCookie("refreshtoken", { path: `/api/refresh_token` });
 
       await Admins.findOneAndUpdate(
-        { _id: req.user.id },
+        { _id: req.user._id },
         {
           refreshToken: "",
         }
       );
 
-      return res.json({ msg: "Logged out!" });
+      return res.status(200).json({ msg: "Logged out!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

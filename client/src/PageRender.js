@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import NotFound from './components/user/global/NotFound.jsx';
+import NotFound from './components/global/NotFound.jsx';
 
 const generatePage = (name) => {
   const component = () => require(`./pages/${name}`).default;

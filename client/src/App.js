@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import PageRender from "./PageRender";
-import Header from "../src/components/user/global/Header.jsx";
+import Header from "../src/components/global/Header.jsx";
 // import Footer from "../src/components/global/Footer.jsx";
-import Alert from "./components/user/Alert";
+import Alert from "./components/global/Alert";
 
 function App() {
   return (

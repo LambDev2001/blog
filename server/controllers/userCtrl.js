@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import Users from "../models/userModel.js";
+import Admins from "../models/adminModel.js";
 
 const userCtrl = {
   // auth
@@ -13,12 +14,25 @@ const userCtrl = {
       const { idUser } = req.params;
       if (!idUser) return res.json({ msg: "idUser is required" });
 
-      const user = await Users.findById({ _id: idUser }).select("-password -__v -createdAt -updatedAt -report -status");
-      if (!user) return res.json({ msg: "User not found" });
+      let user = await Users.findById({ _id: idUser }).select(
+        "-password -__v -createdAt -updatedAt -report -status"
+      );
+      if (!user) {
+        const admin = await Admins.findById(req.user.id);
+        if (admin)
+          user = await Admins.findById({ _id: idUser }).select(
+            "-password -__v -createdAt -updatedAt"
+          );
+        else {
+          return res.json({ msg: "User not found" });
+        }
+      }
 
-      const friends = await Users.find({ _id: { $in: user.friends } }).select("-account -friends -password -__v -createdAt -updatedAt -report -status");
+      const friends = await Users.find({ _id: { $in: user.friends } }).select(
+        "-account -friends -password -__v -createdAt -updatedAt -report -status"
+      );
 
-      return res.status(200).json({...user._doc, friends});
+      return res.status(200).json({ ...user._doc, friends });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -126,8 +140,7 @@ const userCtrl = {
 
   updateUser: async (req, res) => {
     try {
-      if (req.user.id !== req.params.idUser)
-        return res.json({ msg: "You are not owner" });
+      if (req.user.id !== req.params.idUser) return res.json({ msg: "You are not owner" });
 
       const { username, avatar } = req.body;
       await Users.findByIdAndUpdate({ _id: req.user.id }, { username, avatar });
@@ -143,7 +156,7 @@ const userCtrl = {
     try {
       const { idUser } = req.params;
 
-      const user = await Users.findById({ _id: idUser }).select("-password -__v");
+      let user = await Users.findById({ _id: idUser }).select("-password -__v");
 
       res.status(200).json(user);
 

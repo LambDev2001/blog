@@ -1,23 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from "react-router-dom"
-import { logout } from '../../../redux/actions/authAction'
+import { Link, useLocation, useHistory } from "react-router-dom"
+import { logout, logoutAdmin } from '../../redux/actions/authAction.js'
 
 const Header = () => {
   const token = useSelector(state => state.authReducer.accessToken)
   const auth = useSelector(state => state.authReducer)
   const [dropdown, setDropdown] = useState(false)
   const dispatch = useDispatch()
+  const [role, setRole] = useState("user");
+  const location = useLocation();
+  const history = useHistory();
+
+  useEffect(() => {
+    const currentURL = location.pathname + location.search + location.hash;
+    setRole(currentURL.split("/")[1])
+    setDropdown(false)
+  }, [location])
 
   const handleLogout = () => {
-    dispatch(logout(token))
+    history.push(`/${role}`);
+    role === "admin"
+      ? dispatch(logoutAdmin(token))
+      : dispatch(logout(token))
   }
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-light space-x-4 justify-between">
       <div>
         {[
-          ['Home', '/'],
+          ['Home', `/${role}`],
         ].map(([title, url]) => (
           <Link key={title} to={url} className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900">{title}</Link>
         ))}
@@ -35,7 +47,7 @@ const Header = () => {
               dropdown && (
                 <div className="dropdown-menu d-block" style={{ position: "absolute", right: 0 }}>
                   {
-                    [["Profile", `/user/profile/${auth.user._id}`]].map(([title, url]) => (
+                    [["Profile", `/${role}/profile/${auth.user._id}`]].map(([title, url]) => (
                       <Link key={title} className="dropdown-item" to={url} onClick={() => setDropdown(false)} >{title}</Link>
                     ))
                   }
@@ -53,7 +65,7 @@ const Header = () => {
       {!token && (
         <div>
           {
-            [["Login", "/user/login"]].map(([title, url]) => (
+            [["Login", `/${role}/login`]].map(([title, url]) => (
               <Link key={title} to={url} className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900">{title}</Link>
             ))
           }

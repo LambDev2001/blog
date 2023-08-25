@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { profile } from '../../../redux/actions/userAction'
 import { Text } from "../../../components/global/form/Input"
-import Friend from '../../../components/user/Friend'
-import UserBlogs from '../../../components/user/blogs/UserBlogs'
 
 const Profile = () => {
   const { slug } = useParams()
@@ -14,6 +12,7 @@ const Profile = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!slug) return;
     const getInfoUser = async () => {
@@ -29,6 +28,7 @@ const Profile = () => {
     }
     getInfoUser()
   }, [slug, token, dispatch, history])
+
 
   return (
     <div className='d-flex flex-wrap'>
@@ -53,14 +53,11 @@ const Profile = () => {
                 </div>
               </div>
 
-              <Friend friends={userInfo.data.friends} />
             </div>
           )
         }
       </div>
-      <div className='flex-1' style={{ minWidth: "400px" }}>
-        <UserBlogs />
-      </div>
+
     </div >
   );
 }
