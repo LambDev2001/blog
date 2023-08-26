@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 
 import Users from "../models/userModel.js";
 import Admins from "../models/adminModel.js";
+import Blogs from "../models/blogModel.js";
 
 const userCtrl = {
   // auth
@@ -168,13 +169,20 @@ const userCtrl = {
 
   getUsers: async (req, res) => {
     try {
-      const users = await Users.find({}).select([
-        "username",
+      let users = await Users.find({}).select([
         "account",
+        "username",
         "avatar",
-        "role",
-        "createdAt",
+        "status",
+        "report",
       ]);
+
+      users = await Promise.all(
+        users.map(async (user) => {
+          const countBlogs = await Blogs.count({ idUser: user._id });
+          return { ...user._doc, countBlogs };
+        })
+      );
 
       return res.status(200).json(users);
     } catch (err) {
