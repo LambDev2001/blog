@@ -1,4 +1,4 @@
-import { postAPI, getAPI } from "../../utils/FetchData";
+import { postAPI, getAPI } from "../../../utils/FetchData";
 
 export const login = (infoUser) => async (dispatch) => {
   try {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { profile } from '../../../redux/actions/userAction'
+import { profile } from '../../../redux/actions/global/profileAction'
 import { Text } from "../../../components/global/form/Input"
 import Friend from '../../../components/user/Friend'
 import UserBlogs from '../../../components/user/blogs/UserBlogs'

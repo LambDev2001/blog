@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { loginAdmin } from '../../../redux/actions/authAction.js'
+import { loginAdmin } from '../../../redux/actions/global/authAction'
 import { Text } from '../form/Input'
 
 const LoginPass = () => {

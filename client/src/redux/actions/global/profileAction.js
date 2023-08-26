@@ -1,4 +1,4 @@
-import { getAPI } from "../../utils/FetchData";
+import { getAPI } from "../../../utils/FetchData";
 
 export const profile = (idUser, token) => async (dispatch) => {
   try {
