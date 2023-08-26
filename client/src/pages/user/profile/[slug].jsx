@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { profile } from '../../../redux/actions/global/profileAction'
 import { Text } from "../../../components/global/form/Input"
-import Friend from '../../../components/user/Friend'
+import Friend from '../../../components/global//Friend'
 import UserBlogs from '../../../components/user/blogs/UserBlogs'
 
 const Profile = () => {

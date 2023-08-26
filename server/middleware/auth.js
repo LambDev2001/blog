@@ -6,10 +6,10 @@ const auth = async (req, res, next) => {
   try {
     const token = req.header("Authorization"); // token = user._id
     if (!token) {
-      return res.json("Invalid Authorization");
+      return res.json({ err: "Invalid Authorization" });
     }
     const decode = jwt.decode(token, `${process.env.ACCESS_TOKEN_SECRET}`);
-    if (!decode) return res.json("Invalid Authorization when decoding token");
+    if (!decode) return res.json({ err: "Invalid Authorization when decoding token" });
 
     const user =
       (await Users.findOne({ _id: decode.id }, { projection: { password: 0 } })) ||
@@ -18,12 +18,12 @@ const auth = async (req, res, next) => {
     if (user) {
       req.user = user;
     } else {
-      return res.json("Account not found");
+      return res.json({ err: "Account not found" });
     }
 
     next();
   } catch (err) {
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ err: err.message });
   }
 };
 

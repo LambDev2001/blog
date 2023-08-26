@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import Users from "../models/userModel.js";
 import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
+import Reports from "../models/reportModel.js";
 
 const userCtrl = {
   // auth
@@ -157,11 +158,14 @@ const userCtrl = {
     try {
       const { idUser } = req.params;
 
-      let user = await Users.findById({ _id: idUser }).select("-password -__v");
+      const user = await Users.findById({ _id: idUser }).select("-password -__v -updatedAt");
+      if (!user) res.json({ err: "User not found" });
 
-      res.status(200).json(user);
+      const friends = await Users.find({ _id: { $in: user.friends } });
+      const blogs = await Blogs.find({ idUser: idUser });
+      const reports = await Reports.find({ idUser: idUser });
 
-      return res.status(200).json({ msg: "" });
+      return res.status(200).json({ ...user._doc, blogs, reports, friends });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

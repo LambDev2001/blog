@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Friend = (friends) => {
-
   return (
       <table className='w-100'>
         <thead>
