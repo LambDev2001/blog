@@ -50,7 +50,7 @@ const User = () => {
       </div>
 
       {
-        user.blogs &&
+        user.blogs && user.blogs.length > 0 &&
         <div>
           <hr className='my-3' />
           <div className='content pl-2'>Blogs ({user.blogs.length})</div>
@@ -65,7 +65,7 @@ const User = () => {
       }
 
       {
-        user.report &&
+        user.report && user.report.length > 0 &&
         <div>
           <hr className='my-3' />
           <div className='content pl-2'>Reports ({user.reports.length})</div>

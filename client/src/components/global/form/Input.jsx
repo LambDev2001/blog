@@ -8,9 +8,7 @@ export const Text = ({ name, type, value, onChange }) => {
       return (
         <div className="form-group mt-3">
           <label className='form-label'>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
-          <div className='d-flex position-relative'>
-            <input className='form-control' value={value} disabled />
-          </div>
+          <input className='form-control' value={value} disabled />
         </div>
       )
 
