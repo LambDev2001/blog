@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
 
     refreshToken: { type: String, select: false },
     status: { type: String, default: "normal" },
-    reports: {
+    report: {
       type: [String],
       default: [],
     },

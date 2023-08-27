@@ -12,6 +12,8 @@ const Profile = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
+  if(!token) history.push('/admin/login')
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!slug) return;

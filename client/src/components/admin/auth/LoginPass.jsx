@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { loginAdmin } from '../../../redux/actions/global/authAction'
 import { Text } from '../form/Input'
+import { useHistory } from 'react-router-dom'
 
 const LoginPass = () => {
   const [infoUser, setInfoUser] = useState({
@@ -12,6 +13,7 @@ const LoginPass = () => {
   })
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target
@@ -27,6 +29,7 @@ const LoginPass = () => {
     });
 
     dispatch(loginAdmin(infoUser))
+    history.goBack()
   }
 
   return (

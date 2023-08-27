@@ -1,7 +1,8 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
-const TableInfo = ({ thead, tbody }) => {
+const TableInfo = ({ data }) => {
+  const thead = ["avatar", "account", "username", "status", "report", "blogs"]
   const history = useHistory()
 
   return (
@@ -14,7 +15,7 @@ const TableInfo = ({ thead, tbody }) => {
         </tr>
       </thead>
       <tbody>
-        {tbody.map((item, index) => (
+        {data.map((item, index) => (
           <tr key={index} className='pointer-cursor' onClick={() => history.push(`user/${item._id}`)}>
             <td>
               <img src={item.avatar} className="avatar" alt="" />

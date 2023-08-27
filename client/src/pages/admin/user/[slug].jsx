@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import { getUser } from '../../../redux/actions/admin/userAction'
 import { Text } from "../../../components/global/form/Input"
 import Friend from '../../../components/global/Friend'
 import Card from '../../../components/global/Card'
+import TableReport from '../../../components/admin/TableReport'
 
 const User = () => {
+  const history = useHistory()
   const { slug } = useParams()
   const dispatch = useDispatch()
   const [user, setUser] = useState({})
   const token = useSelector(state => state.authReducer.accessToken)
+
+  if (!token) history.push('/admin/login')
 
   useEffect(() => {
     const getInfoUser = async () => {
@@ -30,7 +35,7 @@ const User = () => {
           {
             Object.entries(user).map(([key, value]) => (
               <div key={key}>
-                {key !== "avatar" && key !== "friends" && key !== "reports" && key !== "blogs" &&
+                {key !== "avatar" && key !== "friends" && key !== "report" && key !== "reports" && key !== "blogs" &&
                   <Text name={key} type="show" value={value} />
                 }
               </div>
@@ -42,24 +47,31 @@ const User = () => {
           <img className='rounded-circle' src={user.avatar} alt="" style={{ margin: "auto", marginTop: "2rem" }} />
           <Friend friends={user.friends} />
         </div>
-
       </div>
 
-      <hr className='my-3' />
-      <div className='content pl-2'>Blogs</div>
-      <div className='d-flex flex-wrap justify-between mx-4'>
-        {
-          user.blogs &&
-          user.blogs.map(blog => {
+      {
+        user.blogs &&
+        <div>
+          <hr className='my-3' />
+          <div className='content pl-2'>Blogs ({user.blogs.length})</div>
+          <div className='d-flex flex-wrap justify-around mx-4'>
+            {
+              user.blogs.map((blog) =>
+                (<Card blog={blog} key={blog._id} />)
+              )
+            }
+          </div>
+        </div>
+      }
 
-            return <Card blog={blog} key={blog._id} />
-          })
-        }
-      </div>
-
-      <hr className='my-3' />
-      <div className='content pl-2'>Reports</div>
-
+      {
+        user.report &&
+        <div>
+          <hr className='my-3' />
+          <div className='content pl-2'>Reports ({user.reports.length})</div>
+          <TableReport data={user.reports} />
+        </div>
+      }
 
     </div>
   )

@@ -8,6 +8,7 @@ import Users from "../models/userModel.js";
 import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
 import Reports from "../models/reportModel.js";
+import Comments from "../models/commentModel.js";
 
 const userCtrl = {
   // auth
@@ -163,9 +164,31 @@ const userCtrl = {
 
       const friends = await Users.find({ _id: { $in: user.friends } });
       const blogs = await Blogs.find({ idUser: idUser });
-      const reports = await Reports.find({ idUser: idUser });
+      const comments = await Comments.find({ idUser: idUser });
 
-      return res.status(200).json({ ...user._doc, blogs, reports, friends });
+      const idReports = [...user.report];
+
+      blogs.map((blog) => {
+        if (blog.report.length > 0) {
+          idReports.push(...blog.report);
+        }
+      });
+
+      comments.map((comment) => {
+        if (comment.report.length > 0) {
+          idReports.push(...comment.report);
+        }
+      });
+
+      let reports = await Reports.find({ _id: { $in: idReports } });
+      reports = await Promise.all(
+        reports.map(async (report) => {
+          const author = await Users.findById({ _id: report.idUser });
+          return { ...report._doc, author: author.username };
+        })
+      );
+
+      return res.status(200).json({ ...user._doc, blogs, friends, reports });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
