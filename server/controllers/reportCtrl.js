@@ -76,12 +76,32 @@ const reportCtrl = {
   getReport: async (req, res) => {
     try {
       const { idReport } = req.params;
+      let report = await Reports.findById(idReport).select("-__v");
+      report = report._doc
 
-      const reports = await Reports.findById(idReport).select("-__v");
+      if (!report) return res.json({ err: "Report not found" });
+      const author = await Users.findById(report.idUser).select(
+        "-__v -password -createdAt -updatedAt -status -friends -report"
+      );
 
-      return res.status(200).json(reports);
+      switch (report.type) {
+        case "user":
+          report.user = await Users.findById(report.ids);
+          if (!report.user) return res.json({ err: "User not found" });
+          break;
+        case "blog":
+          report.blog = await Blogs.findById(report.ids);
+          if (!report.blog) return res.json({ err: "Blog not found" });
+          break;
+        case "comment":
+          report.comment = await Comments.findById(report.ids);
+          if (!report.comment) return res.json({ err: "Comment not found" });
+          break;
+      }
+
+      return res.status(200).json({ ...report, author });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ err: err.message });
     }
   },
 
