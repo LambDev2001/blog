@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 
-
+import AdminRouteWrapper from '../../../utils/AdminRouteWrapper'
 import { getReport } from '../../../redux/actions/admin/reportAction'
 
 const Report = () => {
@@ -19,10 +19,10 @@ const Report = () => {
 
     fetchReportData();
   }, [dispatch, slug, token]);
-  console.log(report)
 
   return (
     <div style={{ backgroundColor: "#fff" }}>
+      <AdminRouteWrapper />
       <div className='d-flex'>
         <div className='w-50 p-2'>
           <div className='content my-3'>Info Sender</div>

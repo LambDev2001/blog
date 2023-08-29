@@ -59,8 +59,6 @@ const authCtrl = {
 
   // admin
   logout: async (req, res) => {
-    if (!req.user) return res.json({ msg: "Invalid Authorization" });
-
     try {
       res.clearCookie("refreshtoken", { path: `/api/refresh_token` });
 

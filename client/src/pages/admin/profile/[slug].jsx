@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
+import AdminRouteWrapper from '../../../utils/AdminRouteWrapper'
 import { profile } from '../../../redux/actions/global/profileAction'
 import { Text } from "../../../components/global/form/Input"
 
@@ -10,25 +11,22 @@ const Profile = () => {
   const token = useSelector(state => state.authReducer.accessToken)
   const [userInfo, setUserInfo] = useState({})
   const dispatch = useDispatch()
-  const history = useHistory()
 
-  if(!token) history.push('/admin/login')
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!slug) return;
     const getInfoUser = async () => {
       dispatch(profile(slug, token))
       const data = await dispatch(profile(slug, token))
-      if (!data) history.goBack()
+
       setUserInfo(data)
     }
     getInfoUser()
-  }, [slug, token, dispatch, history])
+  }, [slug, token, dispatch])
 
 
   return (
     <div className='d-flex flex-wrap'>
+      <AdminRouteWrapper />
       <div className='flex-1' style={{ minWidth: "400px" }}>
         {
           userInfo.data && (

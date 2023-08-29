@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useHistory } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { logout, logoutAdmin } from '../../redux/actions/global/authAction'
 
 const Header = () => {
@@ -10,7 +10,6 @@ const Header = () => {
   const dispatch = useDispatch()
   const [role, setRole] = useState("user");
   const location = useLocation();
-  const history = useHistory();
 
   useEffect(() => {
     const currentURL = location.pathname + location.search + location.hash;
@@ -19,7 +18,6 @@ const Header = () => {
   }, [location])
 
   const handleLogout = () => {
-    history.push(`/${role}`);
     role === "admin"
       ? dispatch(logoutAdmin(token))
       : dispatch(logout(token))

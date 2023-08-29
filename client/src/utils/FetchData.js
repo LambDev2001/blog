@@ -8,7 +8,7 @@ export const getAPI = async (url, token) => {
 
     return res;
   } catch (err) {
-    console.log({ smg: err });
+    err.log({ smg: err });
   }
 };
 
@@ -20,7 +20,7 @@ export const postAPI = async (url, data, token) => {
 
     return res;
   } catch (err) {
-    console.log({ smg: err });
+    err.log({ smg: err });
   }
 };
 
@@ -31,7 +31,7 @@ export const patchAPI = async (url, data, token) => {
     });
     return res;
   } catch (err) {
-    console.log({ smg: err });
+    err.log({ smg: err });
   }
 };
 
@@ -42,6 +42,6 @@ export const deleteAPI = async (url, data, token) => {
     });
     return res;
   } catch (err) {
-    console.log({ smg: err });
+    err.log({ smg: err });
   }
 };

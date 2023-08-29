@@ -31,6 +31,7 @@ const Menu = () => {
     ]],
     [BsFillPersonFill, [
       ['Manage users', '/admin/all-users'],
+      ['Manage reports', '/admin/reports'],
 
     ]],
 
