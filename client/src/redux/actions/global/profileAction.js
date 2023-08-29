@@ -12,7 +12,7 @@ export const profile = (idUser, token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: false } });
     return res;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
@@ -28,6 +28,6 @@ export const profileAdmin = (idUser, token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: false } });
     return res;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };

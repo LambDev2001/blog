@@ -8,11 +8,11 @@ export const getAPI = async (url, token) => {
 
     return res;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
-export const postAPI = async (url, data, token) => {
+export const postAPI = async (url, data='', token) => {
   try {
     const res = await axios.post(`http://localhost:5000/api/${url}`, data, {
       headers: { Authorization: token || "" },
@@ -20,28 +20,28 @@ export const postAPI = async (url, data, token) => {
 
     return res;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
-export const patchAPI = async (url, data, token) => {
+export const patchAPI = async (url, data='', token) => {
   try {
     const res = await axios.patch(`http://localhost:5000/api/${url}`, data, {
       headers: { Authorization: token || "" },
     });
     return res;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
-export const deleteAPI = async (url, data, token) => {
+export const deleteAPI = async (url, token) => {
   try {
-    const res = await axios.delete(`http://localhost:5000/api/${url}`, data, {
-      headers: { Authorization: token || "" },
+    const res = await axios.delete(`http://localhost:5000/api/${url}`, {
+      headers: { Authorization: token  },
     });
     return res;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };

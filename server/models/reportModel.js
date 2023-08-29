@@ -7,6 +7,11 @@ const reportSchema = new mongoose.Schema(
       require: true,
     },
 
+    reportedIdUser: {
+      type: String,
+      require: true,
+    },
+
     ids: {
       type: String,
       require: true,

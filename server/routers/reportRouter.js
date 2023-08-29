@@ -19,5 +19,6 @@ router.get("/report/:idReport", permit, reportCtrl.getReport);
 router.get("/reports", permit, reportCtrl.getReports);
 
 router.post("/accept-report/:idReport", permit, reportCtrl.acceptReport);
+router.post("/decline-report/:idReport", permit, reportCtrl.declineReport);
 
 export default router;

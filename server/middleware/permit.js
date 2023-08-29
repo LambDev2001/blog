@@ -21,7 +21,6 @@ const permit = async (req, res, next) => {
     if (!admin) {
       return res.json({ err: "Admin not found" });
     }
-
     req.user = admin;
     next();
   } catch (err) {

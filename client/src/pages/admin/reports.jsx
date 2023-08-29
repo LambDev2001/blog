@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import { getReports } from '../../redux/actions/admin/reportAction';
+import TableReport from "../../components/admin/TableReport";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -16,13 +17,17 @@ const Reports = () => {
     }
 
     fetchReportData()
-  }, [dispatch, token, reports])
+  }, [dispatch, token])
 
   return (
     <div>
       <AdminRouteWrapper />
-        reports
-|    </div>
+      <div>
+        {reports &&
+          <TableReport data={reports} />
+        }
+      </div>
+    </div>
   );
 };
 

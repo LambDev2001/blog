@@ -56,7 +56,7 @@ const chatCtrl = {
       socket.broadcast.to(idRoom).emit("delete-message-server", { idMessage });
       return res.status(200).json({ msg: "Delete message successfully!" });
     } catch (err) {
-      err.log({ smg: err });
+      console.error(err);
     }
   },
 };

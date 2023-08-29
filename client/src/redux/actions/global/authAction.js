@@ -12,7 +12,7 @@ export const login = (infoUser) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: false } });
     dispatch({ type: "ALERT", payload: { type: "success", msg: "Login success" } });
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
@@ -25,7 +25,7 @@ export const register = (infoUser) => async (dispatch) => {
     dispatch({ type: "ALERT", payload: { loading: false } });
     dispatch({ type: "ALERT", payload: { msg: "Check your email" } });
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
@@ -39,7 +39,7 @@ export const logout = (token) => async (dispatch) => {
     dispatch({ type: "AUTH", payload: {} });
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
-    err.log({ msg: err });
+    console.error(err);
   }
 };
 
@@ -54,7 +54,7 @@ export const loginAdmin = (infoUser) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: false } });
     dispatch({ type: "ALERT", payload: { type: "success", msg: "Login success" } });
   } catch (err) {
-    err.log({ msg: err });
+    console.error(err);
   }
 };
 
@@ -68,6 +68,6 @@ export const logoutAdmin = (token) => async (dispatch) => {
     dispatch({ type: "AUTH", payload: {} });
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
-    err.log({ msg: err });
+    console.error(err);
   }
 };

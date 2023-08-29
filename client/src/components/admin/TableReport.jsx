@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+const { declineReport, acceptReport } = require('../../redux/actions/admin/reportAction')
 
 const TableReport = ({ data }) => {
   const history = useHistory()
+  const dispatch = useDispatch()
+  const token = useSelector(state => state.authReducer.accessToken)
+  
+  const handleDecline = async (e, id) => {
+    e.stopPropagation()
+    await dispatch(declineReport(id, token))
+  }
+
+  const handleAccept = async (e, id) => {
+    e.stopPropagation()
+    await dispatch(acceptReport(id, token))
+  }
 
   return (
     <div className='bg-white rounded mb-4 shadow-lg ml-2 mr-3 my-3'>
@@ -22,7 +36,7 @@ const TableReport = ({ data }) => {
       <div className='overflow-x-auto'>
         <table className='table-auto w-full'>
           <tbody className='bg-white cursor-pointer'>
-            {
+            {data &&
               data.map((item, index) => {
                 const dateCreate = new Date(item.updatedAt)
                 const date = dateCreate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -35,10 +49,10 @@ const TableReport = ({ data }) => {
                     <td className='w-[25%] px-4 py-2 border-t border-p'>{date}</td>
                     <td className='w-[25%] px-4 py-2 border-t border-p'>
                       <button className='btn btn-outline-warning'
-                        onClick={(e) => { e.stopPropagation(); console.log("declined") }}>
+                        onClick={(e) => handleDecline(e, item._id)}>
                         Decline
                       </button>
-                      <button className='btn btn-outline-success'>Accept</button>
+                      <button className='btn btn-outline-success' onClick={(e) => handleAccept(e, item._id)}>Accept</button>
                     </td>
                   </tr>
                 )

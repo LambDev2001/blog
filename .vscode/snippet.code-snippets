@@ -35,5 +35,18 @@
 			"return res.status($1).json({msg: ''})"
 		],
 		"description": "Fast retrun in web"
-	}
+	},
+
+	"Try-Catch -Client": {
+		"prefix": "try catch client",
+		"body": [
+			"try {",
+			"\t$1",
+			"",
+			"} catch (err) {",
+			"\tconsole.error(err)",
+			"}"
+		],
+		"description": "Try-Catch block with console.log"
+	},
 }

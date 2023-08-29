@@ -6,7 +6,6 @@ const categoryCtrl = {
   getAllCategories: async (req, res) => {
     try {
       const listCategories = await Categories.find({}).select("name");
-
       return res.status(200).json(listCategories);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -42,9 +41,7 @@ const categoryCtrl = {
 
   updateCategory: async (req, res) => {
     try {
-      const idAdmin = req.user.id;
       const { idCategory } = req.params;
-      const admin = await Admins.findOne({ _id: req.user.id });
       const { name } = req.body;
 
       await Categories.findOneAndUpdate({ _id: idCategory }, { name });
@@ -57,10 +54,7 @@ const categoryCtrl = {
 
   deleteCategory: async (req, res) => {
     try {
-      const idAdmin = req.user.id;
       const { idCategory } = req.params;
-      const admin = await Admins.findOne({ _id: req.user.id });
-
       await Categories.findOneAndDelete({ _id: idCategory });
 
       return res.status(200).json({ msg: "Delete category successfully" });

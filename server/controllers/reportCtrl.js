@@ -31,23 +31,30 @@ const reportCtrl = {
       const idUser = req.user.id;
 
       const { ids, type, content } = req.body;
+      let data = {};
       const report = new Reports({ idUser, ids, type, content });
-      await report.save();
 
       switch (type) {
         case "user":
-          await Users.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          data = await Users.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          report.reportedIdUser = data._id;
           break;
         case "blog":
-          await Blogs.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          data = await Blogs.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          report.reportedIdUser = data.idUser;
           break;
         case "comment":
-          await Comments.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          data = await Comments.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          report.reportedIdUser = data.idUser;
           break;
         case "room":
-          await Rooms.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          data = await Rooms.findOneAndUpdate({ _id: ids }, { $push: { report: report._id } });
+          report.reportedIdUser = data.idUser;
           break;
       }
+
+      await report.save();
+
       return res.status(200).json({ msg: "Report success" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -77,12 +84,13 @@ const reportCtrl = {
     try {
       const { idReport } = req.params;
       let report = await Reports.findById(idReport).select("-__v");
-      report = report._doc
-
+      report = report._doc;
       if (!report) return res.json({ err: "Report not found" });
+
       const author = await Users.findById(report.idUser).select(
         "-__v -password -createdAt -updatedAt -status -friends -report"
       );
+      if (!author) return res.json({ err: "User not found" });
 
       switch (report.type) {
         case "user":
@@ -107,7 +115,19 @@ const reportCtrl = {
 
   getReports: async (req, res) => {
     try {
-      const reports = await Reports.find().select("idUser ids type content updatedAt");
+      let reports = await Reports.find().select("-__v");
+
+      reports = await Promise.all(
+        reports.map(async (report) => {
+          const author = await Users.findById(report.idUser).select(
+            "-__v -password -createdAt -updatedAt -status -friends -report"
+          );
+          if (!author) return res.json({ err: "User not found" });
+
+          return { ...report._doc, author: author.username };
+        })
+      );
+      if (!reports) return res.json({ err: "User not found" });
 
       return res.status(200).json(reports);
     } catch (err) {
@@ -135,6 +155,35 @@ const reportCtrl = {
       }
 
       await Reports.findOneAndDelete({ _id: idReport });
+
+      return res.status(200).json({ msg: "Accept report success" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  declineReport: async (req, res) => {
+    try {
+      const { idReport } = req.params;
+
+      const report = await Reports.findOne({ _id: idReport });
+      if (!report) return res.json({ msg: "Report not found" });
+
+      switch (report.type) {
+        case "user":
+          await Users.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
+          break;
+        case "blog":
+          await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
+          break;
+        case "comment":
+          break;
+        case "group":
+          break;
+      }
+
+      const res = await Reports.findOneAndDelete({ _id: idReport });
+      if (!res) return res.json({ msg: "Report not found" });
 
       return res.status(200).json({ msg: "Accept report success" });
     } catch (err) {

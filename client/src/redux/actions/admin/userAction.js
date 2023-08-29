@@ -12,7 +12,7 @@ export const allUsers = (token) => async (dispatch) => {
 
     return res.data;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
 
@@ -33,6 +33,6 @@ export const getUser = (idUser, token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: false } });
     return user.data;
   } catch (err) {
-    err.log({ smg: err });
+    console.error(err);
   }
 };
