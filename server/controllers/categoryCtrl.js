@@ -33,7 +33,7 @@ const categoryCtrl = {
 
       await newCategory.save();
 
-      return res.status(200).json({ msg: "Create category successfully" });
+      return res.status(200).json(newCategory);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

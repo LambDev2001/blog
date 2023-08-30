@@ -3,8 +3,8 @@ const categoryReducer = (state = [], action) => {
     case "GET_CATEGORIES":
       return action.payload;
 
-    case "CREATE_CATEGORIES":
-      return [action.payload, ...state];
+    case "CREATE_CATEGORY":
+      return [...state, action.payload];
 
     case "UPDATE_CATEGORY":
       return state.map((item) =>

@@ -3,12 +3,10 @@ import ResErrorData from "../../../utils/ResErrorData";
 
 export const createCategory = (name, token) => async (dispatch) => {
   try {
-    dispatch({ type: alert, payload: { loading: true } });
-
+    dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await postAPI("category", { name }, token);
-
     dispatch({ type: "CREATE_CATEGORY", payload: res.data });
-    dispatch({ type: alert, payload: { loading: false } });
+    dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);
   }
@@ -17,6 +15,7 @@ export const createCategory = (name, token) => async (dispatch) => {
 export const getCategories = (token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
+
     const res = await getAPI("categories", token);
     ResErrorData(res.data, dispatch);
 

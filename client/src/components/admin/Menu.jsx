@@ -14,7 +14,7 @@ const Menu = () => {
   useEffect(() => {
     const handleResize = () => {
       const screenHeight = window.innerHeight;
-      setHeightMenu(`${screenHeight-56}px`);
+      setHeightMenu(`${screenHeight - 56}px`);
     };
     handleResize(); // Call it once to set initial dimensions
     window.addEventListener('resize', handleResize);
@@ -32,6 +32,7 @@ const Menu = () => {
     [BsFillPersonFill, [
       ['Manage users', '/admin/all-users'],
       ['Manage reports', '/admin/reports'],
+      ['Manage categories', '/admin/categories'],
 
     ]],
 
