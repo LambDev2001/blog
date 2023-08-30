@@ -76,7 +76,7 @@ const Categories = () => {
           {categories.length > 0 &&
             categories.map((category) => (
               <div
-                className="flex items-center justify-between border border-solid border-black-400 rounded-lg p-2 my-2 
+                className="flex items-center justify-between border border-solid border-black-700 rounded-lg p-2 my-2 
                 hover:scale-110 transition-all duration-300"
                 key={category._id}>
 

@@ -33,6 +33,7 @@ const Menu = () => {
       ['Manage users', '/admin/all-users'],
       ['Manage reports', '/admin/reports'],
       ['Manage categories', '/admin/categories'],
+      ['Manage blogs', '/admin/blogs'],
 
     ]],
 
