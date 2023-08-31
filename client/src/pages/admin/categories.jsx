@@ -26,6 +26,7 @@ const Categories = () => {
     if (edit) {
       if (edit.name === name) return;
       const data = { ...edit, name };
+      console.log(data)
       dispatch(updateCategory(data, token));
     } else {
       dispatch(createCategory(name, token));

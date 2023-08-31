@@ -50,10 +50,13 @@ const policyCtrl = {
 
   changeStatusPolicy: async (req, res) => {
     try {
-      const { idPolicy, status } = req.body;
-      await Policies.findByIdAndUpdate({ _id: idPolicy }, { status });
-
-      return res.status(200).json({ msg: "Change status policy successfully" });
+      const { idPolicy } = req.params;
+      const policy = req.body;
+      const newPolicy = await Policies.findByIdAndUpdate({ _id: idPolicy }, { ...policy }).select(
+        "content status updatedAt"
+      );
+      if (!res) return res.json({ err: "Not found policy" });
+      return res.status(200).json(newPolicy);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

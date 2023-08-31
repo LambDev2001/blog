@@ -34,7 +34,7 @@ const Menu = () => {
       ['Manage reports', '/admin/reports'],
       ['Manage categories', '/admin/categories'],
       ['Manage blogs', '/admin/blogs'],
-
+      ['Manage policies', '/admin/policies'],
     ]],
 
   ]

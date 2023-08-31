@@ -12,8 +12,8 @@ router.get("/all-policies",admin, policyCtrl.getAllPolices) // for admin manager
 
 router.post("/policy",admin, policyCtrl.createPolicy)
 
-router.patch("/policy",admin, policyCtrl.editPolicy)
-router.patch("/status-policy",admin, policyCtrl.changeStatusPolicy)
+router.patch("/policy/:idPolicy",admin, policyCtrl.editPolicy)
+router.patch("/status-policy/:idPolicy",admin, policyCtrl.changeStatusPolicy)
 
 router.delete("/policy",admin, policyCtrl.deletePolicy)
 
