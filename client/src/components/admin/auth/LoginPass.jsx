@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { loginAdmin } from '../../../redux/actions/global/authAction'
+import { loginAdmin } from '../../../redux/actions/authAction'
 import { Text } from '../form/Input'
 import { useHistory } from 'react-router-dom'
 

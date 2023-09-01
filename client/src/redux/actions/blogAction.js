@@ -1,5 +1,5 @@
-import { getAPI } from "../../../utils/FetchData";
-import ResErrorData from "../../../utils/ResErrorData";
+import { getAPI } from "../../utils/FetchData";
+import ResErrorData from "../../utils/ResErrorData";
 
 export const getBlogs = (token) => async (dispatch) => {
   try {

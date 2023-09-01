@@ -15,6 +15,6 @@ router.post("/policy",admin, policyCtrl.createPolicy)
 router.patch("/policy/:idPolicy",admin, policyCtrl.editPolicy)
 router.patch("/status-policy/:idPolicy",admin, policyCtrl.changeStatusPolicy)
 
-router.delete("/policy",admin, policyCtrl.deletePolicy)
+router.delete("/policy/:idPolicy",admin, policyCtrl.deletePolicy)
 
 export default router;

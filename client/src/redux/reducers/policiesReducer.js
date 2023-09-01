@@ -5,11 +5,9 @@ const policiesReducer = (state = {}, action) => {
     case "CREATE_POLICY":
       return [...state, action.payload];
     case "UPDATE_POLICY":
-      return state.map((item) =>
-        item._id === action._id ? { ...item, name: action.payload.name } : item
-      );
+      return state.map((item) => (item._id === action.payload._id ? action.payload : item));
     case "DELETE_POLICY":
-      return state.filter((item) => item._id !== action);
+      return state.filter((item) => item._id !== action.payload);
     default:
       return state;
   }

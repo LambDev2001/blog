@@ -1,5 +1,5 @@
-import { getAPI, postAPI, patchAPI, deleteAPI } from "../../../utils/FetchData";
-import ResErrorData from "../../../utils/ResErrorData";
+import { getAPI, postAPI, patchAPI, deleteAPI } from "../../utils/FetchData";
+import ResErrorData from "../../utils/ResErrorData";
 
 export const createCategory = (name, token) => async (dispatch) => {
   try {

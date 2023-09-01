@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 
 import AdminRouteWrapper from '../../../utils/AdminRouteWrapper'
-import { getReport } from '../../../redux/actions/admin/reportAction'
+import { getReport } from '../../../redux/actions/reportAction'
 
 const Report = () => {
   const [report, setReport] = useState({})

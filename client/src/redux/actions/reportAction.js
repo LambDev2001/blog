@@ -1,5 +1,5 @@
-import { getAPI, postAPI } from "../../../utils/FetchData";
-import ResErrorData from "../../../utils/ResErrorData";
+import { getAPI, postAPI } from "../../utils/FetchData";
+import ResErrorData from "../../utils/ResErrorData";
 
 export const getReport = (idReport, token) => async (dispatch) => {
   try {

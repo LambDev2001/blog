@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-const { declineReport, acceptReport } = require('../../redux/actions/admin/reportAction')
+const { declineReport, acceptReport } = require('../../redux/actions/reportAction')
 
 const TableReport = ({ data }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const token = useSelector(state => state.authReducer.accessToken)
-  
+
   const handleDecline = async (e, id) => {
     e.stopPropagation()
     await dispatch(declineReport(id, token))

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
-import { createCategory, getCategories, updateCategory, deleteCategory } from "../../redux/actions/admin/categoryAction"
+import { createCategory, getCategories, updateCategory, deleteCategory } from "../../redux/actions/categoryAction"
 
 const Categories = () => {
   const [name, setName] = useState('');
@@ -26,7 +26,6 @@ const Categories = () => {
     if (edit) {
       if (edit.name === name) return;
       const data = { ...edit, name };
-      console.log(data)
       dispatch(updateCategory(data, token));
     } else {
       dispatch(createCategory(name, token));

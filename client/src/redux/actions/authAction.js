@@ -1,5 +1,5 @@
-import { postAPI, getAPI } from "../../../utils/FetchData";
-import ResErrorData from "../../../utils/ResErrorData";
+import { postAPI, getAPI } from "../../utils/FetchData";
+import ResErrorData from "../../utils/ResErrorData";
 
 export const login = (infoUser) => async (dispatch) => {
   try {
@@ -7,7 +7,6 @@ export const login = (infoUser) => async (dispatch) => {
 
     const res = await postAPI("login", infoUser);
     ResErrorData(res.data, dispatch);
-
     dispatch({ type: "AUTH", payload: res.data });
     dispatch({ type: "LOADING", payload: { loading: false } });
     dispatch({ type: "ALERT", payload: { type: "success", msg: "Login success" } });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { allUsers } from '../../redux/actions/admin/userAction'
+import { allUsers } from '../../redux/actions/userAction'
 import TableInfo from '../../components/admin/TableInfo'
 import AdminRouteWrapper from '../../utils/AdminRouteWrapper'
 

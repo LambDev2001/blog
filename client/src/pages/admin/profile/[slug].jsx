@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import AdminRouteWrapper from '../../../utils/AdminRouteWrapper'
-import { profile } from '../../../redux/actions/global/profileAction'
+import { profile } from '../../../redux/actions/profileAction'
 import { Text } from "../../../components/global/form/Input"
 
 const Profile = () => {

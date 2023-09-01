@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
-import { getReports } from '../../redux/actions/admin/reportAction';
+import { getReports } from '../../redux/actions/reportAction';
 import TableReport from "../../components/admin/TableReport";
 
 const Reports = () => {

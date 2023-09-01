@@ -28,9 +28,6 @@ body::-webkit-scrollbar-corner {
   background-color: transparent;
 }
 
-button, [type="submit"] {
-  background-color: black;
-}
 
 .avatar {
   border-radius: 50%;
@@ -41,4 +38,13 @@ button, [type="submit"] {
 .content{
   font-size: 2rem;
 }
+
+.ReactModal__Content{
+  width: 50%;
+  height: 70%;
+  margin: auto;
+}
+
+
+
 

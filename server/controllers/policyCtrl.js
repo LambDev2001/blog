@@ -28,10 +28,11 @@ const policyCtrl = {
   createPolicy: async (req, res) => {
     try {
       const { content } = req.body;
+
       const newPolicy = new Policies({ content });
       await newPolicy.save();
 
-      return res.status(200).json({ msg: "New policy create successfully" });
+      return res.status(200).json(newPolicy);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -39,8 +40,9 @@ const policyCtrl = {
 
   editPolicy: async (req, res) => {
     try {
-      const { idPolicy, content } = req.body;
-      await Policies.findByIdAndUpdate({ _id: idPolicy }, { content });
+      const { idPolicy } = req.params;
+      const policy = req.body;
+      await Policies.findByIdAndUpdate({ _id: idPolicy }, policy);
 
       return res.status(200).json({ msg: "Update policy successfully" });
     } catch (err) {
@@ -64,7 +66,7 @@ const policyCtrl = {
 
   deletePolicy: async (req, res) => {
     try {
-      const { idPolicy } = req.body;
+      const { idPolicy } = req.params;
       await Policies.findByIdAndDelete({ _id: idPolicy });
 
       return res.status(200).json({ msg: "Delete policy successfully" });

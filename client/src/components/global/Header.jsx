@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation } from "react-router-dom"
-import { logout, logoutAdmin } from '../../redux/actions/global/authAction'
+import { logout, logoutAdmin } from '../../redux/actions/authAction'
 
 const Header = () => {
   const token = useSelector(state => state.authReducer.accessToken)
