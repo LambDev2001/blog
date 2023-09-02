@@ -49,7 +49,7 @@ export const createPolicy = (content, token) => async (dispatch) => {
       day: "numeric",
     });
 
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    dispatch({ type: "ALERT", payload: { type: "success", msg: "Policy created" } });
     dispatch({ type: "CREATE_POLICY", payload: res.data });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {

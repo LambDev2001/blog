@@ -96,13 +96,12 @@ const blogCtrl = {
       if (ownerBlog.idUser !== req.user.id && !isAdmin) {
         return res.json({ msg: "You are not owner" });
       }
-
-      await Views.findByIdAndDelete({ _id: idBlog });
       const blog = await Blogs.findOneAndDelete({ _id: idBlog });
+      if(!blog) return res.json({ msg: "Blog not found" });
+      
+      await Views.findByIdAndDelete({ _id: idBlog });
 
-      return blog
-        ? res.status(200).json({ msg: "The information blog has change" })
-        : res.json({ msg: "Blog not found" });
+      return res.status(200).json({ msg: "Blog deleted" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -223,8 +222,7 @@ const blogCtrl = {
       const { idBlog } = req.params;
 
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
-      if (ownerBlog.idUser !== req.user.id)
-        return res.json({ msg: "You are not owner" });
+      if (ownerBlog.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
 
       const blog = await Blogs.findOneAndUpdate({ _id: idBlog }, { ...req.body }, { new: true });
 
