@@ -13,6 +13,8 @@ const AdminRouteWrapper = ({ children }) => {
     }
   }, [token, history]);
 
+
+
   return <>{children}</>;
 };
 

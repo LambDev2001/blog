@@ -20,7 +20,7 @@ const AllUser = () => {
 
   return (
     <AdminRouteWrapper>
-      {listUsers &&
+      {listUsers.length>0 &&
         <TableInfo data={listUsers} />
       }
     </AdminRouteWrapper>

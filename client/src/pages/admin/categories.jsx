@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 import { createCategory, getCategories, updateCategory, deleteCategory } from "../../redux/actions/categoryAction"
+import AdminRouteWrapper from '../../utils/AdminRouteWrapper';
 
 const Categories = () => {
   const [name, setName] = useState('');
@@ -21,7 +22,6 @@ const Categories = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!token || !name) return;
 
     if (edit) {
       if (edit.name === name) return;
@@ -35,13 +35,13 @@ const Categories = () => {
   };
 
   const handleDelete = (id) => {
-    if (!token) return;
     if (window.confirm("Are you sure to delete this category?")) {
       dispatch(deleteCategory(id, token));
     }
   };
   return (
     <div className='d-flex justify-center'>
+      <AdminRouteWrapper />
       <div className="w-50">
         <form onSubmit={handleSubmit} >
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Category</label>

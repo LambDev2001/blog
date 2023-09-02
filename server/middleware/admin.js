@@ -11,7 +11,7 @@ const admin = async (req, res, next) => {
     if (!decode) return res.json({ err: "Invalid Authorization when decoding token" });
 
     const admin = await Admins.findOne({ _id: decode.id }, { projection: { password: 0 } });
-    if (!admin) res.json({ err: "Admin not found" });
+    if (!admin) return res.json({ err: "Admin not found" });
 
     req.user = admin;
     next();

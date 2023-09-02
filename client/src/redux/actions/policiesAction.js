@@ -7,15 +7,17 @@ export const getAllPolicies = (token) => async (dispatch) => {
     const res = await getAPI("all-policies", token);
     ResErrorData(res.data, dispatch);
 
-    res.data = res.data.map((item) => {
-      const date = new Date(item.updatedAt);
-      const dateFormat = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    if (res.data.length > 0) {
+      res.data = res.data.map((item) => {
+        const date = new Date(item.updatedAt);
+        const dateFormat = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return { ...item, updatedAt: dateFormat };
       });
-      return { ...item, updatedAt: dateFormat };
-    });
+    }
 
     dispatch({ type: "GET_POLICIES", payload: res.data });
     dispatch({ type: "LOADING", payload: { loading: false } });

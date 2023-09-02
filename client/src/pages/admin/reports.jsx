@@ -23,7 +23,7 @@ const Reports = () => {
     <div>
       <AdminRouteWrapper />
       <div>
-        {reports &&
+        {reports.length > 0 &&
           <TableReport data={reports} />
         }
       </div>

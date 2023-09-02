@@ -7,16 +7,17 @@ export const getBlogs = (token) => async (dispatch) => {
 
     let blogs = await getAPI("blogs-admin", token);
     ResErrorData(blogs.data, dispatch);
-
-    blogs.data = blogs.data.map((item) => {
-      const date = new Date(item.updatedAt);
-      item.updatedAt = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    if (blogs.data.length > 0) {
+      blogs.data = blogs.data.map((item) => {
+        const date = new Date(item.updatedAt);
+        item.updatedAt = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return item;
       });
-      return item;
-    });
+    }
 
     dispatch({ type: "GET_BLOGS", payload: blogs.data });
 
@@ -33,7 +34,7 @@ export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
     const res = await patchAPI(`status-blog/${blog._id}`, { status }, token);
     ResErrorData(res.data, dispatch);
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
-    dispatch({ type: "UPDATE_BLOG", payload: {...blog, status} });
+    dispatch({ type: "UPDATE_BLOG", payload: { ...blog, status } });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);
@@ -51,4 +52,4 @@ export const deleteBlog = (idBlog, token) => async (dispatch) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
