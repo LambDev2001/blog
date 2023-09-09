@@ -28,6 +28,31 @@ export const getBlogs = (token) => async (dispatch) => {
   }
 };
 
+export const getBlog = (idBlog, token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+
+    let blog = await getAPI(`blog/${idBlog}`, token);
+    ResErrorData(blog.data, dispatch);
+
+    const date = new Date(blog.data.createdAt);
+    blog.data.createdAt = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    
+
+    dispatch({ type: "GET_BLOG", payload: blog.data });
+
+    dispatch({ type: "LOADING", payload: { loading: false } });
+    return blog.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

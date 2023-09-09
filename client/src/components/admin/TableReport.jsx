@@ -52,7 +52,7 @@ const TableReport = ({ data }) => {
                         onClick={(e) => handleDecline(e, item._id)}>
                         Decline
                       </button>
-                      <button className='btn btn-outline-success' onClick={(e) => handleAccept(e, item._id)}>Accept</button>
+                      <button className='btn btn-outline-success' onClick={(e) => handleAccept(e, item._id)}>Transgress</button>
                     </td>
                   </tr>
                 )

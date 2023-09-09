@@ -253,8 +253,6 @@ const blogCtrl = {
   statusBlog: async (req, res) => {
     try {
       const { idBlog } = req.params;
-      const data = checkData(req.body, "status");
-      if (data !== true) return res.json({ data });
 
       const blog = await Blogs.findOneAndUpdate(
         { _id: idBlog },

@@ -1,114 +1,173 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom';
 
-import { AiOutlineMenu } from 'react-icons/ai'
-import { BsFillPersonFill } from 'react-icons/bs'
-import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsersGear, faRightToBracket, faRightFromBracket, faAngleLeft, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { logoutAdmin } from '../../redux/actions/authAction';
 
 const Menu = () => {
-  const [menu, setMenu] = useState(0)
-  const [listUrl, setListUrl] = useState([])
-  const [indexActive, setIndexActive] = useState(-1)
-  const [heightMenu, setHeightMenu] = useState("")
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const [menu, setMenu] = useState(false)
+  const [active, setActive] = useState(-1)
+  const user = useSelector(state => state.authReducer.user)
+  const token = useSelector(state => state.authReducer.accessToken)
 
-  // change height menu   
-  useEffect(() => {
-    const handleResize = () => {
-      const screenHeight = window.innerHeight;
-      setHeightMenu(`${screenHeight - 56}px`);
-    };
-    handleResize(); // Call it once to set initial dimensions
-    window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []); // Empty dependency array ensures the effect runs only once on mount
-
+  const logo = {
+    img: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+    name: "BLOG NEW"
+  }
   const listFunctions = [
-    [AiOutlineMenu, [
-      ['Login Users', '/user/login'],
-      ['Users', '/user'],
+    [faUsersGear, "Manager User", [
+      ['/admin/all-users'],
     ]],
-    [BsFillPersonFill, [
-      ['Manage users', '/admin/all-users'],
-      ['Manage reports', '/admin/reports'],
-      ['Manage categories', '/admin/categories'],
-      ['Manage blogs', '/admin/blogs'],
-      ['Manage policies', '/admin/policies'],
+    [faUsersGear, "Manager Blog", [
+      ["User1", '/admin/all-users1'],
+      ["User2", '/admin/all-users2'],
     ]],
-
   ]
   const color = {
-    normal: "rgb(153, 213, 232)",
-    active: "rgb(90, 200, 234)"
+    normal: "#ffff",
+    active: "rgb(1,123,254)",
+    border: "rgba(60, 60, 60, 0.8)"
   }
 
+  const handleOpenMenu = () => {
+    setActive(-1)
+    setMenu(!menu)
+  }
+
+  // choose function in menu
+  const handleActive = (index) => {
+    index === active ? setActive(-1) : setActive(index)
+  }
+
+  const handleLogin = () => {
+    history.push("/admin/login")
+  }
+
+  const handleLogout = () => {
+    dispatch(logoutAdmin(token))
+    history.push("/admin/login")
+  }
+
+  // change with when click menu
   useEffect(() => {
-    const heightScreen = document.querySelector('.menu');
-    heightScreen.style.height = (window.innerHeight - 56) + 'px';
+    const elementMenu = document.querySelector('.menu');
+    elementMenu.style.height = `${window.innerHeight}px`;
+    elementMenu.style.width = menu ? '400px' : '70px';
+  }, [menu]);
 
-    if (menu) {
-      const elementMenu = document.querySelector('.menu')
-      elementMenu.style.width = "400px"
-
-    } else {
-      const elementMenu = document.querySelector('.menu')
-      elementMenu.style.width = "56px"
-    }
-  }, [menu])
-  const handleOpenMenu = (index, listUrl) => {
-
-    if (menu === index + 1) {
-      const elementMenu = document.querySelector(`[data-index="${indexActive}"]`)
-      elementMenu.style.backgroundColor = color.normal
-      setMenu(0)
-      setIndexActive(-1)
-
-    } else {
-      if (indexActive !== index) {
-        const elementMenu = document.querySelector(`[data-index="${index}"]`)
-        elementMenu.style.backgroundColor = color.active
-
-        if (indexActive !== -1) {
-          const elementMenu = document.querySelector(`[data-index="${indexActive}"]`)
-          elementMenu.style.backgroundColor = color.normal
-        }
-        setIndexActive(index)
-      }
-      setMenu(index + 1)
-    }
-    setListUrl(listUrl)
-  }
 
   return (
-    <div className='menu d-flex sticky top-[56px]' style={{ height: heightMenu }} >
-      <div style={{ backgroundColor: "rgb(153, 213, 232)" }}>
+    <div className='menu shadow-element d-flex sticky' style={{ borderRadius: "0 10px 10px 0" }}
+      onMouseEnter={() => handleOpenMenu()} onMouseLeave={() => handleOpenMenu()} >
+      <div style={{ backgroundColor: color.normal, width: "100%", borderRadius: "0 10px 10px 0" }}>
+
+        {/* logo */}
+        <Link to="/admin" className='m-1 p-2 d-flex align-items-center' style={{ borderBottom: `2px solid ${color.border}` }}>
+          <img src={logo.img} alt="logo" className='w-[40px] h-[40px] rounded-circle' />
+          {
+            menu &&
+            <div className='mx-3'>
+              {logo.name}
+            </div>
+          }
+        </Link>
+
+        {/* user */}
+        <div className='m-1 p-2 cursor-pointer' style={{ borderBottom: `2px solid ${color.border}` }}>
+          {
+            user
+              ? (
+                <Link to={`/admin/profile/${user._id}`} className='d-flex align-items-center'>
+                  <img src={user.avatar} alt="avatar" className='w-[40px] h-[40px] rounded-circle' />
+                  {
+                    menu &&
+                    <div className='mx-3'>
+                      {user.username}
+                    </div>
+                  }
+                </Link>
+              )
+              : (<div className='d-flex align-items-center' onClick={() => handleLogin}  >
+                <FontAwesomeIcon icon={faRightToBracket} className='w-[40px] h-[40px]' />
+                {
+                  menu &&
+                  <div className='mx-3'>
+                    Login
+                  </div>
+                }
+              </div>)
+          }
+        </div>
+
+        {/* menu */}
         {
-          listFunctions.map(([iconName, listUrl], index) => {
-            const Icon = iconName;
-            Icon.key = { size: 40 }
-            return (
-              <div key={index} data-index={index} className='p-2 active cursor-pointer'
-                onClick={() => handleOpenMenu(index, listUrl)}  >
-                <Icon size={40} />
+          listFunctions.map(([iconName, future, listUrl], index) => (
+            <div key={index} data-index={index} className='m-1'>
+              <div
+                className={`p-2 cursor-pointer d-flex align-items-center w-100`}
+                style={{
+                  backgroundColor: `${index === active ? color.active : ''}`,
+                  borderRadius: `${index === active ? '10px' : ''}`,
+                }}
+                onClick={() => handleActive(index)}>
+                {/* main icon */}
+                <FontAwesomeIcon icon={iconName} className='w-[40px] h-[40px]' />
+
+                {/* name function or link */}
+                {menu && listUrl.length === 1 && (
+                  <Link className='d-flex align-items-center justify-content-between w-100'
+                    to={listUrl.length === 1 ? listUrl[0] : "#"}>
+                    <p className='mx-3'>{future}</p>
+                  </Link>)}
+
+                {menu && listUrl.length > 1 && (
+                  <div className='d-flex align-items-center justify-content-between w-100'>
+                    <p className='mx-3'>{future}</p>
+                    {index !== active
+                      ? <FontAwesomeIcon icon={faAngleLeft} />
+                      : <FontAwesomeIcon icon={faAngleDown} />
+                    }
+                  </div>)}
               </div>
-            );
-          })
+
+              {/* list child function */}
+              <div>
+                {index === active && listUrl.length > 1 &&
+                  listUrl.map((list, index) => (
+                    <Link key={index} className='d-flex align-items-center ml-[40px] p-2'
+                      to={list[0]}>
+                      <p className='mx-3'>{list[0]}</p>
+                    </Link>
+                  ))
+                }
+              </div>
+              <div style={{ borderBottom: '1px solid #000', margin: "auto" }}></div>
+            </div>
+          ))
+        }
+
+        {/* logout */}
+        {
+          user &&
+          <div className='m-1 p-2 cursor-pointer d-flex align-items-center'
+            onClick={handleLogout}  >
+            <FontAwesomeIcon icon={faRightFromBracket} className='w-[40px] h-[40px]' />
+            {
+              menu &&
+              <div className='mx-3'>
+                Logout
+              </div>
+            }
+          </div>
         }
       </div>
 
-      {
-        menu !== 0 &&
-        <div className='w-100' style={{ backgroundColor: "rgb(90, 200, 234)" }}>
-          {
-            listUrl.map(([title, url]) => (
-              <Link key={title} to={url} className='d-flex pt-3 pb-3' >
-                <span className='pl-2'>{title}</span>
-              </Link>
-            ))
-          }
-        </div>
-      }
+
     </div>
 
   )

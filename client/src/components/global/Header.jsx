@@ -24,7 +24,7 @@ const Header = () => {
   }
 
   return (
-    <nav className="navbar navbar-expand navbar-light bg-light space-x-4 justify-between sticky top-0 z-999">
+    <nav className="navbar navbar-expand navbar-light space-x-4 justify-between sticky top-0" style={{zIndex: 999, background: "white"}}>
       <div>
         {[
           ['Home', `/${role}`],
