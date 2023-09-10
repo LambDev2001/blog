@@ -1,76 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation } from "react-router-dom"
-import { logout, logoutAdmin } from '../../redux/actions/authAction'
+import { useDispatch, useSelector } from "react-redux"
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars, faEnvelope, faBell } from "@fortawesome/free-solid-svg-icons"
+
+import { updateMenu } from "../../redux/actions/menuAction"
 
 const Header = () => {
-  const token = useSelector(state => state.authReducer.accessToken)
-  const auth = useSelector(state => state.authReducer)
-  const [dropdown, setDropdown] = useState(false)
   const dispatch = useDispatch()
-  const [role, setRole] = useState("user");
-  const location = useLocation();
+  const menu = useSelector(state => state.menuReducer)
 
-  useEffect(() => {
-    const currentURL = location.pathname + location.search + location.hash;
-    setRole(currentURL.split("/")[1])
-    setDropdown(false)
-  }, [location])
-
-  const handleLogout = () => {
-    role === "admin"
-      ? dispatch(logoutAdmin(token))
-      : dispatch(logout(token))
+  const handleMenu = () => {
+    dispatch(updateMenu(!menu))
   }
 
   return (
-    <nav className="navbar navbar-expand navbar-light space-x-4 justify-between sticky top-0" style={{zIndex: 999, background: "white"}}>
+    <nav className="navbar navbar-expand space-x-4 justify-between sticky top-0 shadow-element radius-element mx-2 mb-2 h-[58px]" style={{ zIndex: 999 }}>
       <div>
-        {[
-          ['Home', `/${role}`],
-        ].map(([title, url]) => (
-          <Link key={title} to={url} className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900">{title}</Link>
-        ))}
+        <FontAwesomeIcon icon={faBars} className="w-[30px] h-[30px] py-2 px-3" onClick={handleMenu} />
       </div>
-      {token && (
-        <div className='d-flex' style={{ position: "relative" }}>
-          <Link to="/user/profile" className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900"> {auth.user.username}</Link>
-          <div className='anv-item dropdown'>
-            <img className='rounded-circle img-fluid'
-              style={{ height: '40px', with: "40px" }}
-              src={auth.user.avatar} alt="avatar"
-              onClick={() => { setDropdown(!dropdown) }}
-            />
-            {
-              dropdown && (
-                <div className="dropdown-menu d-block" style={{ position: "absolute", right: 0 }}>
-                  {
-                    [["Profile", `/${role}/profile/${auth.user._id}`]].map(([title, url]) => (
-                      <Link key={title} className="dropdown-item" to={url} onClick={() => setDropdown(false)} >{title}</Link>
-                    ))
-                  }
-                  <div className="dropdown-divider"></div>
-                  <Link to="#" onClick={handleLogout}
-                    className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900">
-                    Logout
-                  </Link>
-                </div>
-              )
-            }
-          </div>
-        </div>
-      )}
-      {!token && (
-        <div>
-          {
-            [["Login", `/${role}/login`]].map(([title, url]) => (
-              <Link key={title} to={url} className="rounded-lg px-3 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-slate-900">{title}</Link>
-            ))
-          }
-        </div>
-      )}
-
-
+      <div>
+        <FontAwesomeIcon icon={faBell} className="w-[30px] h-[30px] py-2 px-3" />
+        <FontAwesomeIcon icon={faEnvelope} className="w-[30px] h-[30px] py-2 px-3" style={{ "--fa-secondary-opacity": "0.6", }} />
+      </div>
     </nav>
 
   )

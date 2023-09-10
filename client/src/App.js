@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import PageRender from "./PageRender";
-// import Header from "../src/components/global/Header.jsx";
 // import Footer from "../src/components/global/Footer.jsx";
 import Alert from "./components/global/Alert";
 import Menu from "./components/admin/Menu";
@@ -9,7 +8,6 @@ import Menu from "./components/admin/Menu";
 function App() {
   return (
     <Router>
-      {/* <Header /> */}
       <Alert />
       <div className="d-flex">
         <Menu />

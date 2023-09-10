@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
+
+import Header from '../../components/global/Header'
 import { allUsers } from '../../redux/actions/userAction'
 import TableInfo from '../../components/admin/TableInfo'
 import AdminRouteWrapper from '../../utils/AdminRouteWrapper'
+import Search from '../../components/global/Search'
 
 const AllUser = () => {
   const dispatch = useDispatch()
@@ -19,11 +21,16 @@ const AllUser = () => {
   }, [dispatch, token])
 
   return (
-    <AdminRouteWrapper>
-      {listUsers.length>0 &&
-        <TableInfo data={listUsers} />
+    <div>
+      <AdminRouteWrapper />
+      <Header />
+      {listUsers.length > 0 &&
+        <div>
+          <Search data={listUsers} type={"user"} />
+          <TableInfo data={listUsers} />
+        </div>
       }
-    </AdminRouteWrapper>
+    </div>
   )
 }
 

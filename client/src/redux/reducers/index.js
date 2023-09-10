@@ -6,6 +6,7 @@ import loadingReducer from "./loadingReducer";
 import categoryReducer from "./categoryReducer";
 import blogReducer from "./blogReducer";
 import policiesReducer from "./policiesReducer";
+import menuReducer from "./menuReducer";
 
 export default combineReducers({
   authReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   categoryReducer,
   blogReducer,
   policiesReducer,
+  menuReducer,
 });

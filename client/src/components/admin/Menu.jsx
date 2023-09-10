@@ -13,7 +13,7 @@ const Menu = () => {
   const [active, setActive] = useState(-1)
   const user = useSelector(state => state.authReducer.user)
   const token = useSelector(state => state.authReducer.accessToken)
-
+  const openMenu = useSelector(state => state.menuReducer)
 
   const logo = {
     img: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
@@ -36,8 +36,17 @@ const Menu = () => {
 
   const handleOpenMenu = () => {
     setActive(-1)
-    setMenu(!menu)
+    if (openMenu) {
+      setMenu(true)
+    } else {
+      setMenu(!menu)
+    }
   }
+
+
+  useEffect(() => {
+    setMenu(openMenu)
+  }, [openMenu]);
 
   // choose function in menu
   const handleActive = (index) => {
@@ -62,9 +71,9 @@ const Menu = () => {
 
 
   return (
-    <div className='menu shadow-element d-flex sticky' style={{ borderRadius: "0 10px 10px 0" }}
+    <div className='menu shadow-element d-flex sticky mr-1' style={{ borderRadius: "0 10px 10px 0" }}
       onMouseEnter={() => handleOpenMenu()} onMouseLeave={() => handleOpenMenu()} >
-      <div style={{ backgroundColor: color.normal, width: "100%", borderRadius: "0 10px 10px 0" }}>
+      <div style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
 
         {/* logo */}
         <Link to="/admin" className='m-1 p-2 d-flex align-items-center' style={{ borderBottom: `2px solid ${color.border}` }}>
@@ -121,7 +130,7 @@ const Menu = () => {
                 {/* name function or link */}
                 {menu && listUrl.length === 1 && (
                   <Link className='d-flex align-items-center justify-content-between w-100'
-                    to={listUrl.length === 1 ? listUrl[0] : "#"}>
+                    to={listUrl[0][0]}>
                     <p className='mx-3'>{future}</p>
                   </Link>)}
 
@@ -136,7 +145,7 @@ const Menu = () => {
               </div>
 
               {/* list child function */}
-              <div>
+              <div className='mt-1'>
                 {index === active && listUrl.length > 1 &&
                   listUrl.map((list, index) => (
                     <Link key={index} className='d-flex align-items-center ml-[40px] p-2'
