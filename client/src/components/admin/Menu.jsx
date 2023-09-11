@@ -78,7 +78,7 @@ const Menu = () => {
 
   return (
     <div
-      className="menu shadow-element d-flex sticky mr-1"
+      className="menu shadow-element d-flex sticky top-0 mr-1"
       style={{ borderRadius: "0 10px 10px 0" }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>

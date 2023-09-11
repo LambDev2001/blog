@@ -1,43 +1,111 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "../global/Pagination";
 
 const TableInfo = ({ data }) => {
   const history = useHistory();
+  const itemsPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate the index of the first and last item to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const [sortedData, setSortedData] = useState(currentItems);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("account"); // Add a state for the sorting field
+
+  // Use useEffect to update sortedData when currentItems or sortOrder changes
+  useEffect(() => {
+    if (sortField) {
+      const sorted = [...currentItems].sort((a, b) => {
+        if (sortOrder === "asc") {
+          return a[sortField] < b[sortField] ? -1 : 1;
+        } else {
+          return a[sortField] > b[sortField] ? -1 : 1;
+        }
+      });
+      setSortedData(sorted);
+    }
+  }, [currentItems, sortOrder, sortField]);
+
+  // Update handleSort to set the sorting field
+  const handleSort = (field) => {
+    const order = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(order);
+    setSortField(field); // Set the sorting field
+  };
 
   return (
-    <div
-      className=" m-2 shadow-element radius-element"
-      style={{ position: "relative", zIndex: 20 }}>
-      <table className="table-auto w-full">
-        <thead className="h-[60px]">
+    <div className="m-2 bg-white border-element rounded overflow-hidden">
+      <table className="w-full table-fixed">
+        <thead className="bg-gray-200">
           <tr className="text-center">
-            <th className="w-16 px-4 py-2">Avatar</th>
-            <th className="w-16 px-4 py-2">Account</th>
-            <th className="w-16 px-4 py-2">Username</th>
-            <th className="w-16 px-4 py-2">Status</th>
-            <th className="w-16 px-4 py-2">Report</th>
-            <th className="w-16 px-4 py-2">Blog</th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("username")}>
+              Avatar
+            </th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
+              Account
+            </th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("username")}>
+              Username
+            </th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("status")}>
+              Status
+            </th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("report.length")}>
+              Report
+            </th>
+            <th className="w-1/6 py-3">Action</th>
           </tr>
         </thead>
-
-        <tbody className="cursor-pointer text-center">
-          {data.map((item, index) => (
+        <tbody className="text-center">
+          {sortedData.map((result, index) => (
             <tr
-              className="border-t border-p"
-              key={index}
-              onClick={() => history.push(`user/${item._id}`)}>
-              <td className="d-flex justify-center py-2">
-                <img src={item.avatar} className="avatar" alt="" />
+              className="border-b border-gray-300 hover:bg-gray-100 transition-all duration-300"
+              key={index}>
+              <td className="py-2">
+                <img src={result.avatar} className="w-12 h-12 rounded-full mx-auto" alt="" />
               </td>
-              <td className="py-2">{item.account}</td>
-              <td className="py-2">{item.username}</td>
-              <td className="py-2">{item.status}</td>
-              <td className="py-2">{item.report.length}</td>
-              <td className="py-2">{item.countBlogs}</td>
+              <td className="py-2">{result.account}</td>
+              <td className="py-2 font-semibold">{result.username}</td>
+              <td className="py-2">
+                <span
+                  className={`text-${
+                    result.status === "active" ? "green" : "red"
+                  }-500 font-semibold`}>
+                  {result.status}
+                </span>
+              </td>
+              <td className="py-2">{result.report.length}</td>
+              <td className="py-2">
+                <FontAwesomeIcon
+                  icon={faCircleUser}
+                  className="h-[30px] mx-3 cursor-pointer"
+                  style={{ marginLeft: "auto" }}
+                  onClick={() => history.push(`/admin/user/${result._id}`)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

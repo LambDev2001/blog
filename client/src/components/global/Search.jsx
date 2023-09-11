@@ -30,11 +30,11 @@ const Search = ({ data, type }) => {
         <input
           type="text"
           placeholder="Type to search..."
-          className="border rounded-md mx-2 p-2 w-100"
+          className="mx-2 p-2 w-100 h-10 rounded outline-none shadow-md focus:border-b-2 focus:border-blue-500 hover:outline-solid hover:outline-lightgray"
           value={searchText}
           onChange={(e) => {
             setSearchText(e.target.value);
-            if (e.target.value.trim() === "") {
+            if (e.target.value.trim() === "" || e.target.value.length < 3) {
               setSearchResults([]);
             } else {
               handleSearch();
@@ -97,7 +97,7 @@ const Search = ({ data, type }) => {
               </div>
               <FontAwesomeIcon
                 icon={faCircleUser}
-                className="h-[30px] mx-3"
+                className="h-[30px] mx-3 cursor-pointer"
                 style={{ marginLeft: "auto" }}
                 onClick={() => history.push(`/admin/profile/${result._id}`)}
               />
