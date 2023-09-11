@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema(
     refreshToken: { type: String, select: false },
     status: { type: Number, default: 0 },
     report: {
-      type: [String],
-      default: [],
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

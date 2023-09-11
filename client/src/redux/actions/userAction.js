@@ -29,6 +29,7 @@ export const getUser = (idUser, token) => async (dispatch) => {
       month: "long",
       day: "numeric",
     });
+    dispatch({ type: "GET_USER", payload: user.data });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
     return user.data;

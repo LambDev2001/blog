@@ -2,29 +2,23 @@ import React from "react";
 
 const Friend = (friends) => {
   return (
-    <table className="w-100">
-      <thead>
-        <tr>
-          <th colSpan={2}>Friend</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Array.isArray(friends.friends) &&
-          friends.friends.map((friend, index) => (
-            <tr key={index} className="space-x-4">
-              <td>
-                <img
-                  className="rounded-circle"
-                  src={friend.avatar}
-                  alt="avatar friend"
-                  style={{ width: "30px", height: "30px" }}
-                />
-              </td>
-              <td className="">{friend.username}</td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
+    <div className="w-[300px]">
+      <div>
+        <h1>Friends</h1>
+      </div>
+      {Array.isArray(friends.friends) &&
+        friends.friends.map((friend, index) => (
+          <div key={index} className="d-flex align-items-center ">
+            <img
+              className="rounded-circle my-2 mr-2"
+              src={friend.avatar}
+              alt="avatar friend"
+              style={{ width: "30px", height: "30px" }}
+            />
+            <div className="ml-2">{friend.username}</div>
+          </div>
+        ))}
+    </div>
   );
 };
 

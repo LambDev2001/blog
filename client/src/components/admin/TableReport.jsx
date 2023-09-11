@@ -7,15 +7,15 @@ const TableReport = ({ data }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const token = useSelector(state => state.authReducer.accessToken)
-
+  
   const handleDecline = async (e, id) => {
     e.stopPropagation()
-    await dispatch(declineReport(id, token))
+    dispatch(declineReport(id, token))
   }
 
   const handleAccept = async (e, id) => {
     e.stopPropagation()
-    await dispatch(acceptReport(id, token))
+    dispatch(acceptReport(id, token))
   }
 
   return (
@@ -50,9 +50,9 @@ const TableReport = ({ data }) => {
                     <td className='w-[25%] px-4 py-2 border-t border-p'>
                       <button className='btn btn-outline-warning'
                         onClick={(e) => handleDecline(e, item._id)}>
-                        Decline
+                        Not violated
                       </button>
-                      <button className='btn btn-outline-success' onClick={(e) => handleAccept(e, item._id)}>Transgress</button>
+                      <button className='btn btn-outline-success' onClick={(e) => handleAccept(e, item._id)}>Violated</button>
                     </td>
                   </tr>
                 )

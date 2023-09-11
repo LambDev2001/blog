@@ -4,30 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../global/Pagination";
 
+
 const TableInfo = ({ data }) => {
+  
   const history = useHistory();
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Calculate the index of the first and last item to display
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const [sortedData, setSortedData] = useState(currentItems);
+  const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("account"); // Add a state for the sorting field
-
-  // Use useEffect to update sortedData when currentItems or sortOrder changes
+  const [sortField, setSortField] = useState("account");
+  
   useEffect(() => {
     if (sortField) {
-      const sorted = [...currentItems].sort((a, b) => {
+      const sorted = [...data].sort((a, b) => {
         if (sortOrder === "asc") {
           return a[sortField] < b[sortField] ? -1 : 1;
         } else {
@@ -36,8 +25,20 @@ const TableInfo = ({ data }) => {
       });
       setSortedData(sorted);
     }
-  }, [currentItems, sortOrder, sortField]);
+    
+  }, [data, sortOrder, sortField]);
 
+  // Calculate the index of the first and last item to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
   // Update handleSort to set the sorting field
   const handleSort = (field) => {
     const order = sortOrder === "asc" ? "desc" : "asc";
@@ -50,7 +51,7 @@ const TableInfo = ({ data }) => {
       <table className="w-full table-fixed">
         <thead className="bg-gray-200">
           <tr className="text-center">
-            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("username")}>
+            <th className="w-1/6 py-3 cursor-pointer">
               Avatar
             </th>
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
@@ -62,14 +63,14 @@ const TableInfo = ({ data }) => {
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("status")}>
               Status
             </th>
-            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("report.length")}>
+            {/* <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("report.length")}>
               Report
-            </th>
+            </th> */}
             <th className="w-1/6 py-3">Action</th>
           </tr>
         </thead>
         <tbody className="text-center">
-          {sortedData.map((result, index) => (
+          {currentItems.map((result, index) => (
             <tr
               className="border-b border-gray-300 hover:bg-gray-100 transition-all duration-300"
               key={index}>
@@ -86,7 +87,7 @@ const TableInfo = ({ data }) => {
                   {result.status}
                 </span>
               </td>
-              <td className="py-2">{result.report.length}</td>
+              {/* <td className="py-2">{result.report.length}</td> */}
               <td className="py-2">
                 <FontAwesomeIcon
                   icon={faCircleUser}

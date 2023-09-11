@@ -8,7 +8,7 @@ import Users from "../models/userModel.js";
 import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
 import Reports from "../models/reportModel.js";
-import Comments from "../models/commentModel.js";
+import Views from "../models/viewModel.js";
 
 const userCtrl = {
   // auth
@@ -163,30 +163,14 @@ const userCtrl = {
       if (!user) res.json({ err: "User not found" });
 
       const friends = await Users.find({ _id: { $in: user.friends } });
-      const blogs = await Blogs.find({ idUser: idUser });
-      const comments = await Comments.find({ idUser: idUser });
-
-      const idReports = [...user.report];
-
-      blogs.map((blog) => {
-        if (blog.report.length > 0) {
-          idReports.push(...blog.report);
-        }
-      });
-
-      comments.map((comment) => {
-        if (comment.report.length > 0) {
-          idReports.push(...comment.report);
-        }
-      });
-
-      let reports = await Reports.find({ _id: { $in: idReports } });
-      reports = await Promise.all(
-        reports.map(async (report) => {
-          const author = await Users.findById({ _id: report.idUser });
-          return { ...report._doc, author: author.username };
+      let blogs = await Blogs.find({ idUser: idUser });
+      blogs = await Promise.all(
+        blogs.map(async (blog) => {
+          const views = await Views.findOne({ idBlog: blog._id });
+          return { ...blog._doc, views: views.view };
         })
       );
+      const reports = await Reports.find({ reportedIdUser: idUser });
 
       return res.status(200).json({ ...user._doc, blogs, friends, reports });
     } catch (err) {

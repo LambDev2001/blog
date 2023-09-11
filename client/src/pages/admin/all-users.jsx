@@ -14,10 +14,12 @@ const AllUser = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      setListUsers(await dispatch(allUsers(token)));
+      const users = await dispatch(allUsers(token));
+      setListUsers(users);
     };
     getUsers();
   }, [dispatch, token]);
+    
 
   return (
     <div>
