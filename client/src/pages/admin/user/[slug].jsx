@@ -24,49 +24,55 @@ const User = () => {
       <AdminRouteWrapper />
       <Header />
       <div className="m-2 shadow-element border-element radius-element">
+        <div className="content p-2">Information user</div>
+
         <div className="flex flex-wrap">
-          <div className="px-2 m-2">
+          <div className="m-2 flex-1 min-w-[400px]">
             {user && (
-              <div className="bg-white rounded-lg shadow-md p-4">
-                <h2 className="text-lg font-semibold mb-2">Basic Information</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <span>Username: {user.username}</span>
-                  <span>Account: {user.account}</span>
-                  <span>Status: {user.status}</span>
-                  <span>Day create: {user.createdAt}</span>
-                  <span>Violation: {user.report}</span>
+              <div className="bg-white rounded-lg shadow-md p-3">
+                <h2 className="text-2xl font-semibold mb-2">Basic</h2>
+                <div className="grid grid-cols-2 border-element radius-element">
+                  <span className="text-lg font-bold m-2">Username:</span> {user.username}
+                  <span className="text-lg font-bold m-2">Account:</span> {user.account}
+                  <span className="text-lg font-bold m-2">Status:</span> {user.status}
+                  <span className="text-lg font-bold m-2">Day create:</span> {user.createdAt}
+                  <span className="text-lg font-bold m-2">Violation:</span> {user.report}
                 </div>
               </div>
             )}
           </div>
 
-          {/* avatar */}
-          <div className="px-2 m-2">
-            {user && (
-              <div className="bg-white rounded-lg shadow-md p-4">
-                <h2 className="text-lg font-semibold mb-2">Avatar</h2>
-                <img
-                  className="rounded-full mx-auto mb-4"
-                  src={user.avatar}
-                  alt="User Avatar"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              </div>
-            )}
-          </div>
+          <div className="m-2 flex-1 flex flex-wrap justify-content-around">
+            {/* avatar */}
+            <div className="flex-3 min-w-[300px]">
+              {user && (
+                <div className="bg-white rounded-lg shadow-md p-4 mx-2 mb-3 ">
+                  <h2 className="text-lg font-semibold mb-2">Avatar</h2>
+                  <img
+                    className="rounded-full mx-auto"
+                    src={user.avatar}
+                    alt="User Avatar"
+                    style={{ maxWidth: "100%", height: "auto" }}
+                  />
+                </div>
+              )}
+            </div>
 
-          {/* friend */}
-          <div className="px-2 m-2">
-            {user && (
-              <div className="bg-white rounded-lg shadow-md p-4">
-                <Friend friends={user.friends} />
-              </div>
-            )}
+            {/* friend */}
+            <div className="mx-2 flex-2">
+              {user && (
+                <div className="bg-white rounded-lg shadow-md p-4">
+                  <h2 className="text-lg font-semibold mb-2">Friend</h2>
+                  <Friend friends={user.friends} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <hr className="my-3 mx-2" />
+
       {user.blogs && (
         <div className="m-2 shadow-element border-element radius-element">
           <div className="content p-2">Blogs ({user.blogs.length})</div>
@@ -78,8 +84,10 @@ const User = () => {
         </div>
       )}
 
+      <hr className="my-3 mx-2" />
+
       {user.reports && (
-        <div>
+        <div className="m-2 shadow-element border-element radius-element">
           <div className="content p-2">Reports ({user.reports.length})</div>
           {user.reports.length > 0 && <TableReport data={user.reports} />}
         </div>

@@ -4,6 +4,7 @@ import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
 import Comments from "../models/commentModel.js";
 import Rooms from "../models/roomModel.js";
+import Categories from "../models/categoryModel.js"
 
 const reportCtrl = {
   // auth
@@ -92,6 +93,10 @@ const reportCtrl = {
       );
       if (!author) return res.json({ err: "User not found" });
 
+      const user = await Users.findById(report.reportedIdUser).select(
+        "-__v -password -createdAt -updatedAt -status -friends -report"
+      );
+
       switch (report.type) {
         case "user":
           report.user = await Users.findById(report.ids);
@@ -100,6 +105,8 @@ const reportCtrl = {
         case "blog":
           report.blog = await Blogs.findById(report.ids);
           if (!report.blog) return res.json({ err: "Blog not found" });
+          const category = await Categories.findById(report.blog.category);
+          report.blog.category = category.name
           break;
         case "comment":
           report.comment = await Comments.findById(report.ids);
@@ -107,7 +114,7 @@ const reportCtrl = {
           break;
       }
 
-      return res.status(200).json({ ...report, author });
+      return res.status(200).json({ ...report, author, user });
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }

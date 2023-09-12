@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Card = ({ blog }) => {
-  console.log(blog);
-
   const [showFullDescription, setShowFullDescription] = useState(false);
 
   const toggleDescription = () => {

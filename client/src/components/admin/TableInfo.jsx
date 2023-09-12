@@ -4,16 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../global/Pagination";
 
-
 const TableInfo = ({ data }) => {
-  
   const history = useHistory();
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("account");
-  
+  const colorStatus = [
+    "rgba(240, 240, 240, 0.8)",
+    "rgba(85, 230, 86, 0.8)",
+    "rgba(255, 235, 59, 0.8)",
+    "rgba(255, 99, 71, 0.8)",
+  ];
+
   useEffect(() => {
     if (sortField) {
       const sorted = [...data].sort((a, b) => {
@@ -25,7 +29,6 @@ const TableInfo = ({ data }) => {
       });
       setSortedData(sorted);
     }
-    
   }, [data, sortOrder, sortField]);
 
   // Calculate the index of the first and last item to display
@@ -38,7 +41,7 @@ const TableInfo = ({ data }) => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  
+
   // Update handleSort to set the sorting field
   const handleSort = (field) => {
     const order = sortOrder === "asc" ? "desc" : "asc";
@@ -51,9 +54,7 @@ const TableInfo = ({ data }) => {
       <table className="w-full table-fixed">
         <thead className="bg-gray-200">
           <tr className="text-center">
-            <th className="w-1/6 py-3 cursor-pointer">
-              Avatar
-            </th>
+            <th className="w-1/6 py-3 cursor-pointer">Avatar</th>
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
               Account
             </th>
@@ -79,13 +80,14 @@ const TableInfo = ({ data }) => {
               </td>
               <td className="py-2">{result.account}</td>
               <td className="py-2 font-semibold">{result.username}</td>
-              <td className="py-2">
-                <span
-                  className={`text-${
-                    result.status === "active" ? "green" : "red"
-                  }-500 font-semibold`}>
+              <td className="py-2 d-flex justify-content-center">
+                <div
+                  className="text-gray-600 mx-3 rounded text-center border-element w-[50px] p-1"
+                  style={{
+                    backgroundColor: `${colorStatus[result.status]}`,
+                  }}>
                   {result.status}
-                </span>
+                </div>
               </td>
               {/* <td className="py-2">{result.report.length}</td> */}
               <td className="py-2">

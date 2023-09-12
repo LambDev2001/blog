@@ -1,68 +1,96 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-const { declineReport, acceptReport } = require('../../redux/actions/reportAction')
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "../global/Pagination";
 
-const TableReport = ({ data }) => {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const token = useSelector(state => state.authReducer.accessToken)
-  
-  const handleDecline = async (e, id) => {
-    e.stopPropagation()
-    dispatch(declineReport(id, token))
-  }
+const TableInfo = ({ data }) => {
+  console.log(data);
 
-  const handleAccept = async (e, id) => {
-    e.stopPropagation()
-    dispatch(acceptReport(id, token))
-  }
+  const history = useHistory();
+  const itemsPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortedData, setSortedData] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("account");
+
+  useEffect(() => {
+    if (sortField) {
+      const sorted = [...data].sort((a, b) => {
+        if (sortOrder === "asc") {
+          return a[sortField] < b[sortField] ? -1 : 1;
+        } else {
+          return a[sortField] > b[sortField] ? -1 : 1;
+        }
+      });
+      setSortedData(sorted);
+    }
+  }, [data, sortOrder, sortField]);
+
+  // Calculate the index of the first and last item to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Update handleSort to set the sorting field
+  const handleSort = (field) => {
+    const order = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(order);
+    setSortField(field); // Set the sorting field
+  };
 
   return (
-    <div className='bg-white rounded mb-4 shadow-lg ml-2 mr-3 my-3'>
-      <div style={{ boxShadow: "20px 32px 72px rgba(0, 0, 0, 0.5)", padding: "0.8rem 1rem" }}>
-        <table className='table-auto w-full'>
-          <thead>
-            <tr className='text-center'>
-              <th className='w-[16%] px-4 py-2'>Sender</th>
-              <th className='w-[16%] px-4 py-2'>Type</th>
-              <th className='w-[16%] px-4 py-2'>Content</th>
-              <th className='w-[25%] px-4 py-2'>Date create</th>
-              <th className='w-[25%] px-4 py-2'>Action</th>
+    <div className="m-2 bg-white border-element rounded overflow-hidden">
+      <table className="w-full table-fixed">
+        <thead className="bg-gray-200">
+          <tr className="text-center">
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
+              Sender
+            </th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("username")}>
+              Type
+            </th>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("status")}>
+              Content
+            </th>
+            <th className="w-1/6 py-3">Action</th>
+          </tr>
+        </thead>
+        <tbody className="text-center">
+          {currentItems.map((result, index) => (
+            <tr
+              className="border-b border-gray-300 hover:bg-gray-100 transition-all duration-300"
+              key={index}>
+              <td className="py-2">{result.sender}</td>
+              <td className="py-2 font-semibold">{result.type}</td>
+              <td className="py-2">{result.content}</td>
+              <td className="py-2">
+                <FontAwesomeIcon
+                  icon={faCircleUser}
+                  className="h-[30px] mx-3 cursor-pointer"
+                  style={{ marginLeft: "auto" }}
+                  onClick={() => history.push(`/admin/report/${result._id}`)}
+                />
+              </td>
             </tr>
-          </thead>
-        </table>
-      </div>
-      <div className='overflow-x-auto'>
-        <table className='table-auto w-full'>
-          <tbody className='bg-white cursor-pointer'>
-            {data &&
-              data.map((item, index) => {
-                const dateCreate = new Date(item.updatedAt)
-                const date = dateCreate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-
-                return (
-                  <tr className='text-center' key={index} onClick={() => history.push(`/admin/report/${item._id}`)}>
-                    <td className='w-[16%] px-4 py-2 border-t border-p'>{item.author}</td>
-                    <td className='w-[16%] px-4 py-2 border-t border-p'>{item.type}</td>
-                    <td className='w-[16%] px-4 py-2 border-t border-p'>{item.content}</td>
-                    <td className='w-[25%] px-4 py-2 border-t border-p'>{date}</td>
-                    <td className='w-[25%] px-4 py-2 border-t border-p'>
-                      <button className='btn btn-outline-warning'
-                        onClick={(e) => handleDecline(e, item._id)}>
-                        Not violated
-                      </button>
-                      <button className='btn btn-outline-success' onClick={(e) => handleAccept(e, item._id)}>Violated</button>
-                    </td>
-                  </tr>
-                )
-              })
-            }
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default TableReport
+export default TableInfo;

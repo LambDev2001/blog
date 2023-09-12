@@ -2,10 +2,7 @@ import React from "react";
 
 const Friend = (friends) => {
   return (
-    <div className="w-[300px]">
-      <div>
-        <h1>Friends</h1>
-      </div>
+    <div className="w-100 min-w-[200px]">
       {Array.isArray(friends.friends) &&
         friends.friends.map((friend, index) => (
           <div key={index} className="d-flex align-items-center ">

@@ -12,7 +12,6 @@ const user = async (req, res, next) => {
 
     const user = await Users.findOne({ _id: decode.id }, { projection: { password: 0 } });
     if (!user) return res.json({ err: "User not found" });
-
     req.user = user;
     next();
   } catch (err) {

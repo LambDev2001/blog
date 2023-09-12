@@ -7,9 +7,9 @@ const Search = ({ data, type }) => {
   const history = useHistory();
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const levelUser = [
-    "rgba(255, 255, 255, 0.8)",
-    "rgba(173, 216, 230, 0.8)",
+  const colorStatus = [
+    "rgba(240, 240, 240, 0.8)",
+    "rgba(85, 230, 86, 0.8)",
     "rgba(255, 235, 59, 0.8)",
     "rgba(255, 99, 71, 0.8)",
   ];
@@ -88,9 +88,9 @@ const Search = ({ data, type }) => {
                 </div>
               </div>
               <div
-                className="text-gray-600 mx-3 rounded text-center w-[50px] p-1"
+                className="text-gray-600 mx-3 rounded text-center border-element w-[50px] p-1"
                 style={{
-                  backgroundColor: `${levelUser[result.status]}`,
+                  backgroundColor: `${colorStatus[result.status]}`,
                   border: "1px solid #6b666644",
                 }}>
                 {result.status}

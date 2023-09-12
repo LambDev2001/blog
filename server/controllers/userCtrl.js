@@ -158,9 +158,9 @@ const userCtrl = {
   getUser: async (req, res) => {
     try {
       const { idUser } = req.params;
-
+      
       const user = await Users.findById({ _id: idUser }).select("-password -__v -updatedAt");
-      if (!user) res.json({ err: "User not found" });
+      if (!user) return res.json({ err: "User not found" });
 
       const friends = await Users.find({ _id: { $in: user.friends } });
       let blogs = await Blogs.find({ idUser: idUser });
@@ -170,7 +170,14 @@ const userCtrl = {
           return { ...blog._doc, views: views.view };
         })
       );
-      const reports = await Reports.find({ reportedIdUser: idUser });
+      
+      let reports = await Reports.find({ reportedIdUser: idUser });
+      reports = await Promise.all(
+        reports.map(async (report) => {
+          const user = await Users.findById({ _id: report.idUser });
+          return { ...report._doc, sender: user.username };
+        })
+      );
 
       return res.status(200).json({ ...user._doc, blogs, friends, reports });
     } catch (err) {
