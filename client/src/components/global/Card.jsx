@@ -13,13 +13,13 @@ const Card = ({ blog }) => {
   return (
     <div className="w-80 bg-white shadow-md rounded-lg overflow-hidden m-4 transform transition-transform hover:scale-105">
       {/* thumbnail */}
-      <Link to={`/blog/${blog._id}`}>
+      <Link to={`/admin/blog/${blog._id}`}>
         <img className="w-full h-44 object-cover" src={blog.thumbnail} alt="Blog" />
       </Link>
 
       {/* body */}
       <div className="p-3">
-        <Link to={`/blog/${blog._id}`}>
+        <Link to={`/admin/blog/${blog._id}`}>
           <h2 className="text-2xl font-semibold text-gray-900 mb-2 hover:text-blue-500 transition duration-300">
             {blog.title}
           </h2>

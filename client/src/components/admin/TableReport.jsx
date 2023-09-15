@@ -5,8 +5,6 @@ import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../global/Pagination";
 
 const TableInfo = ({ data }) => {
-  console.log(data);
-
   const history = useHistory();
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);

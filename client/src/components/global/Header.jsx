@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <nav
-      className="navbar navbar-expand space-x-4 justify-between sticky top-0 shadow-element radius-element mx-2 mb-2 h-[58px]"
+      className="navbar navbar-expand space-x-4 justify-between sticky top-0 rounded-lg shadow-md bg-gray-100 mx-2 mb-2 h-[58px]"
       style={{ zIndex: 999 }}>
       <div>
         <FontAwesomeIcon

@@ -109,7 +109,6 @@ const viewCtrl = {
 
       view.viewMonthly++;
       view.view++;
-      console.log(view);
       await view.save();
 
       return res.status(200).json({ msg: "increased view" });

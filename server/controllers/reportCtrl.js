@@ -4,7 +4,9 @@ import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
 import Comments from "../models/commentModel.js";
 import Rooms from "../models/roomModel.js";
-import Categories from "../models/categoryModel.js"
+import Categories from "../models/categoryModel.js";
+import Likes from "../models/likeModel.js";
+import Views from "../models/viewModel.js";
 
 const reportCtrl = {
   // auth
@@ -98,15 +100,32 @@ const reportCtrl = {
       );
 
       switch (report.type) {
-        case "user":
-          report.user = await Users.findById(report.ids);
-          if (!report.user) return res.json({ err: "User not found" });
-          break;
         case "blog":
           report.blog = await Blogs.findById(report.ids);
           if (!report.blog) return res.json({ err: "Blog not found" });
           const category = await Categories.findById(report.blog.category);
-          report.blog.category = category.name
+
+          const likes = await Likes.count({
+            idBlog: report.blog._id,
+            like: true,
+          });
+          const dislikes = await Likes.count({
+            idBlog: report.blog._id,
+            like: false,
+          });
+          const comments = await Comments.count({
+            idBlog: report.blog._id,
+          });
+          const views = await Views.findOne({ idBlog: report.blog._id });
+          report.blog = {
+            ...report.blog._doc,
+            category: category.name,
+            likes,
+            dislikes,
+            views: views.view,
+            comments,
+          };
+
           break;
         case "comment":
           report.comment = await Comments.findById(report.ids);
@@ -160,6 +179,12 @@ const reportCtrl = {
         case "group":
           break;
       }
+
+      await Users.findOneAndUpdate(
+        { _id: report.reportedIdUser },
+        { $inc: { report: 1 } }
+      );
+      
 
       await Reports.findOneAndDelete({ _id: idReport });
 
