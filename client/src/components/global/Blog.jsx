@@ -19,7 +19,7 @@ const Blog = ({ blog, readOnly }) => {
   };
 
   return (
-    <div className="bg-gray-100 rounded-lg shadow-md overflow-hidden p-1">
+    <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden p-1">
       <div className="bg-white">
         <ReactQuill value={blog.content} readOnly={readOnly} theme={"snow"} modules={modules} />
       </div>

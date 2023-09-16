@@ -8,7 +8,7 @@ export const Text = ({ name, type, value, onChange }) => {
       return (
         <div className="form-group mt-3">
           <label className="form-label">{name.charAt(0).toUpperCase() + name.slice(1)}</label>
-          <input className="form-control" value={value} disabled />
+          <input className="bg-white form-control" value={value} disabled />
         </div>
       );
 
@@ -21,7 +21,7 @@ export const Text = ({ name, type, value, onChange }) => {
           <div className="d-flex position-relative">
             <input
               type={hidePass ? "password" : "text"}
-              className="form-control"
+              className="bg-white"
               id={value}
               name={value}
               onChange={onChange}
@@ -45,7 +45,7 @@ export const Text = ({ name, type, value, onChange }) => {
           <label htmlFor={value} className="form-label">
             {name}
           </label>
-          <input type="text" className="form-control" id={value} name={value} onChange={onChange} />
+          <input type="text" className="bg-white form-control" id={value} name={value} onChange={onChange} />
         </div>
       );
   }

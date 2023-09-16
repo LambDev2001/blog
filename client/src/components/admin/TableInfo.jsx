@@ -50,9 +50,9 @@ const TableInfo = ({ data }) => {
   };
 
   return (
-    <div className="m-2 bg-white border-element rounded overflow-hidden">
-      <table className="w-full table-fixed">
-        <thead className="bg-gray-200">
+    <div className="my-2 p-1 bg-gray-200 overflow-hidden">
+      <table className="w-full bg-white table-fixed">
+        <thead className="bg-gray-500">
           <tr className="text-center">
             <th className="w-1/6 py-3 cursor-pointer">Avatar</th>
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
@@ -73,7 +73,7 @@ const TableInfo = ({ data }) => {
         <tbody className="text-center">
           {currentItems.map((result, index) => (
             <tr
-              className="border-b border-gray-300 hover:bg-gray-100 transition-all duration-300"
+              className="border-b border-gray-300 hover:bg-gray-200 transition-all duration-300"
               key={index}>
               <td className="py-2">
                 <img src={result.avatar} className="w-12 h-12 rounded-full mx-auto" alt="" />

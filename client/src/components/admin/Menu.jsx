@@ -38,7 +38,7 @@ const Menu = () => {
   ];
   const color = {
     normal: "#ffff",
-    active: "rgb(1,123,254)",
+    active: "bg-gray-400",
     border: "rgba(60, 60, 60, 0.8)",
   };
 
@@ -78,24 +78,21 @@ const Menu = () => {
 
   return (
     <div
-      className="menu shadow-element d-flex sticky top-0 mr-1"
+      className="menu bg-gray-200 rounded-lg d-flex sticky top-0 mr-1 p-1"
       style={{ borderRadius: "0 10px 10px 0" }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>
-      <div style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
+      <div className="" style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
         {/* logo */}
         <Link
           to="/admin"
-          className="m-1 p-2 d-flex align-items-center"
-          style={{ borderBottom: `2px solid ${color.border}` }}>
+          className="m-1 p-2 d-flex align-items-center bg-white shadow-md rounded-lg">
           <img src={logo.img} alt="logo" className="w-[40px] h-[40px] rounded-circle" />
           {menu && <div className="mx-3">{logo.name}</div>}
         </Link>
 
         {/* user */}
-        <div
-          className="m-1 p-2 cursor-pointer"
-          style={{ borderBottom: `2px solid ${color.border}` }}>
+        <div className={`m-1 p-2 cursor-pointer bg-white shadow-md rounded-lg `}>
           {user ? (
             <Link to={`/admin/profile/${user._id}`} className="d-flex align-items-center">
               <img src={user.avatar} alt="avatar" className="w-[40px] h-[40px] rounded-circle" />
@@ -110,59 +107,67 @@ const Menu = () => {
         </div>
 
         {/* menu */}
-        {listFunctions.map(([iconName, future, listUrl], index) => (
-          <div key={index} data-index={index} className="m-1">
+        <div className="bg-gray-200 p-1 my-2">
+          {listFunctions.map(([iconName, future, listUrl], index) => (
             <div
-              className={`p-2 cursor-pointer d-flex align-items-center w-100`}
-              style={{
-                backgroundColor: `${index === active ? color.active : ""}`,
-                borderRadius: `${index === active ? "10px" : ""}`,
-              }}
-              onClick={() => handleActive(index)}>
-              {/* main icon */}
-              <FontAwesomeIcon icon={iconName} className="w-[40px] h-[40px]" />
+              key={index}
+              data-index={index}
+              className={`my-1 shadow-md rounded-lg ${
+                index === active ? color.active : "bg-white"
+              } `}>
+              <div
+                className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
+                  index === active && color.active
+                } rounded-lg`}
+                onClick={() => handleActive(index)}>
+                {/* main icon */}
+                <FontAwesomeIcon icon={iconName} className="w-[40px] h-[40px]" />
 
-              {/* name function or link */}
-              {menu && listUrl.length === 1 && (
-                <Link
-                  className="d-flex align-items-center justify-content-between w-100"
-                  to={listUrl[0][0]}>
-                  <p className="mx-3">{future}</p>
-                </Link>
-              )}
-
-              {menu && listUrl.length > 1 && (
-                <div className="d-flex align-items-center justify-content-between w-100">
-                  <p className="mx-3">{future}</p>
-                  {index !== active ? (
-                    <FontAwesomeIcon icon={faAngleLeft} />
-                  ) : (
-                    <FontAwesomeIcon icon={faAngleDown} />
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* list child function */}
-            <div className="mt-1">
-              {index === active &&
-                listUrl.length > 1 &&
-                listUrl.map((list, index) => (
+                {/* name function or link */}
+                {menu && listUrl.length === 1 && (
                   <Link
-                    key={index}
-                    className="d-flex align-items-center ml-[40px] p-2"
-                    to={list[0]}>
-                    <p className="mx-3">{list[0]}</p>
+                    className="d-flex align-items-center justify-content-between w-100"
+                    to={listUrl[0][0]}>
+                    <p className="mx-3">{future}</p>
                   </Link>
-                ))}
+                )}
+
+                {menu && listUrl.length > 1 && (
+                  <div className="d-flex align-items-center justify-content-between w-100">
+                    <p className="mx-3">{future}</p>
+                    {index !== active ? (
+                      <FontAwesomeIcon icon={faAngleLeft} />
+                    ) : (
+                      <FontAwesomeIcon icon={faAngleDown} />
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* list child function */}
+              <div className="bg-gray-200">
+                {index === active &&
+                  listUrl.length > 1 &&
+                  listUrl.map((list, index) => (
+                    <div key={index} className="py-1">
+                      <Link
+                        className="d-flex align-items-center ml-[40px] py-2 bg-white shadow-sm rounded-lg"
+                        to={list[0]}>
+                        <p className="mx-3">{list[0]}</p>
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+              <div></div>
             </div>
-            <div style={{ borderBottom: "1px solid #000", margin: "auto" }}></div>
-          </div>
-        ))}
+          ))}
+        </div>
 
         {/* logout */}
         {user && (
-          <div className="m-1 p-2 cursor-pointer d-flex align-items-center" onClick={handleLogout}>
+          <div
+            className="m-1 p-2 cursor-pointer d-flex align-items-center bg-white shadow-md rounded-lg"
+            onClick={handleLogout}>
             <FontAwesomeIcon icon={faRightFromBracket} className="w-[40px] h-[40px]" />
             {menu && <div className="mx-3">Logout</div>}
           </div>

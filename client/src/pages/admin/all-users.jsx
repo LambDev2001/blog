@@ -22,7 +22,7 @@ const AllUser = () => {
     
 
   return (
-    <div>
+    <div className="mx-2">
       <AdminRouteWrapper />
       <Header />
       {listUsers.length > 0 && (

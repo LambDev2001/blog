@@ -63,24 +63,22 @@ const blogCtrl = {
       const blog = await Blogs.findById(idBlog).select("-report -__v");
       if (!blog) return res.json({ msg: "Blog not found" });
 
-      const countLike = await Likes.count({
+      const likes = await Likes.count({
         idBlog: blog._id,
         like: true,
       });
-      const countDislike = await Likes.count({
+      const dislikes = await Likes.count({
         idBlog: blog._id,
         like: false,
       });
 
-      const countComment = await Comments.count({
+      const comments = await Comments.count({
         idBlog: blog._id,
       });
 
       const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
 
-      return res
-        .status(200)
-        .json({ ...blog._doc, countLike, countDislike, countComment, view, viewMonthly });
+      return res.status(200).json({ ...blog._doc, likes, dislikes, comments, views: view, viewMonthly });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -97,8 +95,8 @@ const blogCtrl = {
         return res.json({ msg: "You are not owner" });
       }
       const blog = await Blogs.findOneAndDelete({ _id: idBlog });
-      if(!blog) return res.json({ msg: "Blog not found" });
-      
+      if (!blog) return res.json({ msg: "Blog not found" });
+
       await Views.findByIdAndDelete({ _id: idBlog });
 
       return res.status(200).json({ msg: "Blog deleted" });

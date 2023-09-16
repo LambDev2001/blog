@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from "react-icons/ai";
+import { AiOutlineLike, AiOutlineDislike, AiOutlineComment, AiOutlineEye } from "react-icons/ai";
 import { PiShareFat } from "react-icons/pi";
 
 import { getBlog } from "../../../redux/actions/blogAction";
@@ -23,37 +23,43 @@ const MyEditor = () => {
       <Header />
 
       <div className="w-[80%] m-auto">
-        <div className="bg-gray-100 p-4 mb-2 rounded-lg shadow-md flex flex-wrap justify-around">
-          <div className="flex-[4] mx-3 bg-white rounded-lg shadow-md p-3">
-            <div className="mb-4">
-              <h1 className="text-2xl font-semibold mb-2">Title</h1>
-              <p className="text-lg">{blog.title}</p>
-            </div>
-            <div>
-              <h1 className="text-2xl font-semibold mb-2">Description</h1>
-              <p className="text-lg">{blog.description}</p>
-            </div>
-            <div>
-              <h1 className="text-2xl font-semibold mb-2">Date created</h1>
-              <p className="text-lg">{blog.createdAt}</p>
-            </div>
-            <div>
-              <h1 className="text-2xl font-semibold mb-2">Status</h1>
-              <p className="text-lg">{blog.status}</p>
+        <div className="bg-gray-200 p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around">
+          <div className="flex-[5] mx-3 bg-white rounded-lg shadow-md p-3">
+            <div className="flex justify-content-start align-items-end m-2">
+              <h2 className="text-xl font-semibold mr-3">Title:</h2>
+              <p className="text-gray-600">{blog.title}</p>
             </div>
 
-            <div className="bg-gray-100 p-4 mb-2 rounded-lg shadow-md flex">
-              <div className="d-flex mx-4">
-                <AiOutlineLike size={30} /> {blog.countLike}
+            <div className="flex justify-content-start align-items-end m-2">
+              <h2 className="text-xl font-semibold mr-3">Category:</h2>
+              <p className="text-gray-600">{blog.category}</p>
+            </div>
+
+            <div className="m-2">
+              <h2 className="text-xl font-semibold mr-3">Description:</h2>
+              <p className="text-gray-600">{blog.description}</p>
+            </div>
+
+            <div className="flex justify-content-start align-items-end m-2">
+              <h2 className="text-xl font-semibold mr-3">Status:</h2>
+              <p className="text-gray-600">{blog.status}</p>
+            </div>
+
+            <div className="bg-gray-200 p-4 mb-2 rounded-lg shadow-md flex justify-around">
+              <div className="d-flex align-items-center">
+                <AiOutlineLike size={30} className="mx-2" /> {blog.likes}
               </div>
-              <div className="d-flex mx-4">
-                <AiOutlineDislike size={30} /> {blog.countDislike}
+              <div className="d-flex align-items-center">
+                <AiOutlineDislike size={30} className="mx-2" /> {blog.dislikes}
               </div>
-              <div className="d-flex mx-4">
-                <AiOutlineComment size={30} /> {blog.countComment}
+              <div className="d-flex align-items-center">
+                <AiOutlineComment size={30} className="mx-2" /> {blog.comments}
               </div>
-              <div className="d-flex mx-4">
-                <PiShareFat size={30} /> {blog.share}
+              <div className="d-flex align-items-center">
+                <PiShareFat size={30} className="mx-2" /> {blog.share}
+              </div>
+              <div className="d-flex align-items-center">
+                <AiOutlineEye size={30} className="mx-2" /> {blog.views}
               </div>
             </div>
           </div>

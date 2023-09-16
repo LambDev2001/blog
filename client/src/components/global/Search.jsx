@@ -26,7 +26,7 @@ const Search = ({ data, type }) => {
 
   return (
     <div>
-      <div className="flex align-items-center justify-between shadow-element radius-element m-2 h-[58px] relative">
+      <div className="flex align-items-center justify-between shadow-element radius-element my-2 h-[58px] relative">
         <input
           type="text"
           placeholder="Type to search..."
