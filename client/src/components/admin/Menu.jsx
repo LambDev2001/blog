@@ -79,7 +79,7 @@ const Menu = () => {
   return (
     <div
       className="menu bg-gray-200 rounded-lg d-flex sticky top-0 mr-1 p-1"
-      style={{ borderRadius: "0 10px 10px 0" }}
+      style={{ borderRadius: "0 10px 10px 0", zIndex: 999 }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>
       <div className="" style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>

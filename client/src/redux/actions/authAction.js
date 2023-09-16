@@ -42,6 +42,18 @@ export const logout = (token) => async (dispatch) => {
   }
 };
 
+export const changePass = (value, token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await postAPI("reset-password", { value, token });
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const loginAdmin = (infoUser) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

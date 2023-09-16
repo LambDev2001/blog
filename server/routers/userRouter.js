@@ -11,7 +11,7 @@ router.get("/info-user/:idUser", auth, userCtrl.checkInfoUser);
 router.get("/search-user", auth, userCtrl.searchUser);
 
 // user
-router.get("/reset-password/:token", userCtrl.resetPassword);
+router.post("/reset-password", userCtrl.resetPassword);
 router.get("/friends", user, userCtrl.listFriends);
 
 router.post("/remove-friend/:idUser", user, userCtrl.removeFriend);

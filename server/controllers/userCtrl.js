@@ -96,12 +96,19 @@ const userCtrl = {
   // user
   resetPassword: async (req, res) => {
     try {
-      const { token } = req.params; // change this
-      const newInfo = jwt.verify(token, `${process.env.TEMP_TOKEN}`); // change this
-      const passwordHash = await bcrypt.hash(newInfo.password, 12);
+      const { token, value } = req.body;
+      const decode = jwt.decode(token, `${process.env.ACCESS_TOKEN_SECRET}`);
 
-      await Users.findOneAndUpdate({ _id: newInfo.id }, { password: passwordHash });
+      const user =
+        (await Users.findOne({ _id: decode.id }, { projection: { password: 0 } })) ||
+        (await Admins.findOne({ _id: decode.id }, { projection: { password: 0 } }));
 
+      if (!user) return res.json({ err: "Account not found" });
+
+      const check = await bcrypt.compare(value.currentPassword, user.password);
+      if (!check) return res.json({ err: "Wrong password" });
+      user.password = await bcrypt.hash(value.newPassword, 12);
+      user.save();
       return res.status(200).json({ msg: "Update password successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -158,7 +165,7 @@ const userCtrl = {
   getUser: async (req, res) => {
     try {
       const { idUser } = req.params;
-      
+
       const user = await Users.findById({ _id: idUser }).select("-password -__v -updatedAt");
       if (!user) return res.json({ err: "User not found" });
 
@@ -170,7 +177,7 @@ const userCtrl = {
           return { ...blog._doc, views: views.view };
         })
       );
-      
+
       let reports = await Reports.find({ reportedIdUser: idUser });
       reports = await Promise.all(
         reports.map(async (report) => {
