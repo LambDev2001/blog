@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCircleUser, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { GrShare } from "react-icons/gr";
 
 const Search = ({ data, type }) => {
   const history = useHistory();
@@ -101,6 +103,37 @@ const Search = ({ data, type }) => {
                 style={{ marginLeft: "auto" }}
                 onClick={() => history.push(`/admin/profile/${result._id}`)}
               />
+            </div>
+          ))}
+
+        {type === "blog" &&
+          searchResults.map((result, index) => (
+            <div className="flex items-center border-element radius-element p-2 m-1" key={index}>
+              <div className="flex items-center flex-grow">
+                {/* Use flex-grow to make email part take up all available space */}
+                <div className="flex-6 mx-3">
+                  <div className="flex justify-between">
+                    <div className="font-semibold">{result.title}</div>
+                    <div
+                      className="text-gray-600 mx-3 rounded text-center border-element w-[80px] p-1"
+                      style={{
+                        backgroundColor: `${result.status === "normal" ? colorStatus[1]: colorStatus[2]}`,
+                        border: "1px solid #6b666644",
+                      }}>
+                      {result.status}
+                    </div>
+                  </div>
+                  <div className="text-gray-600">{result.description}</div>
+                </div>
+                <img
+                  src={result.thumbnail}
+                  className="flex-2 max-h-[100px] mx-w-[200px] mx-3 my-1"
+                  alt=""
+                />
+                <div className="flex-1 mx-3">
+                  <GrShare className="cursor-pointer m-auto" size={28} onClick={()=>history.push(`/admin/blog/${result._id}`)} />
+                </div>
+              </div>
             </div>
           ))}
       </div>

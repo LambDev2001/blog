@@ -9,6 +9,7 @@ import {
   faRightFromBracket,
   faAngleLeft,
   faAngleDown,
+  faFileLines
 } from "@fortawesome/free-solid-svg-icons";
 import { logoutAdmin } from "../../redux/actions/authAction";
 
@@ -27,14 +28,15 @@ const Menu = () => {
   };
   const listFunctions = [
     [faUsersGear, "Manager User", [["/admin/all-users"]]],
-    [
-      faUsersGear,
-      "Manager Blog",
-      [
-        ["User1", "/admin/all-users1"],
-        ["User2", "/admin/all-users2"],
-      ],
-    ],
+    [faFileLines, "Manager Blog", [["/admin/blogs"]]],
+    // [
+    //   faFileLines,
+    //   "Manager Blog",
+    //   [
+    //     ["User1", "/admin/all-users1"],
+    //     ["User2", "/admin/all-users2"],
+    //   ],
+    // ],
   ];
   const color = {
     normal: "#ffff",
