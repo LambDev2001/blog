@@ -22,7 +22,6 @@ const Profile = () => {
     };
     getInfoUser();
   }, [slug, token, dispatch]);
-  console.log(user);
 
   return (
     <div className="mx-2">
