@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { loginAdmin } from "../../../redux/actions/authAction";
 import { Text } from "../form/Input";
+import Password from "../../global/form/Password";
 import { useHistory } from "react-router-dom";
 
 const LoginPass = () => {
@@ -18,6 +19,7 @@ const LoginPass = () => {
     const { name, value } = e.target;
     setInfoUser({ ...infoUser, [name]: value }); // update new name: account or password = value
   };
+  console.log(infoUser);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,16 +34,19 @@ const LoginPass = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Text name="Account" value="account" onChange={handleChangeInput} />
-        <Text name="Password" type="password" value="password" onChange={handleChangeInput} />
+    <form className="bg-white rounded-lg shadow-lg p-2 max-w-lg mx-auto" onSubmit={handleSubmit}>
+      <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+        <div className="text-2xl font-semibold mb-4 text-center">Login Form</div>
+        <Text name="account" handleText={handleChangeInput} />
+        <Password name="password" handlePassword={handleChangeInput} />
 
-        <button type="submit" className="btn btn-dark w-100 mt-1">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full w-full mt-3">
           Login
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 

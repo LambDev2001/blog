@@ -43,7 +43,7 @@ const ChangePass = ({ setModal, token }) => {
           </button>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600">
+            className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600">
             Submit
           </button>
         </div>

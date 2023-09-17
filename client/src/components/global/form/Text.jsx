@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-export const Text = ({ name, type, value, onChange }) => {
+const Text = ({ name, type, value, onChange }) => {
   const [hidePass, setHidePass] = useState(true);
   switch (type) {
     case "show":
@@ -50,3 +50,5 @@ export const Text = ({ name, type, value, onChange }) => {
       );
   }
 };
+
+export default Text

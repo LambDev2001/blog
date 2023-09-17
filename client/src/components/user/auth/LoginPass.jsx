@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { login, register } from '../../../redux/actions/authAction'
-import { Text } from '../../global/form/Input'
+import Text from '../../global/form/Text'
 
 const LoginPass = () => {
   const [infoUser, setInfoUser] = useState({

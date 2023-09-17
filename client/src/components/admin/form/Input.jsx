@@ -1,54 +1,19 @@
-import React, { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import React from "react";
+import { splitLabel } from "../../../utils/SplitLabel";
 
-export const Text = ({ name, type, value, onChange }) => {
-  const [hidePass, setHidePass] = useState(true);
-  switch (type) {
-    case "show":
-      return (
-        <div className="form-group mt-3">
-          <label className="form-label">{name.charAt(0).toUpperCase() + name.slice(1)}</label>
-          <div className="d-flex position-relative">
-            <input className="form-control" value={value} disabled />
-          </div>
-        </div>
-      );
-
-    case "password":
-      return (
-        <div className="form-group mb-3">
-          <label htmlFor={value} className="form-label">
-            {name}
-          </label>
-          <div className="d-flex position-relative">
-            <input
-              type={hidePass ? "password" : "text"}
-              className="form-control"
-              id={value}
-              name={value}
-              onChange={onChange}
-            />
-            <div
-              className="position-absolute"
-              style={{ top: " 50%", transform: "translateY(-50%)", right: "10px" }}>
-              {hidePass ? (
-                <AiOutlineEyeInvisible onClick={() => setHidePass(!hidePass)} />
-              ) : (
-                <AiOutlineEye onClick={() => setHidePass(!hidePass)} />
-              )}
-            </div>
-          </div>
-        </div>
-      );
-
-    default:
-      return (
-        <div className="form-group mb-3">
-          <label htmlFor={value} className="form-label">
-            {name}
-          </label>
-          <input type="text" className="form-control" id={value} name={value} onChange={onChange} />
-        </div>
-      );
-  }
+export const Text = ({ name, handleText }) => {
+  return (
+    <div className="mb-2">
+      <label htmlFor={name} className="font-semibold block mb-1">
+        {splitLabel(name)}
+      </label>
+      <input
+        id={name}
+        name={name}
+        placeholder={`Enter your ${name}`}
+        className="p-2 w-full h-10 rounded outline-none shadow-md focus:border-b-2 focus:border-blue-500 hover:outline-solid hover:outline-lightgray"
+        onChange={(e) => handleText(e)}
+      />
+    </div>
+  );
 };
