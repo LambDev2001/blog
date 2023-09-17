@@ -17,12 +17,12 @@ const Profile = () => {
   useEffect(() => {
     if (!slug) return;
     const getInfoUser = async () => {
-      const user = await dispatch(profileAdmin(slug, token));
-
-      setUser(user.data);
+      const userInfo = await dispatch(profileAdmin(slug, token));
+      setUser(userInfo);
     };
     getInfoUser();
   }, [slug, token, dispatch]);
+  console.log(user);
 
   return (
     <div className="mx-2">
@@ -33,14 +33,16 @@ const Profile = () => {
         <div className="flex flex-wrap">
           <div className="m-2 flex-1 min-w-[400px]">
             {user && (
-              <div className="bg-white rounded-lg shadow-slate-300 p-3">
+              <div className="bg-white rounded-lg shadow-slate-300 p-3 h-100">
                 <h2 className="text-2xl font-semibold mb-2">Information User</h2>
                 <div className="grid grid-cols-2 shadow-lg rounded-lg">
                   <span className="text-lg font-bold m-2 mx-3">Username:</span> {user.username}
                   <span className="text-lg font-bold m-2 mx-3">Account:</span> {user.account}
                   <span className="text-lg font-bold m-2 mx-3">Role:</span> {user.role}
-                  <span className="text-lg font-bold m-2 mx-3" onClick={() => setModal(true)}>
-                    <div className="text-blue underline">Change password</div>
+                  <span
+                    className="text-md font-bold m-2 mx-3 cursor-pointer text-blue-500 underline"
+                    onClick={() => setModal(true)}>
+                    Change password
                   </span>
                 </div>
               </div>

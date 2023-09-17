@@ -66,6 +66,7 @@ const Menu = () => {
 
   const handleLogout = () => {
     dispatch(logoutAdmin(token));
+    setMenu(false);
     history.push("/admin/login");
   };
 

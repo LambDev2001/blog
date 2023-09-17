@@ -25,6 +25,7 @@ export const profileAdmin = (idUser, token) => async (dispatch) => {
       dispatch({ type: "LOADING", payload: { loading: false } });
       return;
     }
+    
     dispatch({ type: "LOADING", payload: { loading: false } });
     return res.data;
   } catch (err) {
