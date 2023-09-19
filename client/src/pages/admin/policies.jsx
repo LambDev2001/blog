@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-modal";
 import { TfiClose } from "react-icons/tfi";
+import { AiOutlineDelete } from "react-icons/ai";
 
+import Header from "../../components/global/Header";
+import AdminRouterWrapper from "../../utils/AdminRouteWrapper";
 import { getAllPolicies } from "../../redux/actions/policiesAction";
 import { updatePolicy, createPolicy, deletePolicy } from "../../redux/actions/policiesAction";
-import AdminRouterWrapper from "../../utils/AdminRouteWrapper";
-import { AiOutlineDelete } from "react-icons/ai";
 
 const Policies = () => {
   const dispatch = useDispatch();
@@ -57,11 +58,12 @@ const Policies = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="mx-2">
       <AdminRouterWrapper />
+      <Header />
       <table className="min-w-full border border-gray-300">
         <thead>
-          <tr className="bg-gray-200">
+          <tr className="bg-gray-500">
             <th className="px-4 py-2">#</th>
             <th className="px-4 py-2">Content</th>
             <th className="px-4 py-2">Status</th>

@@ -9,7 +9,9 @@ import {
   faRightFromBracket,
   faAngleLeft,
   faAngleDown,
-  faFileLines
+  faFileLines,
+  faLayerGroup,
+  faHandshake
 } from "@fortawesome/free-solid-svg-icons";
 import { logoutAdmin } from "../../redux/actions/authAction";
 
@@ -29,6 +31,8 @@ const Menu = () => {
   const listFunctions = [
     [faUsersGear, "Manager User", [["/admin/all-users"]]],
     [faFileLines, "Manager Blog", [["/admin/blogs"]]],
+    [faLayerGroup, "Manager Categories", [["/admin/categories"]]],
+    [faHandshake, "Manager Policies", [["/admin/policies"]]],
     // [
     //   faFileLines,
     //   "Manager Blog",
