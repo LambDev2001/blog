@@ -27,7 +27,7 @@ const Alert = () => {
 
   return (
     <>
-      <div style={{ position: "relative" }}>
+      <div className="sticky top-0" style={{ position: "relative" }}>
         {listAlert.map((alert, index) => {
           return (
             <div
@@ -41,7 +41,7 @@ const Alert = () => {
                 top: index * 100,
                 right: 0,
                 display: "block",
-                zIndex: 999,
+                zIndex: 99999,
                 backgroundColor: "white",
               }}>
               <div className={`toast-header bg-${alert.type}`}>

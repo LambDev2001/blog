@@ -42,8 +42,6 @@ export const getBlog = (idBlog, token) => async (dispatch) => {
       day: "numeric",
     });
 
-    
-
     dispatch({ type: "GET_BLOG", payload: blog.data });
 
     dispatch({ type: "LOADING", payload: { loading: false } });

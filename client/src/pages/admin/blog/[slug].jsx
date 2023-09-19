@@ -1,26 +1,86 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment, AiOutlineEye } from "react-icons/ai";
 import { PiShareFat } from "react-icons/pi";
 
-import { getBlog } from "../../../redux/actions/blogAction";
+import { deleteBlog, getBlog } from "../../../redux/actions/blogAction";
 import Header from "../../../components/global/Header";
 import Blog from "../../../components/global/Blog";
+import { updateBlogStatus } from "../../../redux/actions/blogAction";
+import DeleteModal from "../../../components/global/modal/DeleteModal";
 
 const MyEditor = () => {
+  const [openAction, setOpenAction] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
   const { slug } = useParams();
   const blog = useSelector((state) => state.blogReducer);
+  const history = useHistory();
+  const colorStatus = [
+    "rgba(240, 240, 240, 0.8)",
+    "rgba(85, 230, 86, 0.8)",
+    "rgba(255, 235, 59, 0.8)",
+    "rgba(255, 99, 71, 0.8)",
+  ];
 
   useEffect(() => {
     dispatch(getBlog(slug, token));
   }, [dispatch, slug, token]);
 
+  const closeModal = () => {
+    setOpenModal(false);
+    setOpenAction(false);
+  };
+
+  const handleDelete = () => {
+    setOpenAction(false);
+    dispatch(deleteBlog(blog._id, token));
+    history.push("/admin/blogs");
+  };
+
+  const handleStatus = (e, status) => {
+    e.preventDefault();
+    setOpenAction(false);
+    dispatch(updateBlogStatus(blog, status, token));
+  };
+
   return (
     <div className="relative">
+      {openModal && <DeleteModal handleDelete={handleDelete} closeModal={closeModal} />}
       <Header />
+
+      {/* action btn */}
+      <div className="sticky top-[110px] z-[900] flex justify-end items-center space-x-2 cursor-pointer h-0">
+        {openAction && (
+          <div className="bg-white p-2 rounded-lg shadow-md border-element">
+            <button
+              className="mx-1 p-2 rounded-md"
+              style={{ backgroundColor: colorStatus[3] }}
+              onClick={() => setOpenModal(true)}>
+              Delete
+            </button>
+            <button
+              className="mx-1 p-2 rounded-md"
+              style={{ backgroundColor: colorStatus[2] }}
+              onClick={(e) => handleStatus(e, "hidden")}>
+              Hidden
+            </button>
+            <button
+              className="mx-1 p-2 rounded-md"
+              style={{ backgroundColor: colorStatus[1] }}
+              onClick={(e) => handleStatus(e, "normal")}>
+              Normal
+            </button>
+          </div>
+        )}
+        <div
+          className="rounded-full bg-cyan-400 p-3 m-2 h-[60px] w-[60px] text-center flex justify-center items-center"
+          onClick={() => setOpenAction(!openAction)}>
+          <span className="text-white font-semibold">Action</span>
+        </div>
+      </div>
 
       <div className="w-[80%] m-auto">
         <div className="bg-gray-200 p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around">
@@ -40,9 +100,15 @@ const MyEditor = () => {
               <p className="text-gray-600">{blog.description}</p>
             </div>
 
-            <div className="flex justify-content-start align-items-end m-2">
+            <div className="flex justify-content-start align-items-center m-2">
               <h2 className="text-xl font-semibold mr-3">Status:</h2>
-              <p className="text-gray-600">{blog.status}</p>
+              <p
+                className="text-gray-600 rounded text-center border-element w-[70px] p-1"
+                style={{
+                  backgroundColor: `${blog.status === "normal" ? colorStatus[1] : colorStatus[2]}`,
+                }}>
+                {blog.status}
+              </p>
             </div>
 
             <div className="bg-gray-200 p-4 mb-2 rounded-lg shadow-md flex justify-around">

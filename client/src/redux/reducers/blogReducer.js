@@ -7,10 +7,7 @@ const blogReducer = (state = {}, action) => {
     case "CREATE_BLOG":
       return [...state, action.payload];
     case "UPDATE_BLOG":
-      if(typeof(state.payload) === "object"){
-      return state.status = action.payload.status
-      }
-      return state.map((item) => (item._id === action.payload._id ? action.payload : item));
+      return {...state, ...action.payload};
     case "DELETE_BLOG":
       return state.filter((item) => item._id !== action.payload);
     default:
