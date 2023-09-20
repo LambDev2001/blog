@@ -6,6 +6,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 
 import Header from "../../components/global/Header";
 import AdminRouterWrapper from "../../utils/AdminRouteWrapper";
+import Pagination from "../../components/global/Pagination";
 import { getAllPolicies } from "../../redux/actions/policiesAction";
 import { updatePolicy, createPolicy, deletePolicy } from "../../redux/actions/policiesAction";
 
@@ -14,29 +15,48 @@ const Policies = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const [editingIndex, setEditingIndex] = useState(-1);
   const [modal, setModal] = useState(false);
+  const itemsPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortedData, setSortedData] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("account");
 
   useEffect(() => {
     dispatch(getAllPolicies(token));
   }, [dispatch, token]);
 
-  const [sortedData, setSortedData] = useState([]);
   const policies = useSelector((state) => state.policiesReducer);
+  
 
   useEffect(() => {
-    setSortedData(policies);
-  }, [policies]);
+    if (sortField) {
+      const sorted = [...policies].sort((a, b) => {
+        if (sortOrder === "asc") {
+          return a[sortField] < b[sortField] ? -1 : 1;
+        } else {
+          return a[sortField] > b[sortField] ? -1 : 1;
+        }
+      });
+      setSortedData(sorted);
+    }
+  }, [policies, sortOrder, sortField]);
 
-  const [sortOrder, setSortOrder] = useState("asc");
+  // Calculate the index of the first and last item to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const toggleSortOrder = () => {
-    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
-    setSortOrder(newSortOrder);
-    const sorted = [...sortedData].sort((a, b) =>
-      newSortOrder === "asc"
-        ? a.updatedAt.localeCompare(b.updatedAt)
-        : b.updatedAt.localeCompare(a.updatedAt)
-    );
-    setSortedData(sorted);
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Update handleSort to set the sorting field
+  const handleSort = (field) => {
+    const order = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(order);
+    setSortField(field); // Set the sorting field
   };
 
   const handleUpdate = (policy, newData) => {
@@ -64,19 +84,24 @@ const Policies = () => {
       <table className="min-w-full border border-gray-300">
         <thead>
           <tr className="bg-gray-500">
-            <th className="px-4 py-2">#</th>
-            <th className="px-4 py-2">Content</th>
-            <th className="px-4 py-2">Status</th>
-            <th className="px-4 py-2" onClick={toggleSortOrder}>
-              Updated At
-              {sortOrder === "asc" ? "▲" : "▼"}
+            <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("#")}>
+              #
             </th>
-            <th>Action</th>
+            <th className="w-[5/10%] px-4 py-2" onClick={() => handleSort("content")}>
+              Content
+            </th>
+            <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("status")}>
+              Status
+            </th>
+            <th className="w-[2/10%] px-4 py-2" onClick={() => handleSort("updatedAt")}>
+              Updated At
+            </th>
+            <th className="w-[1/10%] px-4 py-2">Action</th>
           </tr>
         </thead>
         <tbody>
-          {sortedData.length > 0 &&
-            sortedData.map((item, index) => (
+          {currentItems.length > 0 &&
+            currentItems.map((item, index) => (
               <tr key={index} className="border-t border-gray-300">
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">
@@ -164,6 +189,14 @@ const Policies = () => {
           </form>
         </div>
       </Modal>
+      
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };
