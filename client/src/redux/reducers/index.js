@@ -8,6 +8,7 @@ import blogReducer from "./blogReducer";
 import policiesReducer from "./policiesReducer";
 import menuReducer from "./menuReducer";
 import userReducer from "./userReducer";
+import dashboardReducer from "./dashboardReducer";
 
 export default combineReducers({
   authReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   policiesReducer,
   menuReducer,
   userReducer,
+  dashboardReducer,
 });
