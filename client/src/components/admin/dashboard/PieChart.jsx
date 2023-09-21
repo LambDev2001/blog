@@ -5,7 +5,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 
 Chart.register(ArcElement, ChartDataLabels);
 
-const Charts = () => {
+const PieChart = () => {
   const data = [
     { category: "java", blogCount: 10 },
     { category: "javascript", blogCount: 15 },
@@ -72,13 +72,12 @@ const Charts = () => {
   };
 
   return (
-    <div className="m-3 rounded-lg shadow-md p-2">
-      <div className="text-xl font-semibold">Top 5 categories</div>
-      <div className="w-[400px] p-2">
+    <div className="rounded-lg shadow-md p-2 bg-white">
+      <div>
         <Pie data={chartData} options={options} />
       </div>
     </div>
   );
 };
 
-export default Charts;
+export default PieChart;

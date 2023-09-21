@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Header from "../../components/global/Header";
 import StatisticalBlog from "../../components/admin/dashboard/StatisticalBlog";
-import Chart from "../../components/admin/dashboard/Chart";
+import PieChart from "../../components/admin/dashboard/PieChart";
 import { getDashboard } from "../../redux/actions/dashboardAction";
+import LineChart from "../../components/admin/dashboard/LineChart";
 
 const Dashboard = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
@@ -22,8 +23,13 @@ const Dashboard = () => {
       <Header />
 
       <StatisticalBlog data={data} />
-      <div className="w-100 bg-gray-200 rounded-lg shadow-md p-2 my-2">
-        <Chart data={data} />
+      <div className="bg-gray-200 rounded-lg shadow-md p-2 my-2 flex flex-wrap justify-around">
+        <div className="w-[35%]">
+          <PieChart data={data} />
+        </div>
+        <div className="w-[60%] min-w-[600px]">
+          <LineChart data={data} />
+        </div>
       </div>
     </div>
   );
