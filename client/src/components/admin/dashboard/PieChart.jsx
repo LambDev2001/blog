@@ -50,7 +50,7 @@ const PieChart = () => {
         },
         color: "#fff",
         font: {
-          size: 16,
+          size: "16em",
         },
       },
     },
@@ -72,10 +72,8 @@ const PieChart = () => {
   };
 
   return (
-    <div className="rounded-lg shadow-md p-2 bg-white">
-      <div>
+    <div className="rounded-lg shadow-md p-2 bg-white h-[400px]">
         <Pie data={chartData} options={options} />
-      </div>
     </div>
   );
 };

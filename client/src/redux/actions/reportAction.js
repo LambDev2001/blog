@@ -14,6 +14,8 @@ export const getReport = (idReport, token) => async (dispatch) => {
       day: "numeric",
     });
 
+    dispatch({ type: "GET_REPORT", payload: report.data });
+
     dispatch({ type: "LOADING", payload: { loading: false } });
 
     return report.data;
@@ -34,6 +36,8 @@ export const getReports = (token) => async (dispatch) => {
       month: "long",
       day: "numeric",
     });
+
+    dispatch({ type: "GET_REPORTS", payload: reports.data });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
     return reports.data;

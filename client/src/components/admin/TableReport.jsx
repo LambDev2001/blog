@@ -6,7 +6,7 @@ import Pagination from "../global/Pagination";
 
 const TableInfo = ({ data }) => {
   const history = useHistory();
-  const itemsPerPage = 6;
+  const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -43,9 +43,12 @@ const TableInfo = ({ data }) => {
     setSortField(field); // Set the sorting field
   };
 
+  console.log(data);
+  
+
   return (
     <div>
-      <table className="p-2 w-full table-fixed border-element">
+      <table className="p-2 w-full table-fixed border-element rounded-lg overflow-hidden">
         <thead className="bg-gray-500">
           <tr className="text-center">
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
@@ -63,9 +66,9 @@ const TableInfo = ({ data }) => {
         <tbody className="text-center">
           {currentItems.map((result, index) => (
             <tr
-              className="border-b border-gray-300 hover:bg-gray-200 transition-all duration-300"
+              className="border-element border-gray-300 hover:bg-gray-200 transition-all duration-300"
               key={index}>
-              <td className="py-2">{result.sender}</td>
+              <td className="py-2">{result.author}</td>
               <td className="py-2 font-semibold">{result.type}</td>
               <td className="py-2">{result.content}</td>
               <td className="py-2">

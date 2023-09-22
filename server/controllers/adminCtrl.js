@@ -95,8 +95,14 @@ const authCtrl = {
       ]);
       const users = await Users.countDocuments();
 
-      info = { blogs, categories, views: views[0].totalViews, reports, users };
+      const topIdBlogs = await Views.find({}).sort({ view: -1 });
+      const topBlogs = await Blogs.find({
+        _id: { $in: topIdBlogs.map((view) => view.idBlog) },
+      });
       
+
+      info = { blogs, categories, views: views[0].totalViews, reports, users, topBlogs };
+
       return res.status(200).json(info);
     } catch (err) {
       return res.status(500).json({ msg: err.message });

@@ -2,18 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LuFileWarning, LuGauge, LuUser, LuTags } from "react-icons/lu";
 import {
-  faUsersGear,
-  faRightToBracket,
-  faRightFromBracket,
-  faAngleLeft,
-  faAngleDown,
-  faFileLines,
-  faLayerGroup,
-  faHandshake,
-  faGaugeHigh
-} from "@fortawesome/free-solid-svg-icons";
+  LiaFileAltSolid,
+  LiaHandshakeSolid,
+  LiaAngleLeftSolid,
+  LiaAngleDownSolid,
+} from "react-icons/lia";
+import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
 import { logoutAdmin } from "../../redux/actions/authAction";
 
 const Menu = () => {
@@ -30,11 +26,12 @@ const Menu = () => {
     name: "BLOG NEW",
   };
   const listFunctions = [
-    [faGaugeHigh, "Dashboard", [["/admin/dashboard"]]],
-    [faUsersGear, "Manager User", [["/admin/all-users"]]],
-    [faFileLines, "Manager Blog", [["/admin/blogs"]]],
-    [faLayerGroup, "Manager Categories", [["/admin/categories"]]],
-    [faHandshake, "Manager Policies", [["/admin/policies"]]],
+    [LuGauge, "Dashboard", [["/admin/dashboard"]]],
+    [LuUser, "Manager User", [["/admin/all-users"]]],
+    [LiaFileAltSolid, "Manager Blog", [["/admin/blogs"]]],
+    [LuTags, "Manager Categories", [["/admin/categories"]]],
+    [LiaHandshakeSolid, "Manager Policies", [["/admin/policies"]]],
+    [LuFileWarning, "Manager Reports", [["/admin/reports"]]],
     // [
     //   faFileLines,
     //   "Manager Blog",
@@ -109,7 +106,7 @@ const Menu = () => {
             </Link>
           ) : (
             <div className="d-flex align-items-center" onClick={() => handleLogin}>
-              <FontAwesomeIcon icon={faRightToBracket} className="w-[40px] h-[40px]" />
+              <IoIosLogIn className="w-[40px] h-[40px]" />
               {menu && <div className="mx-3">Login</div>}
             </div>
           )}
@@ -117,7 +114,7 @@ const Menu = () => {
 
         {/* menu */}
         <div className="bg-gray-200 p-1 my-2">
-          {listFunctions.map(([iconName, future, listUrl], index) => (
+          {listFunctions.map(([Icon, future, listUrl], index) => (
             <div
               key={index}
               data-index={index}
@@ -130,7 +127,7 @@ const Menu = () => {
                 } rounded-lg`}
                 onClick={() => handleActive(index)}>
                 {/* main icon */}
-                <FontAwesomeIcon icon={iconName} className="w-[40px] h-[40px]" />
+                <Icon className="w-[40px] h-[40px]" />
 
                 {/* name function or link */}
                 {menu && listUrl.length === 1 && (
@@ -144,11 +141,7 @@ const Menu = () => {
                 {menu && listUrl.length > 1 && (
                   <div className="d-flex align-items-center justify-content-between w-100">
                     <p className="mx-3">{future}</p>
-                    {index !== active ? (
-                      <FontAwesomeIcon icon={faAngleLeft} />
-                    ) : (
-                      <FontAwesomeIcon icon={faAngleDown} />
-                    )}
+                    {index !== active ? <LiaAngleLeftSolid /> : <LiaAngleDownSolid />}
                   </div>
                 )}
               </div>
@@ -177,7 +170,7 @@ const Menu = () => {
           <div
             className="m-1 p-2 cursor-pointer d-flex align-items-center bg-white shadow-md rounded-lg"
             onClick={handleLogout}>
-            <FontAwesomeIcon icon={faRightFromBracket} className="w-[40px] h-[40px]" />
+            <IoIosLogOut className="w-[40px] h-[40px]" />
             {menu && <div className="mx-3">Logout</div>}
           </div>
         )}

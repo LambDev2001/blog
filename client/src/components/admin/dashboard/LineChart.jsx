@@ -46,19 +46,19 @@ export const data = {
   datasets: [
     {
       label: "View",
-      data: labels.map(() => Math.floor(Math.random() * (1000 - -1000) + -1000)),
+      data: labels.map(() => Math.floor(Math.random() * 100 + 100)),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
       label: "Comment",
-      data: labels.map(() => Math.floor(Math.random() * (1000 - -1000) + -1000)),
+      data: labels.map(() => Math.floor(Math.random() * 100 +20)),
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
     {
       label: "Share",
-      data: labels.map(() => Math.floor(Math.random() * (1000 - -1000) + -1000)),
+      data: labels.map(() => Math.floor(Math.random() * 100)),
       borderColor: "rgba(26, 192, 42, 1)",
       backgroundColor: "rgba(26, 192, 42, 0.5)",
     },
@@ -67,7 +67,7 @@ export const data = {
 
 const LineChart = () => {
   return (
-    <div className="rounded-lg shadow-md p-2 justify-center bg-white">
+    <div className="rounded-lg shadow-md p-2 justify-center bg-white h-[400px]">
       <Line options={options} data={data} />
     </div>
   );

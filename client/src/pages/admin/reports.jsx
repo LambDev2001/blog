@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
-import { getReports } from '../../redux/actions/reportAction';
+import { getReports } from "../../redux/actions/reportAction";
 import TableReport from "../../components/admin/TableReport";
+import Header from "../../components/global/Header";
 
 const Reports = () => {
-  const [reports, setReports] = useState([]);
-  const token = useSelector(state => state.authReducer.accessToken)
-  const dispatch = useDispatch()
+  const reports = useSelector((state) => state.reportReducer.reports);
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchReportData = async () => {
-      const fetchedReportData = await dispatch(getReports(token))
-      if (fetchedReportData) setReports(fetchedReportData)
-    }
-
-    fetchReportData()
-  }, [dispatch, token])
+    dispatch(getReports(token));
+  }, [dispatch, token]);
 
   return (
-    <div>
+    <div className="mx-2">
       <AdminRouteWrapper />
-      <div>
-        {reports.length > 0 &&
-          <TableReport data={reports} />
-        }
-      </div>
+      <Header />
+      <div>{reports && <TableReport data={reports} />}</div>
     </div>
   );
 };

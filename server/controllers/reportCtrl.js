@@ -149,6 +149,8 @@ const reportCtrl = {
             "-__v -password -createdAt -updatedAt -status -friends -report"
           );
           if (!author) return res.json({ err: "User not found" });
+          
+            
 
           return { ...report._doc, author: author.username };
         })
@@ -168,9 +170,6 @@ const reportCtrl = {
       if (!report) return res.json({ msg: "Report not found" });
 
       switch (report.type) {
-        case "user":
-          await Users.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
-          break;
         case "blog":
           await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
           break;
@@ -179,13 +178,6 @@ const reportCtrl = {
         case "group":
           break;
       }
-
-      await Users.findOneAndUpdate(
-        { _id: report.reportedIdUser },
-        { $inc: { report: 1 } }
-      );
-      
-
       await Reports.findOneAndDelete({ _id: idReport });
 
       return res.status(200).json({ msg: "Accept report success" });

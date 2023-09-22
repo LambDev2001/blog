@@ -9,7 +9,7 @@ import AdminRouteWrapper from "../../../utils/AdminRouteWrapper";
 import { acceptReport, declineReport, getReport } from "../../../redux/actions/reportAction";
 
 const Report = () => {
-  const [report, setReport] = useState({});
+  const report = useSelector((state) => state.reportReducer.report);
   const [openAction, setOpenAction] = useState(false);
   const { slug } = useParams();
   const dispatch = useDispatch();
@@ -17,22 +17,18 @@ const Report = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const fetchReportData = async () => {
-      const fetchedReportData = await dispatch(getReport(slug, token));
-      if (fetchedReportData) setReport(fetchedReportData);
-    };
-
-    fetchReportData();
+    dispatch(getReport(slug, token));
   }, [dispatch, slug, token]);
+  console.log(report);
 
   const handleViolate = () => {
     dispatch(acceptReport(report._id, token));
-    history.push(`/admin/user/${report.reportedIdUser}`);
+    history.goBack();
   };
 
   const handleNotViolate = () => {
     dispatch(declineReport(report._id, token));
-    history.push(`/admin/user/${report.reportedIdUser}`);
+    history.goBack();
   };
 
   return (
@@ -69,7 +65,7 @@ const Report = () => {
           <div className="m-3">
             <div className="content mb-3">Info User</div>
             <div className="mb-3">
-              {report.author && (
+              {report && (
                 <div className="bg-white p-2 rounded-lg shadow-md">
                   <h2 className="text-2xl font-semibold my-2 mx-3">Sender</h2>
                   <div className="flex justify-content-start my-2 mx-3">
@@ -88,7 +84,7 @@ const Report = () => {
             </div>
 
             <div>
-              {report.user && (
+              {report && (
                 <div className="bg-white p-2 rounded-lg shadow-md">
                   <h2 className="text-2xl font-semibold my-2 mx-3">User</h2>
                   <div className="flex justify-content-start my-2 mx-3">
@@ -112,7 +108,7 @@ const Report = () => {
           <div className="m-3">
             <div className="content mb-3">Info Report</div>
             <div className="items-center">
-              {report.author && (
+              {report && (
                 <div className="bg-white p-4 rounded-lg shadow-md">
                   <div>
                     <h2 className="text-xl font-semibold">Type: {report.type.toUpperCase()}</h2>
@@ -126,7 +122,7 @@ const Report = () => {
         </div>
       </div>
 
-      {report.blog && (
+      {report && (
         <div>
           <InfoBlog blog={report.blog} />
           <Blog blog={report.blog} readOnly={true} />

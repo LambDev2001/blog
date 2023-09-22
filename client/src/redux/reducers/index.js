@@ -9,6 +9,7 @@ import policiesReducer from "./policiesReducer";
 import menuReducer from "./menuReducer";
 import userReducer from "./userReducer";
 import dashboardReducer from "./dashboardReducer";
+import reportReducer from "./reportReducer";
 
 export default combineReducers({
   authReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   menuReducer,
   userReducer,
   dashboardReducer,
+  reportReducer,
 });
