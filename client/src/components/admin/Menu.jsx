@@ -10,6 +10,7 @@ import {
   LiaAngleDownSolid,
 } from "react-icons/lia";
 import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
+import { BsLayersHalf } from "react-icons/bs";
 import { logoutAdmin } from "../../redux/actions/authAction";
 
 const Menu = () => {
@@ -32,14 +33,16 @@ const Menu = () => {
     [LuTags, "Manager Categories", [["/admin/categories"]]],
     [LiaHandshakeSolid, "Manager Policies", [["/admin/policies"]]],
     [LuFileWarning, "Manager Reports", [["/admin/reports"]]],
-    // [
-    //   faFileLines,
-    //   "Manager Blog",
-    //   [
-    //     ["User1", "/admin/all-users1"],
-    //     ["User2", "/admin/all-users2"],
-    //   ],
-    // ],
+    [
+      BsLayersHalf,
+      "Theme",
+      [
+        ["Button", "/admin/buttons"],
+        ["Table", "/admin/all-users2"],
+        ["Card", "/admin/all-users2"],
+      ],
+    ],
+
   ];
   const color = {
     normal: "#ffff",
@@ -154,7 +157,7 @@ const Menu = () => {
                     <div key={index} className="py-1">
                       <Link
                         className="d-flex align-items-center ml-[40px] py-2 bg-white shadow-sm rounded-lg"
-                        to={list[0]}>
+                        to={list[1]}>
                         <p className="mx-3">{list[0]}</p>
                       </Link>
                     </div>
