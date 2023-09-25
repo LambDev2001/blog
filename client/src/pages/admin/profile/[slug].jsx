@@ -9,9 +9,10 @@ import ChangePass from "../../../components/global/ChangePass";
 
 const Profile = () => {
   const { slug } = useParams();
-  const token = useSelector((state) => state.authReducer.accessToken);
   const [user, setUser] = useState({});
   const [modal, setModal] = useState(false);
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const color = useSelector((state) => state.themeReducer.themeColor);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,11 +29,11 @@ const Profile = () => {
       <AdminRouteWrapper />
       <Header />
 
-      <div className="bg-gray-200 rounded-lg shadow-md">
+      <div className={`${color.outside} rounded-lg shadow-md`}>
         <div className="flex flex-wrap">
           <div className="m-2 flex-1 min-w-[400px]">
             {user && (
-              <div className="bg-white rounded-lg shadow-slate-300 p-3 h-100">
+              <div className={`${color.inside} rounded-lg shadow-slate-300 p-3 h-100`}>
                 <h2 className="text-2xl font-semibold mb-2">Information User</h2>
                 <div className="grid grid-cols-2 shadow-lg rounded-lg">
                   <span className="text-lg font-bold m-2 mx-3">Username:</span> {user.username}
@@ -52,7 +53,7 @@ const Profile = () => {
           <div className="m-2 flex-1 flex flex-wrap justify-content-around">
             <div className="flex-3 min-w-[300px]">
               {user && (
-                <div className="p-3 h-100 bg-white rounded-lg shadow-md">
+                <div className={`${color.inside} p-3 h-100 rounded-lg shadow-md`}>
                   <h2 className="text-lg font-semibold mb-2">Avatar</h2>
                   <img
                     className="rounded-full mx-auto"

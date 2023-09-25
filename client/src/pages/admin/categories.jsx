@@ -10,6 +10,7 @@ import {
 } from "../../redux/actions/categoryAction";
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Header from "../../components/global/Header";
+import Button from "../../components/global/theme/button/Button";
 
 const Categories = () => {
   const [name, setName] = useState("");
@@ -47,10 +48,9 @@ const Categories = () => {
   };
   return (
     <div className="m-2">
-        <AdminRouteWrapper />
-        <Header />
+      <AdminRouteWrapper />
+      <Header />
       <div className="d-flex justify-center">
-
         <div className="w-50">
           <form onSubmit={handleSubmit}>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -70,11 +70,7 @@ const Categories = () => {
                 onChange={(e) => setName(e.target.value)}
               />
 
-              <button
-                className="bg-blue-500 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-2 px-4 ml-2 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                type="submit">
-                {edit ? "Update" : "Create"}
-              </button>
+              <Button text={edit ? "Update" : "Create"} color={2} type="submit" />
             </div>
           </form>
 

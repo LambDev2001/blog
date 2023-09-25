@@ -1,13 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment, AiOutlineEye } from "react-icons/ai";
 import { PiShareFat } from "react-icons/pi";
 
 const InfoBlog = ({ blog }) => {
+  const color = useSelector((state) => state.themeReducer.themeColor);
+
   return (
-    <div className="bg-gray-200 my-2 rounded-lg shadow-md flex flex-wrap justify-around">
+    <div className={`${color.outside} my-2 rounded-lg shadow-md flex flex-wrap justify-around`}>
       {/* information */}
-      <div className="flex-[5] m-3 p-3 bg-white rounded-lg shadow-md min-w-[620px]">
+      <div className={`${color.inside} flex-[5] m-3 p-3  rounded-lg shadow-md min-w-[620px]`}>
         <div className="flex justify-content-start align-items-end m-2">
           <h2 className="text-xl font-semibold mr-3">Title:</h2>
           <p className="text-gray-600">{blog.title}</p>
@@ -28,7 +31,7 @@ const InfoBlog = ({ blog }) => {
           <p className="text-gray-600">{blog.status}</p>
         </div>
 
-        <div className="bg-gray-200 p-4 mb-2 rounded-lg shadow-md flex justify-around">
+        <div className={`${color.outside} p-4 mb-2 rounded-lg shadow-md flex justify-around`}>
           <div className="d-flex align-items-center">
             <AiOutlineLike size={30} className="mx-2" /> {blog.likes}
           </div>
@@ -42,13 +45,14 @@ const InfoBlog = ({ blog }) => {
             <PiShareFat size={30} className="mx-2" /> {blog.share}
           </div>
           <div className="d-flex align-items-center">
-                <AiOutlineEye size={30} className="mx-2" /> {blog.views}
-              </div>
+            <AiOutlineEye size={30} className="mx-2" /> {blog.views}
+          </div>
         </div>
       </div>
 
       {/* thumbnail */}
-      <div className="flex-[2] m-3 p-3 bg-white rounded-lg shadow-md flex flex-col align-items-center min-w-[300px] ">
+      <div
+        className={`${color.inside} flex-[2] m-3 p-3 rounded-lg shadow-md flex flex-col align-items-center min-w-[300px]`}>
         <h1 className="text-2xl font-semibold mb-2">Thumbnail</h1>
         <img src={blog.thumbnail} alt="thumbnail" className="w-[333px] rounded-lg " />
       </div>

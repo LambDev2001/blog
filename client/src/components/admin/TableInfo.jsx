@@ -54,7 +54,7 @@ const TableInfo = ({ data }) => {
 
   return (
     <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
-      <table className="w-full bg-white table-fixed rounded-t-lg overflow-hidden">
+      <table className="w-full bg-white table-fixed rounded-lg overflow-hidden">
         <thead className={`${color.active}`}>
           <tr className="text-center">
             <th className="w-1/6 py-3 cursor-pointer">Avatar</th>
@@ -75,7 +75,7 @@ const TableInfo = ({ data }) => {
         </thead>
         <tbody className="text-center">
           {currentItems.map((result, index) => (
-            <tr className=" border-b hover:bg-gray-200 transition-all duration-300" key={index}>
+            <tr className="border-b hover:bg-gray-200 transition-all duration-300" key={index}>
               <td className="py-2">
                 <img src={result.avatar} className="w-12 h-12 rounded-full mx-auto" alt="" />
               </td>

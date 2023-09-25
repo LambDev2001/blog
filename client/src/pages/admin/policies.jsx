@@ -83,7 +83,7 @@ const Policies = () => {
       <AdminRouterWrapper />
       <Header />
       <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
-        <table className="min-w-full bg-white rounded-t-lg overflow-hidden">
+        <table className="min-w-full bg-white rounded-lg overflow-hidden">
           <thead className={`${color.active}`}>
             <tr className={color.active}>
               <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("#")}>

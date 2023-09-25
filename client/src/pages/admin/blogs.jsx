@@ -70,7 +70,7 @@ const Blogs = () => {
       <Header />
       <Search data={blogs} type={"blog"} />
       <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
-        <table className="w-full bg-white table-fixed rounded-t-lg overflow-hidden">
+        <table className="w-full bg-white table-fixed rounded-lg overflow-hidden">
           <thead className={`${color.active}`}>
             <tr className="text-center">
               <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("title")}>

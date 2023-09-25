@@ -10,12 +10,13 @@ import AdminRouteWrapper from "../../../utils/AdminRouteWrapper";
 import { acceptReport, declineReport, getReport } from "../../../redux/actions/reportAction";
 
 const Report = () => {
-  const report = useSelector((state) => state.reportReducer.report);
   const [openAction, setOpenAction] = useState(false);
+  const report = useSelector((state) => state.reportReducer.report);
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const color = useSelector((state) => state.themeReducer.themeColor);
+  const history = useHistory();
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.authReducer.accessToken);
-  const history = useHistory();
 
   useEffect(() => {
     dispatch(getReport(slug, token));
@@ -40,7 +41,7 @@ const Report = () => {
       {/* action btn */}
       <div className="sticky top-[110px] z-[900] flex justify-end items-center space-x-2 cursor-pointer h-0">
         {openAction && (
-          <div className="bg-white p-2 rounded-lg shadow-md border-element">
+          <div className={`${color.inside} p-2 rounded-lg shadow-md border-element`}>
             <Button text="Violate" color={0} onClick={handleViolate} />
             <Button text="Not Violate" color={3} onClick={handleNotViolate} />
           </div>
@@ -53,13 +54,13 @@ const Report = () => {
       </div>
 
       {/* info report */}
-      <div className="d-flex flex-wrap bg-gray-200 justify-around rounded-lg shadow-md">
+      <div className={`${color.outside} d-flex flex-wrap justify-around rounded-lg shadow-md`}>
         <div className="w-50 min-w-[400px]">
           <div className="m-3">
             <div className="content mb-3">Info User</div>
             <div className="mb-3">
               {report && (
-                <div className="bg-white p-2 rounded-lg shadow-md">
+                <div className={`${color.inside} p-2 rounded-lg shadow-md`}>
                   <h2 className="text-2xl font-semibold my-2 mx-3">Sender</h2>
                   <div className="flex justify-content-start my-2 mx-3">
                     <img
@@ -78,7 +79,7 @@ const Report = () => {
 
             <div>
               {report && (
-                <div className="bg-white p-2 rounded-lg shadow-md">
+                <div className={`${color.inside} p-2 rounded-lg shadow-md`}>
                   <h2 className="text-2xl font-semibold my-2 mx-3">User</h2>
                   <div className="flex justify-content-start my-2 mx-3">
                     <img
@@ -102,7 +103,7 @@ const Report = () => {
             <div className="content mb-3">Info Report</div>
             <div className="items-center">
               {report && (
-                <div className="bg-white p-4 rounded-lg shadow-md">
+                <div className={`${color.inside} p-4 rounded-lg shadow-md`}>
                   <div>
                     <h2 className="text-xl font-semibold">Type: {report.type.toUpperCase()}</h2>
                     <p className="text-gray-600">Content: {report.content}</p>

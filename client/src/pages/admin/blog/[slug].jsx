@@ -15,10 +15,12 @@ const MyEditor = () => {
   const [openAction, setOpenAction] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const token = useSelector((state) => state.authReducer.accessToken);
+  const blog = useSelector((state) => state.blogReducer);
+  const color = useSelector((state) => state.themeReducer.themeColor);
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const blog = useSelector((state) => state.blogReducer);
   const history = useHistory();
+
   const colorStatus = [
     "rgba(240, 240, 240, 0.8)",
     "rgba(85, 230, 86, 0.8)",
@@ -55,7 +57,7 @@ const MyEditor = () => {
       {/* action btn */}
       <div className="sticky top-[110px] z-[900] flex justify-end items-center space-x-2 cursor-pointer h-0">
         {openAction && (
-          <div className="bg-white p-2 rounded-lg shadow-md border-element">
+          <div className={`${color.inside} p-2 rounded-lg shadow-md border-element`}>
             <Button text={"Delete"} color={0} onClick={() => setOpenModal(true)} />
             <Button text={"Hidden"} color={2} onClick={(e) => handleStatus(e, "hidden")} />
             <Button text={"Normal"} color={3} onClick={(e) => handleStatus(e, "normal")} />
@@ -70,8 +72,9 @@ const MyEditor = () => {
 
       {/* blog */}
       <div className="w-[80%] m-auto">
-        <div className="bg-gray-200 p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around">
-          <div className="flex-[5] mx-3 bg-white rounded-lg shadow-md p-3">
+        <div
+          className={`${color.outside} p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around`}>
+          <div className={`${color.inside} flex-[5] mx-3 rounded-lg shadow-md p-3`}>
             <div className="flex justify-content-start align-items-end m-2">
               <h2 className="text-xl font-semibold mr-3">Title:</h2>
               <p className="text-gray-600">{blog.title}</p>
@@ -98,7 +101,7 @@ const MyEditor = () => {
               </p>
             </div>
 
-            <div className="bg-gray-200 p-4 mb-2 rounded-lg shadow-md flex justify-around">
+            <div className={`${color.outside} p-4 mb-2 rounded-lg shadow-md flex justify-around`}>
               <div className="d-flex align-items-center">
                 <AiOutlineLike size={30} className="mx-2" /> {blog.likes}
               </div>
@@ -116,7 +119,8 @@ const MyEditor = () => {
               </div>
             </div>
           </div>
-          <div className="flex-[2] mx-3 bg-white rounded-lg shadow-md p-3 flex flex-col align-items-center ">
+          <div
+            className={`${color.inside} flex-[2] mx-3 rounded-lg shadow-md p-3 flex flex-col align-items-center`}>
             <h1 className="text-2xl font-semibold mb-2">Thumbnail</h1>
             <img src={blog.thumbnail} alt="thumbnail" className="w-[333px] rounded-lg " />
           </div>

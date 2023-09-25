@@ -47,7 +47,7 @@ const TableInfo = ({ data }) => {
 
   return (
     <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
-      <table className="w-full bg-white table-fixed rounded-t-lg overflow-hidden">
+      <table className="w-full bg-white table-fixed rounded-lg overflow-hidden">
         <thead className={`${color.active}`}>
           <tr className="text-center">
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
@@ -65,7 +65,7 @@ const TableInfo = ({ data }) => {
         <tbody className="text-center">
           {currentItems.map((result, index) => (
             <tr
-              className="border-element border-gray-300 hover:bg-gray-200 transition-all duration-300"
+              className="border-b hover:bg-gray-200 transition-all duration-300"
               key={index}>
               <td className="py-2">{result.author}</td>
               <td className="py-2 font-semibold">{result.type}</td>

@@ -8,6 +8,7 @@ import Button4 from "../../components/global/theme/button/Button4";
 import { useDispatch, useSelector } from "react-redux";
 
 const Buttons = () => {
+  const color = useSelector((state) => state.themeReducer.themeColor);
   const styleButton = [Button1, Button2, Button3, Button4];
   const textButton = ["Danger", "Warning", "Info", "Success"];
  
@@ -28,7 +29,7 @@ const Buttons = () => {
       </div>
       <div className="flex flex-wrap justify-between">
         {styleButton.map((Button, index) => (
-          <div key={index} className="bg-gray-200 rounded-lg shadow-md p-4 space-x-2 my-2">
+          <div key={index} className={`${color.outside} rounded-lg shadow-md p-4 space-x-2 my-2`}>
             <div className="flex mb-2">
               <input
                 type="radio"
