@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -66,8 +67,10 @@ export const data = {
 };
 
 const LineChart = () => {
+  const color = useSelector(state => state.themeReducer.themeColor)
+
   return (
-    <div className="rounded-lg shadow-md p-2 justify-center bg-white h-[400px]">
+    <div className={`${color.inside} rounded-lg shadow-md p-2 justify-center h-[400px]`}>
       <Line options={options} data={data} />
     </div>
   );

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCircleUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { GrShare } from "react-icons/gr";
 
 const Search = ({ data, type }) => {
-  const history = useHistory();
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const history = useHistory();
+  const color = useSelector((state) => state.themeReducer.themeColor);
+
   const colorStatus = [
     "rgba(240, 240, 240, 0.8)",
     "rgba(85, 230, 86, 0.8)",
@@ -28,7 +31,7 @@ const Search = ({ data, type }) => {
 
   return (
     <div>
-      <div className="flex align-items-center justify-between shadow-element radius-element my-2 h-[58px] relative">
+      <div className={`${color.outside} flex align-items-center justify-between rounded-md shadow-md my-2 h-[58px] relative`}>
         <input
           type="text"
           placeholder="Type to search..."
@@ -59,7 +62,7 @@ const Search = ({ data, type }) => {
           }}
         />
 
-        <button className="bg-blue-500 text-white rounded p-2 mx-3" onClick={handleSearch}>
+        <button className={`${color.active} text-white rounded p-2 mx-3`} onClick={handleSearch}>
           <FontAwesomeIcon icon={faSearch} className="h-[40px w-[40px]" />
         </button>
       </div>
@@ -117,7 +120,9 @@ const Search = ({ data, type }) => {
                     <div
                       className="text-gray-600 mx-3 rounded text-center border-element w-[80px] p-1"
                       style={{
-                        backgroundColor: `${result.status === "normal" ? colorStatus[1]: colorStatus[2]}`,
+                        backgroundColor: `${
+                          result.status === "normal" ? colorStatus[1] : colorStatus[2]
+                        }`,
                         border: "1px solid #6b666644",
                       }}>
                       {result.status}
@@ -131,7 +136,11 @@ const Search = ({ data, type }) => {
                   alt=""
                 />
                 <div className="flex-1 mx-3">
-                  <GrShare className="cursor-pointer m-auto" size={28} onClick={()=>history.push(`/admin/blog/${result._id}`)} />
+                  <GrShare
+                    className="cursor-pointer m-auto"
+                    size={28}
+                    onClick={() => history.push(`/admin/blog/${result._id}`)}
+                  />
                 </div>
               </div>
             </div>

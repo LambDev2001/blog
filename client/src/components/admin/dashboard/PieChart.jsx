@@ -1,4 +1,5 @@
 import React from "react";
+import {useSelector} from "react-redux"
 import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
@@ -6,6 +7,8 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 Chart.register(ArcElement, ChartDataLabels);
 
 const PieChart = () => {
+  const color = useSelector((state) => state.themeReducer.themeColor);
+
   const data = [
     { category: "java", blogCount: 10 },
     { category: "javascript", blogCount: 15 },
@@ -72,7 +75,7 @@ const PieChart = () => {
   };
 
   return (
-    <div className="rounded-lg shadow-md p-2 bg-white h-[400px]">
+    <div className={`${color.inside} rounded-lg shadow-md p-2 h-[400px]`}>
         <Pie data={chartData} options={options} />
     </div>
   );

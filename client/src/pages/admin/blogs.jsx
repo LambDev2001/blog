@@ -11,8 +11,9 @@ import { getBlogs } from "../../redux/actions/blogAction";
 import { useHistory } from "react-router-dom";
 
 const Blogs = () => {
-  const dispatch = useDispatch();
   const token = useSelector((state) => state.authReducer.accessToken);
+  const color = useSelector((state) => state.themeReducer.themeColor);
+  const dispatch = useDispatch();
   const history = useHistory();
   const colorStatus = [
     "rgba(240, 240, 240, 0.8)",
@@ -68,57 +69,60 @@ const Blogs = () => {
       <AdminRouteWrapper />
       <Header />
       <Search data={blogs} type={"blog"} />
-      <table className="p-2 w-full table-fixed border-element bg-gray-200 rounded-lg shadow-md overflow-hidden">
-        <thead className="bg-gray-500">
-          <tr className="text-center">
-            <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("title")}>
-              Title
-            </th>
-            <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("thumbnail")}>
-              Thumbnail
-            </th>
-            <th className="w-2/6 py-3 cursor-pointer" onClick={() => handleSort("description")}>
-              Description
-            </th>
-            <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("status")}>
-              Status
-            </th>
-            <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("date")}>
-              Date update
-            </th>
-            <th className="w-1/7 py-3">Action</th>
-          </tr>
-        </thead>
-        <tbody className="text-center bg-white">
-          {currentItems.map((result, index) => (
-            <tr
-              key={index}
-              className="border-t border-gray-300 hover:bg-gray-200 transition-all duration-300"
-              onClick={() => history.push(`/admin/blog/${result._id}`)}>
-              <td className="px-3 py-2">{result.title}</td>
-              <td className="px-3 py-2">
-                <img className="max-h-[80px] max-w-[100%] m-auto" src={result.thumbnail} alt="" />
-              </td>
-              <td className="text-start">{result.description.substring(0, 100)}</td>
-              <td className="px-3 py-2">
-                <div
-                  className="text-gray-600 m-auto rounded text-center border-element w-[70px] p-1"
-                  style={{
-                    backgroundColor: `${
-                      result.status === "normal" ? colorStatus[1] : colorStatus[2]
-                    }`,
-                  }}>
-                  {result.status}
-                </div>
-              </td>
-              <td className="px-3 py-2">{result.updatedAt}</td>
-              <td className="px-3 py-2">
-                <GrShare className="cursor-pointer m-auto" size={30} />
-              </td>
+      <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
+        <table className="w-full bg-white table-fixed rounded-t-lg overflow-hidden">
+          <thead className={`${color.active}`}>
+            <tr className="text-center">
+              <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("title")}>
+                Title
+              </th>
+              <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("thumbnail")}>
+                Thumbnail
+              </th>
+              <th className="w-2/6 py-3 cursor-pointer" onClick={() => handleSort("description")}>
+                Description
+              </th>
+              <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("status")}>
+                Status
+              </th>
+              <th className="w-1/7 py-3 cursor-pointer" onClick={() => handleSort("date")}>
+                Date update
+              </th>
+              <th className="w-1/7 py-3">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-center bg-white">
+            {currentItems.map((result, index) => (
+              <tr
+                key={index}
+                className="border-t border-gray-300 hover:bg-gray-200 transition-all duration-300"
+                onClick={() => history.push(`/admin/blog/${result._id}`)}>
+                <td className="px-3 py-2">{result.title}</td>
+                <td className="px-3 py-2">
+                  <img className="max-h-[80px] max-w-[100%] m-auto" src={result.thumbnail} alt="" />
+                </td>
+                <td className="text-start">{result.description.substring(0, 100)}</td>
+                <td className="px-3 py-2">
+                  <div
+                    className="text-gray-600 m-auto rounded text-center border-element w-[70px] p-1"
+                    style={{
+                      backgroundColor: `${
+                        result.status === "normal" ? colorStatus[1] : colorStatus[2]
+                      }`,
+                    }}>
+                    {result.status}
+                  </div>
+                </td>
+                <td className="px-3 py-2">{result.updatedAt}</td>
+                <td className="px-3 py-2">
+                  <GrShare className="cursor-pointer m-auto" size={30} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}

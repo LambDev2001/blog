@@ -19,7 +19,6 @@ const AllUser = () => {
     };
     getUsers();
   }, [dispatch, token]);
-    
 
   return (
     <div className="mx-2">

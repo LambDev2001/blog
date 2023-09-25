@@ -8,6 +8,7 @@ import { updateMenu } from "../../redux/actions/menuAction";
 const Header = () => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => state.menuReducer);
+  const color = useSelector((state) => state.themeReducer.themeColor);
 
   const handleMenu = () => {
     dispatch(updateMenu(!menu));
@@ -15,7 +16,7 @@ const Header = () => {
 
   return (
     <nav
-      className="navbar navbar-expand space-x-4 justify-between sticky top-0 rounded-lg shadow-md bg-gray-200 mb-2 h-[58px]"
+      className={`navbar navbar-expand space-x-4 justify-between sticky top-0 rounded-lg shadow-md ${color.outside} mb-2 h-[58px]`}
       style={{ zIndex: 999 }}>
       <div>
         <FontAwesomeIcon

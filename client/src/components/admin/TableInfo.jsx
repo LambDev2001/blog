@@ -3,14 +3,17 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../global/Pagination";
+import { useSelector } from "react-redux";
 
 const TableInfo = ({ data }) => {
-  const history = useHistory();
-  const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("account");
+  const color = useSelector((state) => state.themeReducer.themeColor);
+  const history = useHistory();
+  const itemsPerPage = 6;
+
   const colorStatus = [
     "rgba(240, 240, 240, 0.8)",
     "rgba(85, 230, 86, 0.8)",
@@ -50,9 +53,9 @@ const TableInfo = ({ data }) => {
   };
 
   return (
-    <div className="my-2 p-1 bg-gray-200 overflow-hidden">
-      <table className="w-full bg-white table-fixed">
-        <thead className="bg-gray-500">
+    <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
+      <table className="w-full bg-white table-fixed rounded-t-lg overflow-hidden">
+        <thead className={`${color.active}`}>
           <tr className="text-center">
             <th className="w-1/6 py-3 cursor-pointer">Avatar</th>
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
@@ -72,17 +75,15 @@ const TableInfo = ({ data }) => {
         </thead>
         <tbody className="text-center">
           {currentItems.map((result, index) => (
-            <tr
-              className="border-b border-gray-300 hover:bg-gray-200 transition-all duration-300"
-              key={index}>
+            <tr className=" border-b hover:bg-gray-200 transition-all duration-300" key={index}>
               <td className="py-2">
                 <img src={result.avatar} className="w-12 h-12 rounded-full mx-auto" alt="" />
               </td>
               <td className="py-2">{result.account}</td>
               <td className="py-2 font-semibold">{result.username}</td>
-              <td className="py-2 d-flex justify-content-center">
+              <td className="py-2">
                 <div
-                  className="text-gray-600 mx-3 rounded text-center border-element w-[50px] p-1"
+                  className="text-gray-600 rounded text-center w-[50px] p-1 m-auto"
                   style={{
                     backgroundColor: `${colorStatus[result.status]}`,
                   }}>

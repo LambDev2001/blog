@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const color = useSelector(state => state.themeReducer.themeColor)
   const pageNumbers = [];
 
   for (let i = 1; i <= totalPages; i++) {
@@ -15,7 +17,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             key={number}
             onClick={() => onPageChange(number)}
             className={`cursor-pointer px-4 py-2 rounded ${
-              currentPage === number ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+              currentPage === number ? `${color.active} text-white` : "bg-gray-300 hover:bg-gray-300"
             }`}
           >
             {number}

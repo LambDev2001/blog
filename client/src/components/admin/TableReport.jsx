@@ -3,14 +3,16 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../global/Pagination";
+import { useSelector } from "react-redux";
 
 const TableInfo = ({ data }) => {
-  const history = useHistory();
-  const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("account");
+  const color = useSelector((state) => state.themeReducer.themeColor);
+  const history = useHistory();
+  const itemsPerPage = 8;
 
   useEffect(() => {
     if (sortField) {
@@ -44,9 +46,9 @@ const TableInfo = ({ data }) => {
   };
 
   return (
-    <div>
-      <table className="p-2 w-full table-fixed border-element rounded-lg overflow-hidden">
-        <thead className="bg-gray-500">
+    <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
+      <table className="w-full bg-white table-fixed rounded-t-lg overflow-hidden">
+        <thead className={`${color.active}`}>
           <tr className="text-center">
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("account")}>
               Sender

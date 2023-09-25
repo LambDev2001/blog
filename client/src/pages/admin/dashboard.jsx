@@ -12,6 +12,7 @@ import { getDashboard } from "../../redux/actions/dashboardAction";
 const Dashboard = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const data = useSelector((state) => state.dashboardReducer);
+  const color = useSelector((state) => state.themeReducer.themeColor);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +25,8 @@ const Dashboard = () => {
       <Header />
 
       <StatisticalBlog data={data} />
-      <div className="bg-gray-200 rounded-lg shadow-md p-2 my-2 flex flex-wrap justify-around">
+      <div
+        className={`${color.outside} rounded-lg shadow-md p-2 my-2 flex flex-wrap justify-around`}>
         <div className="w-[32%]">
           <PieChart data={data} />
         </div>
@@ -33,12 +35,16 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="bg-gray-200 rounded-lg shadow-md p-4">
+      <div className={`${color.outside} rounded-lg shadow-md p-4`}>
         <h2 className="text-2xl font-semibold mb-4">Top Blogs Mosts Views</h2>
-        <div className="bg-white rounded-lg shadow-md flex flex-wrap">
+        <div className={`${color.inside} rounded-lg shadow-md flex flex-wrap`}>
           {data.topBlogs &&
             data.topBlogs.map((blog) => {
-              return <div key={blog._id}><Card blog={blog}/></div>;
+              return (
+                <div key={blog._id}>
+                  <Card blog={blog} />
+                </div>
+              );
             })}
         </div>
       </div>

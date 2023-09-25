@@ -21,6 +21,7 @@ const Menu = () => {
   const user = useSelector((state) => state.authReducer.user);
   const token = useSelector((state) => state.authReducer.accessToken);
   const openMenu = useSelector((state) => state.menuReducer);
+  const color = useSelector((state) => state.themeReducer.themeColor);
 
   const logo = {
     img: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
@@ -38,17 +39,11 @@ const Menu = () => {
       "Theme",
       [
         ["Button", "/admin/buttons"],
-        ["Table", "/admin/all-users2"],
+        ["color", "/admin/colors"],
         ["Card", "/admin/all-users2"],
       ],
     ],
-
   ];
-  const color = {
-    normal: "#ffff",
-    active: "bg-gray-400",
-    border: "rgba(60, 60, 60, 0.8)",
-  };
 
   const handleOpenMenu = () => {
     setActive(-1);
@@ -87,7 +82,7 @@ const Menu = () => {
 
   return (
     <div
-      className="menu bg-gray-200 rounded-lg d-flex sticky top-0 mr-1 p-1"
+      className={`menu ${color.outside} rounded-lg d-flex sticky top-0 mr-1 p-1`}
       style={{ borderRadius: "0 10px 10px 0", zIndex: 999 }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>
@@ -95,13 +90,13 @@ const Menu = () => {
         {/* logo */}
         <Link
           to="/admin"
-          className="m-1 p-2 d-flex align-items-center bg-white shadow-md rounded-lg">
+          className={`m-1 p-2 d-flex align-items-center ${color.inside} shadow-md rounded-lg`}>
           <img src={logo.img} alt="logo" className="w-[40px] h-[40px] rounded-circle" />
           {menu && <div className="mx-3">{logo.name}</div>}
         </Link>
 
         {/* user */}
-        <div className={`m-1 p-2 cursor-pointer bg-white shadow-md rounded-lg `}>
+        <div className={`m-1 p-2 cursor-pointer ${color.inside} shadow-md rounded-lg `}>
           {user ? (
             <Link to={`/admin/profile/${user._id}`} className="d-flex align-items-center">
               <img src={user.avatar} alt="avatar" className="w-[40px] h-[40px] rounded-circle" />
@@ -116,13 +111,13 @@ const Menu = () => {
         </div>
 
         {/* menu */}
-        <div className="bg-gray-200 p-1 my-2">
+        <div className={`${color.outside} p-1 my-2`}>
           {listFunctions.map(([Icon, future, listUrl], index) => (
             <div
               key={index}
               data-index={index}
               className={`my-1 shadow-md rounded-lg ${
-                index === active ? color.active : "bg-white"
+                index === active ? color.active : color.inside
               } `}>
               <div
                 className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
@@ -150,13 +145,13 @@ const Menu = () => {
               </div>
 
               {/* list child function */}
-              <div className="bg-gray-200">
+              <div className={color.outside}>
                 {index === active &&
                   listUrl.length > 1 &&
                   listUrl.map((list, index) => (
                     <div key={index} className="py-1">
                       <Link
-                        className="d-flex align-items-center ml-[40px] py-2 bg-white shadow-sm rounded-lg"
+                        className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg`}
                         to={list[1]}>
                         <p className="mx-3">{list[0]}</p>
                       </Link>
@@ -171,7 +166,7 @@ const Menu = () => {
         {/* logout */}
         {user && (
           <div
-            className="m-1 p-2 cursor-pointer d-flex align-items-center bg-white shadow-md rounded-lg"
+            className={`m-1 p-2 cursor-pointer d-flex align-items-center ${color.inside} shadow-md rounded-lg`}
             onClick={handleLogout}>
             <IoIosLogOut className="w-[40px] h-[40px]" />
             {menu && <div className="mx-3">Logout</div>}

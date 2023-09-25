@@ -7,26 +7,27 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Header from "../../components/global/Header";
 import AdminRouterWrapper from "../../utils/AdminRouteWrapper";
 import Pagination from "../../components/global/Pagination";
+import Button from "../../components/global/theme/button/Button";
 import { getAllPolicies } from "../../redux/actions/policiesAction";
 import { updatePolicy, createPolicy, deletePolicy } from "../../redux/actions/policiesAction";
 
 const Policies = () => {
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.authReducer.accessToken);
-  const [editingIndex, setEditingIndex] = useState(-1);
-  const [modal, setModal] = useState(false);
-  const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("account");
+  const [editingIndex, setEditingIndex] = useState(-1);
+  const [modal, setModal] = useState(false);
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const color = useSelector((state) => state.themeReducer.themeColor);
+  const dispatch = useDispatch();
+  const itemsPerPage = 8;
 
   useEffect(() => {
     dispatch(getAllPolicies(token));
   }, [dispatch, token]);
 
   const policies = useSelector((state) => state.policiesReducer);
-  
 
   useEffect(() => {
     if (sortField) {
@@ -81,85 +82,83 @@ const Policies = () => {
     <div className="mx-2">
       <AdminRouterWrapper />
       <Header />
-      <table className="min-w-full border border-gray-300">
-        <thead>
-          <tr className="bg-gray-500">
-            <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("#")}>
-              #
-            </th>
-            <th className="w-[5/10%] px-4 py-2" onClick={() => handleSort("content")}>
-              Content
-            </th>
-            <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("status")}>
-              Status
-            </th>
-            <th className="w-[2/10%] px-4 py-2" onClick={() => handleSort("updatedAt")}>
-              Updated At
-            </th>
-            <th className="w-[1/10%] px-4 py-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.length > 0 &&
-            currentItems.map((item, index) => (
-              <tr key={index} className="border-t border-gray-300">
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">
-                  {editingIndex === index ? (
-                    <textarea
-                      className="w-100 order border-gray-300 rounded"
-                      type="text"
-                      value={item.content}
-                      onChange={(e) => {
-                        dispatch({
-                          type: "UPDATE_POLICY",
-                          payload: { ...item, content: e.target.value },
-                        });
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleUpdate(item, e.target.value);
+      <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
+        <table className="min-w-full bg-white rounded-t-lg overflow-hidden">
+          <thead className={`${color.active}`}>
+            <tr className={color.active}>
+              <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("#")}>
+                #
+              </th>
+              <th className="w-[5/10%] px-4 py-2" onClick={() => handleSort("content")}>
+                Content
+              </th>
+              <th className="w-[1/10%] px-4 py-2" onClick={() => handleSort("status")}>
+                Status
+              </th>
+              <th className="w-[2/10%] px-4 py-2" onClick={() => handleSort("updatedAt")}>
+                Updated At
+              </th>
+              <th className="w-[1/10%] px-4 py-2">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.length > 0 &&
+              currentItems.map((item, index) => (
+                <tr key={index} className="border-t border-gray-300">
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">
+                    {editingIndex === index ? (
+                      <textarea
+                        className="w-100 order border-gray-300 rounded"
+                        type="text"
+                        value={item.content}
+                        onChange={(e) => {
+                          dispatch({
+                            type: "UPDATE_POLICY",
+                            payload: { ...item, content: e.target.value },
+                          });
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleUpdate(item, e.target.value);
+                            setEditingIndex(-1);
+                          }
+                        }}
+                        onBlur={() => {
+                          handleUpdate(item, item.content);
                           setEditingIndex(-1);
-                        }
-                      }}
-                      onBlur={() => {
-                        handleUpdate(item, item.content);
-                        setEditingIndex(-1);
-                      }}
-                    />
-                  ) : (
-                    <span onClick={() => setEditingIndex(index)} className="cursor-pointer">
-                      {item.content}
-                    </span>
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  <select
-                    value={item.status}
-                    onChange={(e) => handleUpdate(item, e.target.value)}
-                    className="p-1 border border-gray-300 rounded">
-                    <option value="normal">Normal</option>
-                    <option value="hidden">Hidden</option>
-                  </select>
-                </td>
-                <td className="px-4 py-2">{item.updatedAt}</td>
-                <td className="px-4 py-2">
-                  {" "}
-                  <AiOutlineDelete onClick={() => handleDelete(item._id)} />{" "}
-                </td>
-              </tr>
-            ))}
-          <tr className="border-t border-gray-300">
-            <td colSpan="4" className=" px-4 py-2 text-center">
-              <button
-                onClick={() => setModal(true)}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Add New Policy
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                        }}
+                      />
+                    ) : (
+                      <span onClick={() => setEditingIndex(index)} className="cursor-pointer">
+                        {item.content}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    <select
+                      value={item.status}
+                      onChange={(e) => handleUpdate(item, e.target.value)}
+                      className="p-1 border border-gray-300 rounded">
+                      <option value="normal">Normal</option>
+                      <option value="hidden">Hidden</option>
+                    </select>
+                  </td>
+                  <td className="px-4 py-2">{item.updatedAt}</td>
+                  <td className="px-4 py-2">
+                    {" "}
+                    <AiOutlineDelete onClick={() => handleDelete(item._id)} />{" "}
+                  </td>
+                </tr>
+              ))}
+            <tr className="border-t border-gray-300">
+              <td colSpan="5" className=" px-4 py-2 text-center">
+                <Button text={"Add New Policy"} color={2} onClick={() => setModal(true)} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <Modal
         isOpen={modal}
@@ -181,15 +180,11 @@ const Policies = () => {
               cols="30"
               rows="10"
               name="content"></textarea>
-            <button
-              className="self-end bg-blue-500 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-              type="submit">
-              Submit
-            </button>
+            <Button text={"Submit"} color={2} type="submit" />
           </form>
         </div>
       </Modal>
-      
+
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
