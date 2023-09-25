@@ -36,7 +36,7 @@ const Color = () => {
       <div className="flex flex-wrap">
         {colors.map((color, index) => {
           return (
-            <div key={index} className={`${color.outside} p-3 m-4`}>
+            <div key={index} className={`${color.outside} py-3 px-4 m-4 rounded-md`}>
               <div className="flex mb-2">
                 <input
                   type="radio"
@@ -46,7 +46,9 @@ const Color = () => {
                 />{" "}
                 <div className="mx-2">Style {index + 1}</div>
               </div>
-              <div className={`${color.inside} p-3`}></div>
+              <div className={`${color.inside} p-3 rounded-md`}>
+                <div className={`${color.active} p-2 rounded-sm`}></div>
+              </div>
             </div>
           );
         })}

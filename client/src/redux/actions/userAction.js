@@ -1,4 +1,4 @@
-import { getAPI } from "../../utils/FetchData";
+import { getAPI, patchAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
 
 export const allUsers = (token) => async (dispatch) => {
@@ -37,3 +37,21 @@ export const getUser = (idUser, token) => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const changeStatus =
+  (idUser, status, token) =>
+  async (dispatch) => {
+    try {
+      console.log( {idUser, status, token});
+      
+      dispatch({ type: "LOADING", payload: { loading: true } });
+      const res = await patchAPI(`change-status/${idUser}`, { status }, token);
+      ResErrorData(res.data, dispatch);
+      dispatch({ type: "UPDATE_USER", payload: { status } });
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+
+      dispatch({ type: "LOADING", payload: { loading: false } });
+    } catch (err) {
+      console.error(err);
+    }
+  };

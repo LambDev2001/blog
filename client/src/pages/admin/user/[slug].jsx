@@ -1,29 +1,57 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import AdminRouteWrapper from "../../../utils/AdminRouteWrapper";
-import { getUser } from "../../../redux/actions/userAction";
 import Friend from "../../../components/global/Friend";
 import Header from "../../../components/global/Header";
 import Card from "../../../components/global/Card";
 import TableReport from "../../../components/admin/TableReport";
+import Button from "../../../components/global/theme/button/Button";
+import { getUser, changeStatus } from "../../../redux/actions/userAction";
 
 const User = () => {
-  const { slug } = useParams();
-  const dispatch = useDispatch();
+  const [openAction, setOpenAction] = useState(false);
   const token = useSelector((state) => state.authReducer.accessToken);
   const user = useSelector((state) => state.userReducer);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const { slug } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUser(slug, token));
   }, [slug, dispatch, token]);
 
+  const upStatus = () => {
+    setOpenAction(false);
+    dispatch(changeStatus(user._id, user.status + 1, token));
+  };
+
+  const downStatus = () => {
+    setOpenAction(false);
+    dispatch(changeStatus(user._id, user.status - 1, token));
+  };
+
   return (
     <div className="mx-2">
       <AdminRouteWrapper />
       <Header />
+
+      {/* action btn */}
+      <div className="sticky top-[110px] z-[900] flex justify-end items-center space-x-2 cursor-pointer h-0">
+        {openAction && (
+          <div className={`${color.inside} p-2 rounded-lg shadow-md border-element`}>
+            <Button text="Down Status" color={0} onClick={downStatus} />
+            <Button text="Up Status" color={3} onClick={upStatus} />
+          </div>
+        )}
+        <div
+          className="rounded-full bg-cyan-400 p-3 m-2 h-[60px] w-[60px] text-center flex justify-center items-center"
+          onClick={() => setOpenAction(!openAction)}>
+          <span className="text-white font-semibold">Action</span>
+        </div>
+      </div>
+
       <div className={`${color.outside} rounded-lg shadow-md`}>
         <div className="flex flex-wrap">
           <div className="m-2 flex-1 min-w-[400px]">

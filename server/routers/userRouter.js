@@ -21,4 +21,5 @@ router.patch("/user/:idUser", user, userCtrl.updateUser);
 // admin
 router.get("/user/:idUser", admin, userCtrl.getUser);
 router.get("/users", admin, userCtrl.getUsers);
+router.patch("/change-status/:idUser", admin, userCtrl.changeStatus);
 export default router;

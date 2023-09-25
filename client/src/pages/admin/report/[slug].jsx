@@ -21,7 +21,6 @@ const Report = () => {
   useEffect(() => {
     dispatch(getReport(slug, token));
   }, [dispatch, slug, token]);
-  console.log(report);
 
   const handleViolate = () => {
     dispatch(acceptReport(report._id, token));

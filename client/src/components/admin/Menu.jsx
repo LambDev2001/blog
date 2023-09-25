@@ -82,11 +82,11 @@ const Menu = () => {
 
   return (
     <div
-      className={`menu ${color.outside} rounded-lg d-flex sticky top-0 mr-1 p-1`}
+      className={`menu ${color.outside} rounded-lg d-flex sticky top-0 mr-1 p-1 custom-scroll-container h-32 overflow-hidden`}
       style={{ borderRadius: "0 10px 10px 0", zIndex: 999 }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>
-      <div className="" style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
+      <div className="custom-scroll-content h-full overflow-auto" style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
         {/* logo */}
         <Link
           to="/admin"

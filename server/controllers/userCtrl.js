@@ -214,6 +214,22 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  changeStatus: async (req, res) => {
+    try {
+      const { idUser } = req.params;
+      const { status } = req.body;
+      
+      const user = await Users.findById({ _id: idUser });
+      if (!user) return res.json({ msg: "User not found" });
+
+      user.status = status;
+      await user.save();
+
+      return res.status(200).json({ msg: "Change status successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 export default userCtrl;
