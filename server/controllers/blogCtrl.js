@@ -6,6 +6,7 @@ import Likes from "../models/likeModel.js";
 import Categories from "../models/categoryModel.js";
 import Views from "../models/viewModel.js";
 import Comments from "../models/commentModel.js";
+import Reports from "../models/reportModel.js";
 
 const blogCtrl = {
   // none auth
@@ -97,7 +98,10 @@ const blogCtrl = {
       const blog = await Blogs.findOneAndDelete({ _id: idBlog });
       if (!blog) return res.json({ msg: "Blog not found" });
 
-      await Views.findByIdAndDelete({ _id: idBlog });
+      await Likes.deleteMany({ idBlog: idBlog });
+      await Comments.deleteMany({ idBlog: idBlog });
+      await Reports.deleteMany({ ids: idBlog });
+      await Views.deleteMany({ idBlog: idBlog });
 
       return res.status(200).json({ msg: "Blog deleted" });
     } catch (err) {

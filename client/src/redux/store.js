@@ -18,7 +18,7 @@ import rootReducer from "./reducers/index";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["authReducer"],
+  whitelist: ["authReducer", "themeReducer"],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({

@@ -4,11 +4,12 @@ import { useParams, useHistory } from "react-router-dom";
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment, AiOutlineEye } from "react-icons/ai";
 import { PiShareFat } from "react-icons/pi";
 
-import { deleteBlog, getBlog } from "../../../redux/actions/blogAction";
 import Header from "../../../components/global/Header";
 import Blog from "../../../components/global/Blog";
-import { updateBlogStatus } from "../../../redux/actions/blogAction";
 import DeleteModal from "../../../components/global/modal/DeleteModal";
+import Button from "../../../components/global/theme/button/Button";
+import { deleteBlog, getBlog } from "../../../redux/actions/blogAction";
+import { updateBlogStatus } from "../../../redux/actions/blogAction";
 
 const MyEditor = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -55,24 +56,9 @@ const MyEditor = () => {
       <div className="sticky top-[110px] z-[900] flex justify-end items-center space-x-2 cursor-pointer h-0">
         {openAction && (
           <div className="bg-white p-2 rounded-lg shadow-md border-element">
-            <button
-              className="mx-1 p-2 rounded-md"
-              style={{ backgroundColor: colorStatus[3] }}
-              onClick={() => setOpenModal(true)}>
-              Delete
-            </button>
-            <button
-              className="mx-1 p-2 rounded-md"
-              style={{ backgroundColor: colorStatus[2] }}
-              onClick={(e) => handleStatus(e, "hidden")}>
-              Hidden
-            </button>
-            <button
-              className="mx-1 p-2 rounded-md"
-              style={{ backgroundColor: colorStatus[1] }}
-              onClick={(e) => handleStatus(e, "normal")}>
-              Normal
-            </button>
+            <Button text={"Delete"} color={0} onClick={() => setOpenModal(true)} />
+            <Button text={"Hidden"} color={2} onClick={(e) => handleStatus(e, "hidden")} />
+            <Button text={"Normal"} color={3} onClick={(e) => handleStatus(e, "normal")} />
           </div>
         )}
         <div
@@ -82,6 +68,7 @@ const MyEditor = () => {
         </div>
       </div>
 
+      {/* blog */}
       <div className="w-[80%] m-auto">
         <div className="bg-gray-200 p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around">
           <div className="flex-[5] mx-3 bg-white rounded-lg shadow-md p-3">

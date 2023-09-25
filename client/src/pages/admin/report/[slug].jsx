@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Header from "../../../components/global/Header";
 import InfoBlog from "../../../components/global/InfoBlog";
 import Blog from "../../../components/global/Blog";
+import Button from "../../../components/global/theme/button/Button";
 import AdminRouteWrapper from "../../../utils/AdminRouteWrapper";
 import { acceptReport, declineReport, getReport } from "../../../redux/actions/reportAction";
 
@@ -40,16 +41,8 @@ const Report = () => {
       <div className="sticky top-[110px] z-[900] flex justify-end items-center space-x-2 cursor-pointer h-0">
         {openAction && (
           <div className="bg-white p-2 rounded-lg shadow-md border-element">
-            <button
-              className="bg-green-500 text-white p-2 rounded-md mr-2"
-              onClick={() => handleNotViolate()}>
-              Not violate
-            </button>
-            <button
-              className="bg-red-500 text-white p-2 rounded-md"
-              onClick={() => handleViolate()}>
-              Violate
-            </button>
+            <Button text="Violate" color={0} onClick={handleViolate} />
+            <Button text="Not Violate" color={3} onClick={handleNotViolate} />
           </div>
         )}
         <div

@@ -43,9 +43,6 @@ const TableInfo = ({ data }) => {
     setSortField(field); // Set the sorting field
   };
 
-  console.log(data);
-  
-
   return (
     <div>
       <table className="p-2 w-full table-fixed border-element rounded-lg overflow-hidden">

@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 
 import Header from "../../components/global/Header";
-import Button1 from "../../components/global/theme/Button1";
-import Button2 from "../../components/global/theme/Button2";
-import Button3 from "../../components/global/theme/Button3";
-import Button4 from "../../components/global/theme/Button4";
+import Button1 from "../../components/global/theme/button/Button1";
+import Button2 from "../../components/global/theme/button/Button2";
+import Button3 from "../../components/global/theme/button/Button3";
+import Button4 from "../../components/global/theme/button/Button4";
+import { useDispatch, useSelector } from "react-redux";
 
 const Buttons = () => {
   const styleButton = [Button1, Button2, Button3, Button4];
   const textButton = ["Danger", "Warning", "Info", "Success"];
-  const colorTheme = ["bg-red-400", "bg-yellow-400", "bg-blue-400", "bg-green-400"];
-  const colorHover = ["bg-red-600", "bg-amber-500", "bg-blue-600", "bg-lime-500"];
-
-  const [selectedStyle, setSelectedStyle] = useState(null);
+ 
+  const themeBtn = useSelector((state) => state.themeReducer.themeBtn);
+  const [selectedStyle, setSelectedStyle] = useState(themeBtn);
+  const dispatch = useDispatch();
 
   const handleStyleChange = (index) => {
     setSelectedStyle(index);
+    dispatch({ type: "UPDATE_THEME", payload: { themeBtn: index } });
   };
 
   return (
@@ -40,8 +42,7 @@ const Buttons = () => {
               <Button
                 key={buttonIndex}
                 text={text}
-                color={colorTheme[buttonIndex]}
-                hover={colorHover[buttonIndex]}
+                color={buttonIndex}
               />
             ))}
           </div>
