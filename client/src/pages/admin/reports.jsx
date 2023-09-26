@@ -5,6 +5,7 @@ import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import { getReports } from "../../redux/actions/reportAction";
 import TableReport from "../../components/admin/TableReport";
 import Header from "../../components/global/Header";
+import Menu from "../../components/admin/Menu";
 
 const Reports = () => {
   const reports = useSelector((state) => state.reportReducer.reports);
@@ -16,10 +17,15 @@ const Reports = () => {
   }, [dispatch, token]);
 
   return (
-    <div className="mx-2">
-      <AdminRouteWrapper />
-      <Header />
-      <div>{reports && <TableReport data={reports} />}</div>
+    <div className="d-flex">
+      <Menu />
+      <div className="w-100">
+        <div className="mx-2">
+          <AdminRouteWrapper />
+          <Header content="Manager Reports" />
+          <div>{reports && <TableReport data={reports} />}</div>
+        </div>
+      </div>
     </div>
   );
 };

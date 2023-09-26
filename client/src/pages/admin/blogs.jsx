@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { GrShare } from "react-icons/gr";
-import Pagination from "../../components/global/Pagination";
-
-import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
-import Header from "../../components/global/Header";
-import Search from "../../components/global/Search";
-import { getBlogs } from "../../redux/actions/blogAction";
 import { useHistory } from "react-router-dom";
 
+import { GrShare } from "react-icons/gr";
+
+import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
+import Pagination from "../../components/global/Pagination";
+import Header from "../../components/global/Header";
+import Search from "../../components/global/Search";
+import Menu from "../../components/admin/Menu";
+import { getBlogs } from "../../redux/actions/blogAction";
+
 const Blogs = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [statusBlogs, setStatusBlogs] = useState("all");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("title");
   const token = useSelector((state) => state.authReducer.accessToken);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const blogs = useSelector((state) => state.blogReducer);
+  const [sortedData, setSortedData] = useState([]);
+  const [dataBlogs, setDataBlogs] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const itemsPerPage = 4;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
   const colorStatus = [
     "rgba(240, 240, 240, 0.8)",
     "rgba(85, 230, 86, 0.8)",
@@ -26,16 +41,13 @@ const Blogs = () => {
     dispatch(getBlogs(token));
   }, [dispatch, token]);
 
-  const blogs = useSelector((state) => state.blogReducer);
-  const itemsPerPage = 4;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortedData, setSortedData] = useState([]);
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("title");
+  useEffect(() => {
+    setDataBlogs(blogs);
+  }, [blogs]);
 
   useEffect(() => {
-    if (sortField && blogs.length > 1) {
-      const sorted = [...blogs].sort((a, b) => {
+    if (sortField && dataBlogs.length >= 0 && blogs) {
+      const sorted = [...dataBlogs].sort((a, b) => {
         if (sortOrder === "asc") {
           return a[sortField] < b[sortField] ? -1 : 1;
         } else {
@@ -44,15 +56,22 @@ const Blogs = () => {
       });
       setSortedData(sorted);
     }
-  }, [blogs, sortOrder, sortField]);
+  }, [blogs, dataBlogs, sortOrder, sortField]);
+
+  const sortStatus = (status) => {
+    setStatusBlogs(status);
+    if (status === "all") {
+      setDataBlogs(blogs);
+    } else {
+      setDataBlogs(
+        blogs.filter((blog) => {
+          return blog.status === status;
+        })
+      );
+    }
+  };
 
   // Calculate the index of the first and last item to display
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -65,11 +84,39 @@ const Blogs = () => {
   };
 
   return (
+    <div className="d-flex">
+    <Menu />
+    <div className="w-100">
     <div className="mx-2">
       <AdminRouteWrapper />
-      <Header />
-      <Search data={blogs} type={"blog"} />
-      <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
+      <Header content="Manager Blogs" />
+      <Search data={dataBlogs} type={"blog"} />
+
+      {/* filter status */}
+      <div className={`flex mt-1`}>
+        <div
+          className={`${
+            statusBlogs === "all" ? color.active : color.inside
+          } py-2 px-4 mx-2 rounded-md shadow-lg cursor-pointer`}
+          onClick={() => sortStatus("all")}>
+          All
+        </div>
+        <div
+          className={`${
+            statusBlogs === "waiting" ? color.active : color.inside
+          } py-2 px-4 mx-2 rounded-md shadow-lg cursor-pointer`}
+          onClick={() => sortStatus("waiting")}>
+          Waiting
+        </div>
+        <div
+          className={`${
+            statusBlogs === "hidden" ? color.active : color.inside
+          } py-2 px-4 mx-2 rounded-md shadow-lg cursor-pointer`}
+          onClick={() => sortStatus("hidden")}>
+          Hidden
+        </div>
+      </div>
+      <div className={`${color.outside} p-1 rounded-lg overflow-hidden`}>
         <table className="w-full bg-white table-fixed rounded-lg overflow-hidden">
           <thead className={`${color.active}`}>
             <tr className="text-center">
@@ -131,75 +178,7 @@ const Blogs = () => {
         />
       )}
     </div>
-    // <div className="d-flex flex-wrap">
-    //   <AdminRouteWrapper />
-    //   <Header />
-    //   <div className="p-4 flex-1">
-    //     <button
-    //       className={`${sheet === "all" ? "bg-gray-200" : ""} px-2 py-1 mr-2 rounded`}
-    //       onClick={() => setSheet("all")}>
-    //       All
-    //     </button>
-    //     <button
-    //       className={`${sheet === "waiting" ? "bg-gray-200" : ""} px-2 py-1 rounded`}
-    //       onClick={() => setSheet("waiting")}>
-    //       Waiting
-    //     </button>
-    //     <table className="min-w-full border border-gray-300">
-    //       <thead>
-    //         <tr className="bg-gray-200">
-    //           <th className="px-4 py-2">#</th>
-    //           <th className="px-4 py-2">Title</th>
-    //           <th className="px-4 py-2">Thumbnail</th>
-    //           <th className="px-4 py-2">Status</th>
-    //           <th className="px-4 py-2" onClick={toggleSortOrder}>
-    //             Updated At
-    //             {sortOrder === "asc" ? "▲" : "▼"}
-    //           </th>
-    //           <th>Action</th>
-    //         </tr>
-    //       </thead>
-
-    //       <tbody>
-    //         {sortedData.length > 0 &&
-    //           sortedData.map((item, index) => (
-    //             <tr
-    //               key={index}
-    //               className="border-t border-gray-300"
-    //               onClick={() => history.push(`/blog/${result._id}`)}>
-    //               <td className="px-4 py-2">{index + 1}</td>
-    //               <td className="px-4 py-2">{result.title}</td>
-    //               <td className="px-4 py-2">
-    //                 <img className="h-[80px]" src={result.thumbnail} alt="" />
-    //               </td>
-    //               <td className="px-4 py-2">
-    //                 <select
-    //                   value={result.status}
-    //                   className="p-1 border border-gray-300 rounded"
-    //                   onClick={(e) => e.stopPropagation()}
-    //                   onChange={(e) => {
-    //                     handleUpdate(item, e.target.value);
-    //                   }}>
-    //                   <option value="normal">Normal</option>
-    //                   <option value="hidden">Hidden</option>
-    //                   <option value="waiting">Waiting</option>
-    //                 </select>
-    //               </td>
-    //               <td className="px-4 py-2">{result.updatedAt}</td>
-    //               <td className="px-4 py-2">
-    //                 <AiOutlineDelete
-    //                   onClick={(e) => {
-    //                     e.stopPropagation();
-    //                     handleDelete(result._id);
-    //                   }}
-    //                 />
-    //               </td>
-    //             </tr>
-    //           ))}
-    //       </tbody>
-    //     </table>
-    //   </div>
-    // </div>
+    </div></div>
   );
 };
 

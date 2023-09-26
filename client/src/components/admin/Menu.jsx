@@ -40,7 +40,6 @@ const Menu = () => {
       [
         ["Button", "/admin/buttons"],
         ["color", "/admin/colors"],
-        ["Card", "/admin/all-users2"],
       ],
     ],
   ];
@@ -86,20 +85,26 @@ const Menu = () => {
       style={{ borderRadius: "0 10px 10px 0", zIndex: 999 }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>
-      <div className="custom-scroll-content h-full overflow-auto" style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
+      <div
+        className="custom-scroll-content h-full overflow-auto"
+        style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
         {/* logo */}
         <Link
           to="/admin"
-          className={`m-1 p-2 d-flex align-items-center ${color.inside} shadow-md rounded-lg`}>
-          <img src={logo.img} alt="logo" className="w-[40px] h-[40px] rounded-circle" />
+          className={`m-1 py-2 px-1 d-flex align-items-center ${color.inside} shadow-md rounded-lg`}>
+          <img src={logo.img} alt="logo" className="ml-[1px] w-[40px] h-[40px] rounded-circle" />
           {menu && <div className="mx-3">{logo.name}</div>}
         </Link>
 
         {/* user */}
-        <div className={`m-1 p-2 cursor-pointer ${color.inside} shadow-md rounded-lg `}>
+        <div className={`m-1 py-2 px-1 cursor-pointer ${color.inside} shadow-md rounded-lg `}>
           {user ? (
             <Link to={`/admin/profile/${user._id}`} className="d-flex align-items-center">
-              <img src={user.avatar} alt="avatar" className="w-[40px] h-[40px] rounded-circle" />
+              <img
+                src={user.avatar}
+                alt="avatar"
+                className="ml-[1px] w-[40px] h-[40px] rounded-circle"
+              />
               {menu && <div className="mx-3">{user.username}</div>}
             </Link>
           ) : (
@@ -118,11 +123,11 @@ const Menu = () => {
               data-index={index}
               className={`my-1 shadow-md rounded-lg ${
                 index === active ? color.active : color.inside
-              } `}>
+              } overflow-hidden`}>
               <div
                 className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
                   index === active && color.active
-                } rounded-lg`}
+                } rounded-lg overflow-hidden`}
                 onClick={() => handleActive(index)}>
                 {/* main icon */}
                 <Icon className="w-[40px] h-[40px]" />
@@ -145,20 +150,19 @@ const Menu = () => {
               </div>
 
               {/* list child function */}
-              <div className={color.outside}>
+              <div className={`${color.active} `}>
                 {index === active &&
                   listUrl.length > 1 &&
                   listUrl.map((list, index) => (
-                    <div key={index} className="py-1">
+                    <div key={index} className="py-2 pr-1">
                       <Link
-                        className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg`}
+                        className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg overflow-hidden`}
                         to={list[1]}>
                         <p className="mx-3">{list[0]}</p>
                       </Link>
                     </div>
                   ))}
               </div>
-              <div></div>
             </div>
           ))}
         </div>
@@ -166,9 +170,9 @@ const Menu = () => {
         {/* logout */}
         {user && (
           <div
-            className={`m-1 p-2 cursor-pointer d-flex align-items-center ${color.inside} shadow-md rounded-lg`}
+            className={`m-1 py-2 px-1 cursor-pointer d-flex align-items-center ${color.inside} shadow-md rounded-lg`}
             onClick={handleLogout}>
-            <IoIosLogOut className="w-[40px] h-[40px]" />
+            <IoIosLogOut className="w-[36px] h-[36px]" />
             {menu && <div className="mx-3">Logout</div>}
           </div>
         )}

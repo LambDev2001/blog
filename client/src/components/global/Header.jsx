@@ -5,7 +5,7 @@ import { faBars, faEnvelope, faBell } from "@fortawesome/free-solid-svg-icons";
 
 import { updateMenu } from "../../redux/actions/menuAction";
 
-const Header = () => {
+const Header = ({ content = "" }) => {
   const dispatch = useDispatch();
   const menu = useSelector((state) => state.menuReducer);
   const color = useSelector((state) => state.themeReducer.themeColor);
@@ -25,6 +25,8 @@ const Header = () => {
           onClick={handleMenu}
         />
       </div>
+
+      <div className="text-2xl font-serif">{content}</div>
       <div>
         <FontAwesomeIcon icon={faBell} className="w-[30px] h-[30px] py-2 px-3" />
         <FontAwesomeIcon

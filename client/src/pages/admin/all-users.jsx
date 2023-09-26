@@ -6,6 +6,7 @@ import { allUsers } from "../../redux/actions/userAction";
 import TableInfo from "../../components/admin/TableInfo";
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Search from "../../components/global/Search";
+import Menu from "../../components/admin/Menu";
 
 const AllUser = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,20 @@ const AllUser = () => {
   }, [dispatch, token]);
 
   return (
-    <div className="mx-2">
-      <AdminRouteWrapper />
-      <Header />
-      {listUsers.length > 0 && (
-        <div>
-          <Search data={listUsers} type={"user"} />
-          <TableInfo data={listUsers} />
+    <div className="d-flex">
+      <Menu />
+      <div className="w-100">
+        <div className="mx-2">
+          <AdminRouteWrapper />
+          <Header content="Manager Users" />
+          {listUsers.length > 0 && (
+            <div>
+              <Search data={listUsers} type={"user"} />
+              <TableInfo data={listUsers} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
