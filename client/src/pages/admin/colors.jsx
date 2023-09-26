@@ -12,6 +12,8 @@ const Color = () => {
     { outside: "bg-gray-200", inside: "bg-white", active: "bg-gray-400" },
     { outside: "bg-cyan-100", inside: "bg-emerald-50", active: "bg-cyan-400" },
     { outside: "bg-fuchsia-100", inside: "bg-white", active: "bg-fuchsia-400" },
+    { outside: "bg-teal-400", inside: "bg-green-200", active: "bg-orange-400" },
+    { outside: "bg-stone-500", inside: "bg-neutral-200", active: "bg-orange-200" },
   ];
 
   const curColor = useSelector((state) => state.themeReducer.themeColor);
