@@ -10,7 +10,8 @@ import menuReducer from "./menuReducer";
 import userReducer from "./userReducer";
 import dashboardReducer from "./dashboardReducer";
 import reportReducer from "./reportReducer";
-import themeReducer  from "./themeReducer";
+import themeReducer from "./themeReducer";
+import themeUserReducer from "./themeUserReducer";
 
 export default combineReducers({
   authReducer,
@@ -24,4 +25,5 @@ export default combineReducers({
   dashboardReducer,
   reportReducer,
   themeReducer,
+  themeUserReducer,
 });
