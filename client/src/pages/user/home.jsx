@@ -122,97 +122,301 @@ const Home = () => {
         </div>
 
         {/* blog */}
-        <div className={` w-3/5`}>
-          <div className="flex justify-between m-4">
-            <Link
-              to={`/user/create`}
-              className="py-2 px-3 border rounded-full cursor-pointer text-white">
-              Create a post
-            </Link>
+        <div className={`w-3/5 custom-scroll-container`} style={{ height: `${height}px` }}>
+          <div className="custom-scroll-content h-100 overflow-auto">
+            <div className="flex justify-between m-4">
+              <Link
+                to={`/user/create`}
+                className="py-2 px-3 border rounded-full cursor-pointer text-white">
+                Create a post
+              </Link>
 
-            {/* type blog show */}
-            <div className="relative">
-              <div
-                className={`${themeColor.input} py-2 px-3 rounded-md flex`}
-                onClick={() => setModalType(!modalType)}>
-                {typeBlog === 1 ? <TbRectangleVertical size={20} /> : <TbRectangle size={20} />}
-                <IoIosArrowDown className="ml-2" size={20}/>
-              </div>
-              {modalType && (
+              {/* type blog show */}
+              <div className="relative">
                 <div
-                  className={`${themeColor.input} absolute right-0 mt-2 flex flex-col w-[120px] rounded-md`}>
-                  <div className={`p-2 m-auto border-b`}>View</div>
-                  <div className={`${themeColor.hoverBold} p-2 my-1 mx-3 rounded-md flex cursor-pointer`} onClick={() => setType(1)}>
-                    <TbRectangleVerticalFilled size={20} className="" />
-                    <div className="ml-2">Card</div>
-                  </div>
-                  <div className={`${themeColor.hoverBold} p-2 my-1 mx-3 rounded-md flex cursor-pointer`} onClick={() => setType(2)}>
-                    <TbRectangleFilled size={20} className="" />
-                    <div className="ml-2">Classis</div>
-                  </div>
+                  className={`${themeColor.input} py-2 px-3 rounded-md flex`}
+                  onClick={() => setModalType(!modalType)}>
+                  {typeBlog === 1 ? <TbRectangleVertical size={20} /> : <TbRectangle size={20} />}
+                  <IoIosArrowDown className="ml-2" size={20} />
                 </div>
-              )}
-            </div>
-          </div>
-
-          <div className={`${themeColor.sub} mx-4 rounded-lg p-3`}>
-            {/* header */}
-            <div className="flex justify-between">
-              <div className="flex">
-                <img
-                  src="https://imgs.search.brave.com/N1nj9QYN-j2SKJNz9Q6qTxDw-zFieCBL6AZaGyozGjU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzdy/NGp2cC9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl8xZHhlanQ1Y3Ux/c2ExLnBuZw"
-                  alt="thumbnail"
-                  className="h-[28px] w-[28px] rounded-circle"
-                />
-                <div className="mx-3">Name</div>
-                <div>Time</div>
-              </div>
-              <div className="flex">
-                <MdOutlineBugReport color="white" size={24} className="mx-1" />
-                <IoMdClose color="white" size={24} className="mx-1" />
+                {modalType && (
+                  <div
+                    className={`${themeColor.input} absolute right-0 mt-2 flex flex-col w-[120px] rounded-md`}>
+                    <div className={`p-2 m-auto border-b`}>View</div>
+                    <div
+                      className={`${themeColor.hoverBold} p-2 my-1 mx-3 rounded-md flex cursor-pointer`}
+                      onClick={() => setType(1)}>
+                      <TbRectangleVerticalFilled size={20} className="" />
+                      <div className="ml-2">Card</div>
+                    </div>
+                    <div
+                      className={`${themeColor.hoverBold} p-2 my-1 mx-3 rounded-md flex cursor-pointer`}
+                      onClick={() => setType(2)}>
+                      <TbRectangleFilled size={20} className="" />
+                      <div className="ml-2">Classis</div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* description */}
-            <div className="my-3 text-xl font-bold">
-              Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays soy sauce
-              on laundry
-            </div>
-
-            {/* thumbnail */}
-            <div>
-              <img
-                src="https://imgs.search.brave.com/0O8pH-KjwLpF9VDJyN2ckjGvwH2gNY0z_-yOu0QLye4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly96YmFz/ZS1nbG9iYWwuemlu/Z2Zyb250LmNvbS9z/YWFzYm94L3Jlc291/cmNlcy9qcGVnL2Fu/aW1lLWFpLWFydC1n/ZW5lcmF0b3I5LWZv/dG9yLTIwMjMwODE4/OTUxMi0xX180MzVi/MzhiNWEwOGYxY2E4/MTZlZDA0YTVmYWE4/NWVmMy5qcGVn"
-                alt="thumbnail"
-                className="w-100 rounded-md"
-              />
-            </div>
-
-            {/* interact */}
-            <div className="flex">
-              <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
-                <div className="flex mr-2">
-                  <BiLike size={24} />
-                  <div className="ml-1">210</div>
+            {typeBlog === 1 && (
+              <div className={`${themeColor.sub} mx-4 my-2 rounded-lg p-3`}>
+                {/* header */}
+                <div className="flex justify-between">
+                  <div className="flex">
+                    <img
+                      src="https://imgs.search.brave.com/N1nj9QYN-j2SKJNz9Q6qTxDw-zFieCBL6AZaGyozGjU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzdy/NGp2cC9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl8xZHhlanQ1Y3Ux/c2ExLnBuZw"
+                      alt="thumbnail"
+                      className="h-[28px] w-[28px] rounded-circle"
+                    />
+                    <div className="mx-3">Name</div>
+                    <div>Time</div>
+                  </div>
+                  <div className="flex">
+                    <MdOutlineBugReport color="white" size={24} className="mx-1" />
+                    <IoMdClose color="white" size={24} className="mx-1" />
+                  </div>
                 </div>
+
+                {/* description */}
+                <div className="my-3 text-xl font-bold">
+                  Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays soy
+                  sauce on laundry
+                </div>
+
+                {/* thumbnail */}
+                <div>
+                  <img
+                    src="https://imgs.search.brave.com/0O8pH-KjwLpF9VDJyN2ckjGvwH2gNY0z_-yOu0QLye4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly96YmFz/ZS1nbG9iYWwuemlu/Z2Zyb250LmNvbS9z/YWFzYm94L3Jlc291/cmNlcy9qcGVnL2Fu/aW1lLWFpLWFydC1n/ZW5lcmF0b3I5LWZv/dG9yLTIwMjMwODE4/OTUxMi0xX180MzVi/MzhiNWEwOGYxY2E4/MTZlZDA0YTVmYWE4/NWVmMy5qcGVn"
+                    alt="thumbnail"
+                    className="w-100 rounded-md"
+                  />
+                </div>
+
+                {/* interact */}
                 <div className="flex">
-                  <BiDislike size={24} />
-                  <div className="ml-1">50</div>
+                  <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                    <div className="flex mr-2">
+                      <BiLike size={24} />
+                      <div className="ml-1">210</div>
+                    </div>
+                    <div className="flex">
+                      <BiDislike size={24} />
+                      <div className="ml-1">50</div>
+                    </div>
+                  </div>
+                  <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                    <FaRegEye size={24} />
+                    <div className="ml-1">1707</div>
+                  </div>
+                  <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                    <BiCommentDetail size={24} />
+                    <div className="ml-1">70</div>
+                  </div>
+                  <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                    <GoShare size={24} />
+                    <div className="ml-1">10</div>
+                  </div>
                 </div>
               </div>
-              <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
-                <FaRegEye size={24} />
-                <div className="ml-1">1707</div>
-              </div>
-              <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
-                <BiCommentDetail size={24} />
-                <div className="ml-1">70</div>
-              </div>
-              <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
-                <GoShare size={24} />
-                <div className="ml-1">10</div>
-              </div>
-            </div>
+            )}
+
+            {typeBlog === 2 && (
+              <>
+                <div className={`${themeColor.sub} mx-4 my-3 rounded-lg p-3`}>
+                  {/* header */}
+                  <div className="flex justify-between">
+                    <div className="flex">
+                      <img
+                        src="https://imgs.search.brave.com/N1nj9QYN-j2SKJNz9Q6qTxDw-zFieCBL6AZaGyozGjU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzdy/NGp2cC9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl8xZHhlanQ1Y3Ux/c2ExLnBuZw"
+                        alt="thumbnail"
+                        className="h-[28px] w-[28px] rounded-circle"
+                      />
+                      <div className="mx-3">Name</div>
+                      <div>Time</div>
+                    </div>
+                    <div className="flex">
+                      <MdOutlineBugReport color="white" size={24} className="mx-1" />
+                      <IoMdClose color="white" size={24} className="mx-1" />
+                    </div>
+                  </div>
+
+                  {/* description, interact and thumbnail */}
+                  <div className="flex flex-wrap justify-between">
+                    <div className="w-3/4">
+                      {/* description */}
+                      <div className="my-3 text-xl font-bold">
+                        Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays
+                        soy sauce on laundry
+                      </div>
+                      {/* interact */}
+                      <div className="flex">
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <div className="flex mr-2">
+                            <BiLike size={24} />
+                            <div className="ml-1">210</div>
+                          </div>
+                          <div className="flex">
+                            <BiDislike size={24} />
+                            <div className="ml-1">50</div>
+                          </div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <FaRegEye size={24} />
+                          <div className="ml-1">1707</div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <BiCommentDetail size={24} />
+                          <div className="ml-1">70</div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <GoShare size={24} />
+                          <div className="ml-1">10</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* thumbnail */}
+                    <div className="w-1/4 max-w-[200px] h-100">
+                      <img
+                        src="https://imgs.search.brave.com/0O8pH-KjwLpF9VDJyN2ckjGvwH2gNY0z_-yOu0QLye4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly96YmFz/ZS1nbG9iYWwuemlu/Z2Zyb250LmNvbS9z/YWFzYm94L3Jlc291/cmNlcy9qcGVnL2Fu/aW1lLWFpLWFydC1n/ZW5lcmF0b3I5LWZv/dG9yLTIwMjMwODE4/OTUxMi0xX180MzVi/MzhiNWEwOGYxY2E4/MTZlZDA0YTVmYWE4/NWVmMy5qcGVn"
+                        alt="thumbnail"
+                        className="w-100 rounded-md"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${themeColor.sub} mx-4 my-3 rounded-lg p-3`}>
+                  {/* header */}
+                  <div className="flex justify-between">
+                    <div className="flex">
+                      <img
+                        src="https://imgs.search.brave.com/bg0ot27bBUbk8__0NewwtvpD8V11_YcibTor_YnkmVo/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWd2/My5mb3Rvci5jb20v/aW1hZ2VzL2dhbGxl/cnkvRmVtYWxlLWFu/aW1lLWNoYXJhY3Rl/ci1pbi1LaW1vbm8t/Z2VuZXJhdGVkLWJ5/LUZvdG9ycy1hbmlt/ZS1BSS1hcnQtZ2Vu/ZXJhdG9yLmpwZw"
+                        alt="thumbnail"
+                        className="h-[28px] w-[28px] rounded-circle"
+                      />
+                      <div className="mx-3">Name</div>
+                      <div>Time</div>
+                    </div>
+                    <div className="flex">
+                      <MdOutlineBugReport color="white" size={24} className="mx-1" />
+                      <IoMdClose color="white" size={24} className="mx-1" />
+                    </div>
+                  </div>
+
+                  {/* description, interact and thumbnail */}
+                  <div className="flex flex-wrap justify-between">
+                    <div className="w-3/4">
+                      {/* description */}
+                      <div className="my-3 text-xl font-bold">
+                        Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays
+                        soy sauce on laundry
+                      </div>
+                      {/* interact */}
+                      <div className="flex">
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <div className="flex mr-2">
+                            <BiLike size={24} />
+                            <div className="ml-1">210</div>
+                          </div>
+                          <div className="flex">
+                            <BiDislike size={24} />
+                            <div className="ml-1">50</div>
+                          </div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <FaRegEye size={24} />
+                          <div className="ml-1">1707</div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <BiCommentDetail size={24} />
+                          <div className="ml-1">70</div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <GoShare size={24} />
+                          <div className="ml-1">10</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* thumbnail */}
+                    <div className="w-1/4 max-w-[200px] h-100">
+                      <img
+                        src="https://imgs.search.brave.com/bg0ot27bBUbk8__0NewwtvpD8V11_YcibTor_YnkmVo/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWd2/My5mb3Rvci5jb20v/aW1hZ2VzL2dhbGxl/cnkvRmVtYWxlLWFu/aW1lLWNoYXJhY3Rl/ci1pbi1LaW1vbm8t/Z2VuZXJhdGVkLWJ5/LUZvdG9ycy1hbmlt/ZS1BSS1hcnQtZ2Vu/ZXJhdG9yLmpwZw"
+                        alt="thumbnail"
+                        className="ư-100 rounded-md"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${themeColor.sub} mx-4 my-3 rounded-lg p-3`}>
+                  {/* header */}
+                  <div className="flex justify-between">
+                    <div className="flex">
+                      <img
+                        src="https://imgs.search.brave.com/bg0ot27bBUbk8__0NewwtvpD8V11_YcibTor_YnkmVo/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWd2/My5mb3Rvci5jb20v/aW1hZ2VzL2dhbGxl/cnkvRmVtYWxlLWFu/aW1lLWNoYXJhY3Rl/ci1pbi1LaW1vbm8t/Z2VuZXJhdGVkLWJ5/LUZvdG9ycy1hbmlt/ZS1BSS1hcnQtZ2Vu/ZXJhdG9yLmpwZw"
+                        alt="thumbnail"
+                        className="h-[28px] w-[28px] rounded-circle"
+                      />
+                      <div className="mx-3">Name</div>
+                      <div>Time</div>
+                    </div>
+                    <div className="flex">
+                      <MdOutlineBugReport color="white" size={24} className="mx-1" />
+                      <IoMdClose color="white" size={24} className="mx-1" />
+                    </div>
+                  </div>
+
+                  {/* description, interact and thumbnail */}
+                  <div className="flex flex-wrap justify-between">
+                    <div className="w-3/4">
+                      {/* description */}
+                      <div className="my-3 text-xl font-bold">
+                        Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays
+                        soy sauce on laundry
+                      </div>
+                      {/* interact */}
+                      <div className="flex">
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <div className="flex mr-2">
+                            <BiLike size={24} />
+                            <div className="ml-1">210</div>
+                          </div>
+                          <div className="flex">
+                            <BiDislike size={24} />
+                            <div className="ml-1">50</div>
+                          </div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <FaRegEye size={24} />
+                          <div className="ml-1">1707</div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <BiCommentDetail size={24} />
+                          <div className="ml-1">70</div>
+                        </div>
+                        <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
+                          <GoShare size={24} />
+                          <div className="ml-1">10</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* thumbnail */}
+                    <div className="w-1/4 max-w-[200px] h-100">
+                      <img
+                        src="https://imgs.search.brave.com/bg0ot27bBUbk8__0NewwtvpD8V11_YcibTor_YnkmVo/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWd2/My5mb3Rvci5jb20v/aW1hZ2VzL2dhbGxl/cnkvRmVtYWxlLWFu/aW1lLWNoYXJhY3Rl/ci1pbi1LaW1vbm8t/Z2VuZXJhdGVkLWJ5/LUZvdG9ycy1hbmlt/ZS1BSS1hcnQtZ2Vu/ZXJhdG9yLmpwZw"
+                        alt="thumbnail"
+                        className="ư-100 rounded-md"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
