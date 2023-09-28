@@ -79,7 +79,9 @@ const blogCtrl = {
 
       const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
 
-      return res.status(200).json({ ...blog._doc, likes, dislikes, comments, views: view, viewMonthly });
+      return res
+        .status(200)
+        .json({ ...blog._doc, likes, dislikes, comments, views: view, viewMonthly });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -113,12 +115,14 @@ const blogCtrl = {
   listBlogs: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
-      const allBlogs = await Blogs.find({
-        status: "normal",
-      }).select("-report -status -content");
+      const allBlogs = await Blogs.find({}).select("-report -status -content");
 
       let blogs = await Promise.all(
         allBlogs.map(async (blog) => {
+          const author = await Users.findById(blog.idUser).select(
+            "-password -__v -report -status -friends"
+          );
+
           const category = await Categories.findById(blog.category);
 
           const likes = await Likes.count({
@@ -130,8 +134,28 @@ const blogCtrl = {
             like: false,
           });
           const views = await Views.findOne({ idBlog: blog._id });
+          let comments = await Comments.count({
+            idBlog: blog._id,
+          });
 
-          return { ...blog._doc, category: category.name, likes, dislikes, views: views.view };
+          let isLike = await Likes.findOne({
+            idBlog: blog._id,
+            idUser: req.user.id,
+          });
+          
+          if(!isLike) isLike = {like: null};
+          
+
+          return {
+            ...blog._doc,
+            author,
+            category: category.name,
+            likes,
+            dislikes,
+            views: views.view,
+            comments,
+            isLike: isLike.like,
+          };
         })
       );
 
@@ -147,6 +171,8 @@ const blogCtrl = {
 
       return res.status(200).json(blogs);
     } catch (err) {
+      console.log(err);
+
       return res.status(500).json({ msg: err.message });
     }
   },

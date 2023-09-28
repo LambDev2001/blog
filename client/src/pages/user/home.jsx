@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { IoIosArrowDown } from "react-icons/io";
@@ -16,13 +16,23 @@ import Menu from "../../components/user/basic/Menu";
 import Blog from "../../components/user/blog/Blog";
 import Friend from "../../components/user/basic/Friend";
 import Group from "../../components/user/basic/Group";
+import { getBlogsUser } from "../../redux/actions/blogAction";
+import { getRooms } from "../../redux/actions/roomAction";
 
 const Home = () => {
   const [typeBlog, setTypeBlog] = useState(1);
   const [modalType, setModalType] = useState(false);
   const themeColor = useSelector((state) => state.themeUserReducer);
+  const token = useSelector((state) => state.authReducer.accessToken);
+
+  const dispatch = useDispatch()
 
   const height = window.innerHeight - 60;
+
+  useEffect(() => {
+    dispatch(getBlogsUser(token))
+    dispatch(getRooms(token))
+  }, [dispatch, token])
 
   const setType = (type) => {
     setTypeBlog(type);

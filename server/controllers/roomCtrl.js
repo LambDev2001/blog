@@ -7,8 +7,8 @@ const groupCtrl = {
     try {
       const idUser = req.user.id;
 
-      const rooms = await Rooms.find({ member: idUser }).select(
-        "-idUser -member -report -__v -createdAt -updatedAt"
+      let rooms = await Rooms.find({ member: idUser }).select(
+        "-idUser -report -__v -createdAt -updatedAt"
       );
 
       return res.status(200).json(rooms);
