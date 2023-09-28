@@ -11,6 +11,22 @@ body {
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 2px;
+  background-color: rgb(57, 59, 58);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(20, 20, 20);
+  border-radius: 10px;
+}
+
+/* Thiết lập màu sắc của phần nền thanh cuộn */
+body::-webkit-scrollbar-track {
+  background-color: transparent; /* Màu nền của thanh cuộn */
+}
+
 .avatar {
   border-radius: 50%;
   width: 50px;

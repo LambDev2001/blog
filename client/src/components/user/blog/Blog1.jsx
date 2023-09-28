@@ -32,8 +32,11 @@ const Blog1 = (data, readOnly) => {
           </div>
         </div>
 
+        {/* title */}
+        <div className="my-1 text-lg font-bold">Name character</div>
+
         {/* description */}
-        <div className="my-3 text-xl font-bold">
+        <div className="my-1 text-md">
           Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays soy sauce on
           laundry
         </div>
@@ -93,8 +96,11 @@ const Blog1 = (data, readOnly) => {
           </div>
         </div>
 
+        {/* title */}
+        <div className="my-1 text-lg font-bold">Name character</div>
+
         {/* description */}
-        <div className="my-3 text-xl font-bold">
+        <div className="my-1 text-md">
           Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays soy sauce on
           laundry
         </div>

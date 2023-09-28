@@ -41,7 +41,7 @@ const LoginPass = () => {
       <div className={`${color.inside} p-4 rounded-lg shadow-md`}>
         <div className="text-2xl font-semibold mb-4 text-center">Login Form</div>
         <Text name="account" handleText={handleChangeInput} />
-        <Password name="password" handlePassword={handleChangeInput} />
+        <Password name="password" onChange={handleChangeInput} />
 
         <div className="flex justify-end">
           <Button text={"Login"} color={2} type="submit" />

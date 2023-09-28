@@ -33,8 +33,11 @@ const Blogs2 = () => {
       {/* description, interact and thumbnail */}
       <div className="flex flex-wrap justify-between">
         <div className="w-3/4">
+          {/* title */}
+          <div className="my-1 text-lg font-bold">Name character</div>
+
           {/* description */}
-          <div className="my-3 text-xl font-bold">
+          <div className="my-1 text-md">
             Bukit Panjang woman who poured pee in neighbour's shoes now allegedly sprays soy sauce
             on laundry
           </div>

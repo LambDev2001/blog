@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import { GoSearch } from "react-icons/go";
 
+import ModalLogin from "../../../components/user/auth/ModalLogin";
+import { logout } from "../../../redux/actions/authAction";
+
 const Header = () => {
+  const [modalLogin, setModalLogin] = useState(false);
+  const [modalUser, setModalUser] = useState(false);
   const user = useSelector((state) => state.authReducer.user);
   const themeColor = useSelector((state) => state.themeUserReducer);
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const dispatch = useDispatch();
+
+  const handleModalLogin = (state) => {
+    setModalLogin(state);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout(token));
+    setModalUser(false);
+  };
 
   return (
     <div
@@ -33,15 +49,39 @@ const Header = () => {
 
       {/* login */}
       <div className="my-auto mx-2">
-        {user.username ? (
+        {user ? (
           <div>
-            <img src={user.avatar} alt="avatar" className="rounded-full w-[40px] h-[40px]" />
+            <img
+              src={user.avatar}
+              alt="avatar"
+              className="rounded-full w-[40px] h-[40px]"
+              onClick={() => setModalUser(!modalUser)}
+            />
+            {modalUser && (
+              <div
+                className={`${themeColor.input} absolute top-[60px] right-4 py-1 px-1 rounded-lg`}>
+                <div
+                  className={`${themeColor.hoverBold} py-2 px-4 mx-2 my-1 rounded-lg cursor-pointer`}>
+                  <Link to="/user/profile">Profile</Link>
+                </div>
+                <hr />
+                <div
+                  className={`${themeColor.hoverBold} py-2 px-4 mx-2 my-1 rounded-lg cursor-pointer`}
+                  onClick={handleLogout}>
+                  Logout
+                </div>
+              </div>
+            )}
           </div>
         ) : (
-          <div className={`${themeColor.hover} py-2 px-3 rounded-full`}>
-            <Link to={`/user/login`}>Login</Link>
+          <div
+            className={`${themeColor.hover} py-2 px-3 rounded-full cursor-pointer`}
+            onClick={() => handleModalLogin(!modalLogin)}>
+            <div>Login</div>
           </div>
         )}
+
+        {modalLogin && <ModalLogin handleModalLogin={handleModalLogin} />}
       </div>
     </div>
   );

@@ -174,7 +174,7 @@ const loginUser = async (user, password, res) => {
   try {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.json({ msg: "The account or password is incorrect" });
+      return res.json({ err: "The account or password is incorrect" });
     }
 
     const accessToken = generateAccessToken({ id: user._id });

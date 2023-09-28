@@ -33,8 +33,8 @@ const ChangePass = ({ setModal, token }) => {
         onSubmit={(e) => handleSubmit(e)}>
         <div className="text-2xl font-semibold mb-4 text-center">Change Password</div>
 
-        <Password name="currentPassword" handlePassword={handleCurrentPassword} />
-        <Password name="newPassword" handlePassword={handleNewPassword} />
+        <Password name="currentPassword" onChange={handleCurrentPassword} />
+        <Password name="newPassword" onChange={handleNewPassword} />
 
         <div className="flex justify-center mt-4">
           <Button text={"Close"} color={0} onClick={() => setModal(false)} />

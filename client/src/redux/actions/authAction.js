@@ -17,11 +17,11 @@ export const login = (infoUser) => async (dispatch) => {
 
 export const register = (infoUser) => async (dispatch) => {
   try {
-    dispatch({ type: "ALERT", payload: { loading: true } });
+    dispatch({ type: "LOADING", payload: { loading: true } });
 
     await postAPI("register", infoUser);
 
-    dispatch({ type: "ALERT", payload: { loading: false } });
+    dispatch({ type: "LOADING", payload: { loading: false } });
     dispatch({ type: "ALERT", payload: { msg: "Check your email" } });
   } catch (err) {
     console.error(err);

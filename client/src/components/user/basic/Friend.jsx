@@ -78,8 +78,6 @@ const Friend = () => {
           <IoChatbubblesOutline size={20} />
         </div>
       </div>
-
-
     </div>
   );
 };

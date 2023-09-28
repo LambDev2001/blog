@@ -82,10 +82,12 @@ const Home = () => {
         </div>
 
         {/* social */}
-        <div className={`${themeColor.border} w-1/5 border-l custom-scroll-container`} style={{ height: `${height}px` }}>
+        <div
+          className={`${themeColor.border} w-1/5 border-l custom-scroll-container`}
+          style={{ height: `${height}px` }}>
           <div className="custom-scroll-content h-100 overflow-auto">
             <Friend />
-  
+
             <Group />
           </div>
         </div>
