@@ -161,6 +161,36 @@ const userCtrl = {
     }
   },
 
+  follow: async (req, res) => {
+    try {
+      const { idUser } = req.body;
+      const user = await Users.findById({ _id: req.user.id });
+      if (!user) return res.json({ msg: "User not found" });
+
+      user.following.push(idUser);
+      await user.save();
+      return res.status(200).json({ msg: "Follow successfully" });
+    }
+    catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  unFollow: async (req, res) => {
+    try {
+      const { idUser } = req.body;
+      const user = await Users.findById({ _id: req.user.id });
+      if (!user) return res.json({ msg: "User not found" });
+
+      user.following.splice(user.following.indexOf(idUser), 1);
+      await user.save();
+      return res.status(200).json({ msg: "Follow successfully" });
+    }
+    catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // admin
   getUser: async (req, res) => {
     try {

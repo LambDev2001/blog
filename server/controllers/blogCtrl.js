@@ -45,14 +45,16 @@ const blogCtrl = {
   increaseShare: async (req, res) => {
     try {
       const { idBlog } = req.params;
-      const blog = await Blogs.findById(idBlog);
-      if (!blog) return res.json({ msg: "Blog not found" });
+
+      let blog = await Blogs.findById(idBlog);
+      if (!blog) return res.json({ err: "Blog not found" });
 
       blog.share += 1;
       await blog.save();
 
       return res.status(200).json({ msg: "Increased share" });
     } catch (err) {
+      console.log(err);
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -129,11 +131,14 @@ const blogCtrl = {
             idBlog: blog._id,
             like: true,
           });
+
           const dislikes = await Likes.count({
             idBlog: blog._id,
             like: false,
           });
+
           const views = await Views.findOne({ idBlog: blog._id });
+
           let comments = await Comments.count({
             idBlog: blog._id,
           });
@@ -142,9 +147,13 @@ const blogCtrl = {
             idBlog: blog._id,
             idUser: req.user.id,
           });
-          
-          if(!isLike) isLike = {like: null};
-          
+
+          if (!isLike) isLike = { like: null };
+
+          const isFollowing = await Users.findOne({
+            _id: req.user.id,
+            following: author._id,
+          });
 
           return {
             ...blog._doc,
@@ -155,6 +164,7 @@ const blogCtrl = {
             views: views.view,
             comments,
             isLike: isLike.like,
+            isFollowing: isFollowing ? true : false,
           };
         })
       );

@@ -2,12 +2,16 @@ const blogReducer = (state = [], action) => {
   switch (action.type) {
     case "GET_BLOGS":
       return action.payload;
+
     case "GET_BLOG":
       return action.payload;
+
     case "CREATE_BLOG":
       return [{ ...state[0], ...action.payload }];
+
     case "UPDATE_BLOG":
       return [{ ...state[0], ...action.payload }];
+
     case "LIKE_BLOG":
       let resultLike = state.map((item) => {
         if (item._id === action.payload._id) {
@@ -41,6 +45,22 @@ const blogReducer = (state = [], action) => {
       });
 
       return resultDislike;
+
+    case "FOLLOW_USER_BLOGS":
+      return state.map((item) => {
+        if (item.author._id === action.payload.idUser) {
+          return { ...item, isFollowing: true };
+        }
+        return item;
+      })
+
+    case "INCREASE_SHARE":
+      return state.map((item) => {
+        if (item._id === action.payload.idBlog) {
+          return { ...item, share: item.share + 1 };
+        }
+        return item;
+      });
 
     case "DELETE_BLOG":
       return state.filter((item) => item._id !== action.payload);

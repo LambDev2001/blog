@@ -55,3 +55,24 @@ export const changeStatus =
       console.error(err);
     }
   };
+
+  export const followUser = (idUser, token) => async (dispatch) => {
+    try {
+      const res = await patchAPI(`follow`, {idUser}, token);
+      ResErrorData(res.data, dispatch);
+      dispatch({ type: "FOLLOW_USER_BLOGS", payload: {idUser} });
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  export const unFollowUser = (idUser, token) => async (dispatch) => {
+    try {
+      const res = await patchAPI(`un-follow`, {idUser}, token);
+      ResErrorData(res.data, dispatch);
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    } catch (err) {
+      console.error(err);
+    }
+  }

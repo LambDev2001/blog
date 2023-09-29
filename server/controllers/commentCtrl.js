@@ -1,5 +1,5 @@
-import Blogs from "../models/blogModel.js";
 import Comments from "../models/commentModel.js";
+import Users from "../models/userModel.js";
 import { io } from "../server.js";
 
 const commentCtrl = {
@@ -7,22 +7,22 @@ const commentCtrl = {
   getComments: async (req, res) => {
     try {
       const { idBlog } = req.params;
-      const comments = await Comments.find({ idBlog, status: "normal" })
+      let comments = await Comments.find({ idBlog, status: "normal" })
         .select("idUser message replyCM updatedAt")
         .limit(10);
       if (comments.length === 0) return res.status(200).json({ msg: "This blog has no comment" });
 
-      const listComment = comments.map((comment) => {
-        return {
-          _id: comment._id,
-          idUser: comment.idUser,
-          message: comment.message,
-          countReplyComment: comment.replyCM.length,
-          updatedAt: comment.updatedAt,
-        };
-      });
+      comments = await Promise.all(
+        comments.map(async (comment) => {
+          const author = await Users.findById(comment.idUser).select(
+            "-password -__v -report -status"
+          );
+          return { ...comment._doc, author };
+        })
+      );
+      
 
-      return res.status(200).json(listComment);
+      return res.status(200).json(comments);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

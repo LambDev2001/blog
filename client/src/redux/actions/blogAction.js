@@ -128,3 +128,14 @@ export const dislikeBlog = (idBlog, token) => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const increaseShare = (idBlog, token) => async (dispatch) => {
+  try {
+    const res = await patchAPI(`increase-share/${idBlog}`, {}, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "INCREASE_SHARE", payload: {idBlog} });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
