@@ -1,8 +1,7 @@
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
 
 import { getAPI, postAPI, patchAPI, deleteAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
-
 
 export const getBlogs = (token) => async (dispatch) => {
   try {
@@ -36,7 +35,7 @@ export const getBlogsUser = (token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: true } });
 
     let blogs = await getAPI("blogs", token);
-    
+
     ResErrorData(blogs.data, dispatch);
     if (blogs.data.length > 0) {
       blogs.data = blogs.data.map((item) => {
@@ -46,8 +45,15 @@ export const getBlogsUser = (token) => async (dispatch) => {
           month: "long",
           day: "numeric",
         });
-        const timeAgo = formatDistanceToNow(date, { addSuffix: true });
-        return {...item, timeAgo};
+        let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
+        if (timeAgo.startsWith("about ")) {
+          timeAgo = timeAgo.slice(6);
+        } else if (timeAgo.startsWith("over ")) {
+          timeAgo = timeAgo.slice(5);
+        }
+        
+
+        return { ...item, timeAgo };
       });
     }
 
@@ -113,7 +119,7 @@ export const likeBlog = (idBlog, token) => async (dispatch) => {
   try {
     const res = await postAPI(`like/${idBlog}`, {}, token);
     ResErrorData(res.data, dispatch);
-    dispatch({ type: "LIKE_BLOG", payload: {_id: idBlog, isLike: true} });
+    dispatch({ type: "LIKE_BLOG", payload: { _id: idBlog, isLike: true } });
   } catch (err) {
     console.error(err);
   }
@@ -123,7 +129,7 @@ export const dislikeBlog = (idBlog, token) => async (dispatch) => {
   try {
     const res = await postAPI(`dislike/${idBlog}`, {}, token);
     ResErrorData(res.data, dispatch);
-    dispatch({ type: "DISLIKE_BLOG", payload: {_id: idBlog, isLike: false} });
+    dispatch({ type: "DISLIKE_BLOG", payload: { _id: idBlog, isLike: false } });
   } catch (err) {
     console.error(err);
   }
@@ -133,9 +139,8 @@ export const increaseShare = (idBlog, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`increase-share/${idBlog}`, {}, token);
     ResErrorData(res.data, dispatch);
-    dispatch({ type: "INCREASE_SHARE", payload: {idBlog} });
+    dispatch({ type: "INCREASE_SHARE", payload: { idBlog } });
   } catch (err) {
     console.error(err);
   }
-}
-
+};

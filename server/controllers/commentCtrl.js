@@ -8,8 +8,8 @@ const commentCtrl = {
     try {
       const { idBlog } = req.params;
       let comments = await Comments.find({ idBlog, status: "normal" })
-        .select("idUser message replyCM updatedAt")
-        .limit(10);
+        .select("idUser message replyCM createdAt updatedAt")
+        .sort({ createdAt: -1 });
       if (comments.length === 0) return res.status(200).json({ msg: "This blog has no comment" });
 
       comments = await Promise.all(
@@ -66,13 +66,22 @@ const commentCtrl = {
       const newComment = new Comments({ idUser, idBlog, message });
       await newComment.save();
 
-      const data = new Object({
-        newComment: newComment._doc,
-        user: req.user,
-      });
+      const author = await Users.findById(newComment.idUser).select(
+        "-__v -password -createdAt -updatedAt -status -friends -report"
+      )
 
-      io.to(`${idBlog}`).emit("create-comment", data);
-      return res.status(200).json(newComment);
+      const comment = {
+        _id: newComment._id,
+        idUser: newComment.idUser,
+        replyCM: newComment.replyCM,
+        message: newComment.message,
+        createdAt : newComment.createdAt,
+        updatedAt: newComment.updatedAt,
+        author
+      }
+
+      io.to(`${idBlog}`).emit("create-comment", comment);
+      return res.status(200).json(comment);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

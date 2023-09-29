@@ -36,10 +36,14 @@ const Blog1 = ({ readOnly }) => {
     dispatch(increaseShare(idBlog, token));
   };
 
-  const handleComment = (index, idBlog)=>{
-    dispatch(getComments(idBlog));
-    setOpenComments(index);
-  }
+  const handleComment = (index, idBlog) => {
+    if (openComments !== index) {
+      dispatch(getComments(idBlog));
+      setOpenComments(index);
+    } else {
+      setOpenComments(-1);
+    }
+  };
 
   return (
     <div>
@@ -121,7 +125,7 @@ const Blog1 = ({ readOnly }) => {
                 </div>
                 <div
                   className={`${themeColor.input} flex cursor-pointer py-2 px-3 m-2 rounded-full`}>
-                  <BiCommentDetail size={24} onClick={()=>handleComment(index, blog._id)} />
+                  <BiCommentDetail size={24} onClick={() => handleComment(index, blog._id)} />
                   <div className="ml-1">{blog.comments}</div>
                 </div>
                 <div
@@ -133,10 +137,7 @@ const Blog1 = ({ readOnly }) => {
             </div>
 
             {/* Comment */}
-            {
-              openComments === index &&
-              <Comment />
-            }
+            <div id={blog._id}>{openComments === index && <Comment idBlog={blog._id} />}</div>
           </div>
         ))}
     </div>
