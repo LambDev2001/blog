@@ -7,7 +7,7 @@ const router = express.Router()
 
 // none auth
 router.get("/comments/:idBlog", commentCtrl.getComments)
-router.get("/reply-comments/:idComment", commentCtrl.showReplyComments)
+router.get("/reply/:idComment", commentCtrl.getReplies)
 
 // user
 

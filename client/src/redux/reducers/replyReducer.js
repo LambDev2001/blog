@@ -1,9 +1,9 @@
-const commentReducer = (state =[], action) => {
+const replyReducer = (state = [], action) => {
   switch (action.type) {
-    case "GET_COMMENTS":
+    case "GET_REPLY":
       return action.payload;
 
-    case "SEND_COMMENT":
+    case "SEND_REPLY":
       return [action.payload, ...state];
 
     default:
@@ -11,4 +11,4 @@ const commentReducer = (state =[], action) => {
   }
 };
 
-export default commentReducer;
+export default replyReducer;

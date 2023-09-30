@@ -8,7 +8,7 @@ import { GoShare } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineBugReport } from "react-icons/md";
 
-import Comment from "./Comment";
+import Comment from "../comment/Comment";
 import { dislikeBlog, likeBlog, increaseShare } from "../../../redux/actions/blogAction";
 import { followUser } from "../../../redux/actions/userAction";
 import { getComments } from "../../../redux/actions/commentAction";

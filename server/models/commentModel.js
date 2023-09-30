@@ -11,8 +11,8 @@ const commentSchema = new mongoose.Schema(
       require: [true, "The comment must have to id blog"],
     },
     replyCM: {
-      type: [String],
-      default: [],
+      type: String,
+      default: "",
     },
     message: {
       type: String,

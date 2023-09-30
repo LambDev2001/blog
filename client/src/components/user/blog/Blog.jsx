@@ -7,7 +7,7 @@ const Blog = ({type=1, readOnly=true}) => {
   const styleBlogs = [Blog1, Blog2]
   const Blog = styleBlogs[type-1]
 
-  return <Blog readOnly={readOnly} />
+  return <Blog />
 };
 
 export default Blog;
