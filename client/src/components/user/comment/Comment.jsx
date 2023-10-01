@@ -1,104 +1,141 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { LuMoreHorizontal } from "react-icons/lu";
+
 import { sendComment, getReply, sendReply } from "../../../redux/actions/commentAction";
 import InputComment from "./InputComment";
+import ModalReportComment from "../basic/ModalReportComment";
 
-const Comment = ({ idBlog }) => {
+const Comment = ({ idBlog, comments, idComment = "" }) => {
   const [comment, setComment] = useState("");
   const [isReply, setIsReply] = useState(-1);
+  const [isMore, setIsMore] = useState(-1);
+  const [isReport, setIsReport] = useState({});
   const token = useSelector((state) => state.authReducer.accessToken);
   const user = useSelector((state) => state.authReducer.user);
-  const comments = useSelector((state) => state.commentReducer);
-  // const replies = useSelector((state) => state.replyReducer);
   const themeColor = useSelector((state) => state.themeUserReducer);
-  const dispatch = useDispatch();
 
-  const handleGetReply = (idComment, index) => {
-    dispatch(getReply(idComment, token));
-  };
+  const dispatch = useDispatch();
 
   const handleComment = (e) => {
     const { value } = e.target;
     setComment(value);
   };
 
-  const handleReply = (index) => {
-    if (isReply === index) setIsReply(-1);
-    else {
+  const handleReply = async (index, idComment) => {
+    if (isReply === index) {
+      setIsReply(-1);
+    } else {
+      await dispatch(getReply(idComment, token));
       setIsReply(index);
-      handleGetReply(comment._id, index);
     }
   };
 
-  const handleSubmit = (e, idComment) => {
+  const handleMore = (index) => {
+    if (isMore === index) {
+      setIsMore(-1);
+    } else {
+      setIsMore(index);
+    }
+  };
+
+  const handleOpenReport = (comment) => {
+    setIsMore(-1);
+    setIsReport(comment);
+  };
+
+  const handleSubmit = async (e, idComment) => {
     e.preventDefault();
 
     if (idComment === "") dispatch(sendComment({ comment, idBlog, token }));
-    else dispatch(sendReply({ comment, idBlog, idComment, token }));
+    else {
+      await dispatch(sendReply({ comment, idBlog, idComment, token }));
+      dispatch(getReply(idComment, token));
+    }
     setComment("");
   };
 
   return (
-    <div className={`${themeColor.sub} mx-4 my-2 rounded-lg p-3`}>
+    <div className={`${themeColor.sub} rounded-lg pt-2 pb-3 pl-4 `}>
       {comments.length > 0 &&
         comments.map((comment, index) => (
-          <div key={index} className="my-2">
-            <div className="flex">
+          <div key={index}>
+            <div className="my-2 flex">
               {/* Avatar */}
               <img
                 src={comment.author.avatar}
                 alt="avatar"
                 className="rounded-circle h-[32px] w-[32px] my-2"
               />
+
               <div>
                 {/* info */}
-                <div className="ml-2">
-                  <div className={`${themeColor.input} p-2 rounded-lg`}>
+                <div className="ml-2 relative">
+                  <div className={`${themeColor.input} p-2 rounded-lg max-w-prose`}>
                     <div className="font-bold">{comment.author.username}</div>
-                    <div>{comment.message}</div>
+                    <div className="block">{comment.message}</div>
                   </div>
 
                   <div className="flex justify-between text-sm text-gray-500">
                     <div
                       className="font-semibold cursor-pointer mr-2"
-                      onClick={() => handleReply(index)}>
+                      onClick={() => handleReply(index, comment._id)}>
                       Reply
                     </div>
                     <div>{comment.timeAgo}</div>
                   </div>
                 </div>
+
                 {isReply !== index && comment.countReply > 0 && (
                   <div
-                    className="ml-2 mt-2 text-gray-400"
-                    onClick={() => handleGetReply(comment._id, index)}>
+                    className="ml-2 mt-1 text-gray-400"
+                    onClick={() => handleReply(index, comment._id)}>
                     {comment.countReply} Reply
                   </div>
                 )}
+              </div>
 
-                {/* send reply */}
-                {isReply === index && (
-                  <InputComment
-                    idComment={comment._id}
-                    user={user}
-                    themeColor={themeColor}
-                    handleSubmit={handleSubmit}
-                    handleComment={handleComment}
-                  />
-                )}
+              <div className="mx-3 ">
+                <div
+                  className={`${isMore === index && themeColor.input} ${
+                    themeColor.hover
+                  } mb-auto rounded-full p-2`}
+                  onClick={() => handleMore(index)}>
+                  <LuMoreHorizontal size={16} />
+                </div>
+                <div className={`${themeColor.input} relative mt-1`}>
+                  {/* modal more */}
+                  {isMore === index && (
+                    <div
+                      className={`${themeColor.input} absolute top-0 left-0 rounded-lg p-2`}
+                      onClick={() => handleOpenReport(comment)}>
+                      Report
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
+
+            {/* reply */}
+            {isReply === index && (
+              <Comment idBlog={idBlog} comments={comment.replies} idComment={comment._id} />
+            )}
           </div>
         ))}
 
       {/* send comment */}
-      <InputComment
-        idComment={""}
-        user={user}
-        themeColor={themeColor}
-        handleSubmit={handleSubmit}
-        handleComment={handleComment}
-      />
+      <div className="w-100 flex-grow">
+        <InputComment
+          idComment={idComment}
+          user={user}
+          themeColor={themeColor}
+          handleSubmit={handleSubmit}
+          handleComment={handleComment}
+        />
+      </div>
+
+      <div>{isReport !== "" && <ModalReportComment />}</div>
     </div>
   );
 };

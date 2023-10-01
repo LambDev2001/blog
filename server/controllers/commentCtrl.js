@@ -18,7 +18,8 @@ const commentCtrl = {
             "-password -__v -report -status"
           );
           const countReply = await Comments.count({ replyCM: comment._id });
-          return { ...comment._doc, author, countReply };
+          const replies = [];
+          return { ...comment._doc, author, replies, countReply };
         })
       );
 
@@ -31,7 +32,7 @@ const commentCtrl = {
   getReplies: async (req, res) => {
     try {
       const { idComment } = req.params;
-      let comments = await Comments.find({ replyCM: idComment, status: "normal"})
+      let comments = await Comments.find({ replyCM: idComment, status: "normal" })
         .select("idUser message createdAt updatedAt")
         .sort({ createdAt: -1 });
 
@@ -41,7 +42,8 @@ const commentCtrl = {
             "-password -__v -report -status"
           );
           const countReply = await Comments.count({ replyCM: comment._id });
-          return { ...comment._doc, author, countReply };
+          const replies = [];
+          return { ...comment._doc, author, replies, countReply };
         })
       );
 

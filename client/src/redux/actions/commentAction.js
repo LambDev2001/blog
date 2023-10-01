@@ -24,8 +24,9 @@ export const getComments = (idBlog) => async (dispatch) => {
       });
     }
 
-    // dispatch({ type: "GET_COMMENTS", payload: {comments: res.data, replyComment} });
     dispatch({ type: "GET_COMMENTS", payload: res.data });
+
+    // dispatch({ type: "GET_COMMENTS", payload: {comments: res.data, replyComment} });
   } catch (err) {
     console.error(err);
   }
@@ -52,7 +53,8 @@ export const getReply = (idComment) => async (dispatch) => {
       });
     }
 
-    dispatch({ type: "GET_REPLY", payload: res.data });
+    dispatch({ type: "GET_REPLY", payload: { idComment, data: res.data } });
+    return idComment
   } catch (err) {
     console.error(err);
   }
@@ -87,7 +89,6 @@ export const sendReply =
   ({ comment, idBlog, idComment, token }) =>
   async (dispatch) => {
     try {
-      
       let res = await postAPI(`comment`, { message: comment, idBlog, replyCM: idComment }, token);
       ResErrorData(res.data, dispatch);
 
@@ -101,9 +102,11 @@ export const sendReply =
       } else if (timeAgo.startsWith("less than ")) {
         timeAgo = timeAgo.slice(10);
       }
-      res.data = { ...res.data, timeAgo };
 
-      dispatch({ type: "SEND_REPLY", payload: res.data });
+      const replies = [];
+      res.data = { ...res.data, timeAgo, replies };
+
+      dispatch({ type: "SEND_REPLY", payload: { idComment, data: [res.data] } });
     } catch (err) {
       console.error(err);
     }

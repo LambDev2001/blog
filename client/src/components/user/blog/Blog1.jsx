@@ -17,8 +17,10 @@ const Blog1 = ({ readOnly }) => {
   const [openComments, setOpenComments] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const blogs = useSelector((state) => state.blogReducer);
+  const comments = useSelector((state) => state.commentReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
+
 
   const handleLike = (id) => {
     dispatch(likeBlog(id, token));
@@ -137,7 +139,7 @@ const Blog1 = ({ readOnly }) => {
             </div>
 
             {/* Comment */}
-            <div id={blog._id}>{openComments === index && <Comment idBlog={blog._id} />}</div>
+            <div id={blog._id} className="ml-2 mr-6 pl-4">{openComments === index && <Comment idBlog={blog._id} comments={comments} />}</div>
           </div>
         ))}
     </div>

@@ -6,7 +6,7 @@ const InputComment = ({themeColor, handleSubmit, handleComment, user, idComment=
     <form
       onSubmit={(e) => handleSubmit(e, idComment)}
       onKeyDown={(e) => e.key === "Enter" && handleSubmit(e, idComment)}
-      className={`${themeColor.sub} w-100 flex mt-3 `}>
+      className={`${themeColor.sub} flex mt-3 mr-3`}>
       <img src={user.avatar} alt="" className="rounded-full w-[32px] h-[32px]" />
       <input
         type="text"
