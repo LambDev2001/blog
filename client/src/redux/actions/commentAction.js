@@ -54,7 +54,7 @@ export const getReply = (idComment) => async (dispatch) => {
     }
 
     dispatch({ type: "GET_REPLY", payload: { idComment, data: res.data } });
-    return idComment
+    return idComment;
   } catch (err) {
     console.error(err);
   }
@@ -107,6 +107,18 @@ export const sendReply =
       res.data = { ...res.data, timeAgo, replies };
 
       dispatch({ type: "SEND_REPLY", payload: { idComment, data: [res.data] } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+export const reportComment =
+  ({ comment, content, token }) =>
+  async (dispatch) => {
+    try {
+      let res = await postAPI(`report`, { ids: comment._id, type: "comment", content }, token);
+      ResErrorData(res.data, dispatch);
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
     } catch (err) {
       console.error(err);
     }

@@ -9,18 +9,19 @@ import { IoMdClose } from "react-icons/io";
 import { MdOutlineBugReport } from "react-icons/md";
 
 import Comment from "../comment/Comment";
+import ModalReportBlog from "../modal/ModalReportBlog";
 import { dislikeBlog, likeBlog, increaseShare } from "../../../redux/actions/blogAction";
 import { followUser } from "../../../redux/actions/userAction";
 import { getComments } from "../../../redux/actions/commentAction";
 
 const Blog1 = ({ readOnly }) => {
   const [openComments, setOpenComments] = useState(-1);
+  const [isReport, setIsReport] = useState(null);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const blogs = useSelector((state) => state.blogReducer);
   const comments = useSelector((state) => state.commentReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
-
 
   const handleLike = (id) => {
     dispatch(likeBlog(id, token));
@@ -45,6 +46,11 @@ const Blog1 = ({ readOnly }) => {
     } else {
       setOpenComments(-1);
     }
+  };
+
+  const handleShowReport = (idBlog) => {
+    if (isReport === idBlog || idBlog === null) setIsReport(null);
+    else setIsReport(idBlog);
   };
 
   return (
@@ -83,8 +89,13 @@ const Blog1 = ({ readOnly }) => {
                     </div>
                   )}
                   <div className="flex">
-                    <MdOutlineBugReport color="white" size={24} className="mx-1" />
-                    <IoMdClose color="white" size={24} className="mx-1" />
+                    <MdOutlineBugReport
+                      color="white"
+                      size={24}
+                      className="mx-1 cursor-pointer"
+                      onClick={() => handleShowReport(blog._id)}
+                    />
+                    <IoMdClose color="white" size={24} className="mx-1 cursor-pointer" />
                   </div>
                 </div>
               </div>
@@ -139,7 +150,16 @@ const Blog1 = ({ readOnly }) => {
             </div>
 
             {/* Comment */}
-            <div id={blog._id} className="ml-2 mr-6 pl-4">{openComments === index && <Comment idBlog={blog._id} comments={comments} />}</div>
+            <div id={blog._id} className="ml-2 mr-6 pl-4">
+              {openComments === index && <Comment idBlog={blog._id} comments={comments} />}
+            </div>
+
+            {/* Report blog */}
+            <div>
+              {isReport === blog._id && (
+                <ModalReportBlog blog={blog} handleIsModal={handleShowReport} />
+              )}
+            </div>
           </div>
         ))}
     </div>

@@ -5,7 +5,7 @@ import { LuMoreHorizontal } from "react-icons/lu";
 
 import { sendComment, getReply, sendReply } from "../../../redux/actions/commentAction";
 import InputComment from "./InputComment";
-import ModalReportComment from "../basic/ModalReportComment";
+import ModalReportComment from "../modal/ModalReportComment";
 
 const Comment = ({ idBlog, comments, idComment = "" }) => {
   const [comment, setComment] = useState("");
@@ -40,9 +40,9 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
     }
   };
 
-  const handleOpenReport = (comment) => {
+  const handleOpenReport = (index) => {
     setIsMore(-1);
-    setIsReport(comment);
+    setIsReport(index);
   };
 
   const handleSubmit = async (e, idComment) => {
@@ -61,6 +61,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
       {comments.length > 0 &&
         comments.map((comment, index) => (
           <div key={index}>
+            {/* comment parent */}
             <div className="my-2 flex">
               {/* Avatar */}
               <img
@@ -69,6 +70,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                 className="rounded-circle h-[32px] w-[32px] my-2"
               />
 
+              {/* Info comment */}
               <div>
                 {/* info */}
                 <div className="ml-2 relative">
@@ -96,11 +98,12 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                 )}
               </div>
 
+              {/* more */}
               <div className="mx-3 ">
                 <div
                   className={`${isMore === index && themeColor.input} ${
                     themeColor.hover
-                  } mb-auto rounded-full p-2`}
+                  } mb-auto rounded-full p-2 cursor-pointer`}
                   onClick={() => handleMore(index)}>
                   <LuMoreHorizontal size={16} />
                 </div>
@@ -108,10 +111,15 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                   {/* modal more */}
                   {isMore === index && (
                     <div
-                      className={`${themeColor.input} absolute top-0 left-0 rounded-lg p-2`}
-                      onClick={() => handleOpenReport(comment)}>
+                      className={`${themeColor.input} absolute top-0 left-0 rounded-lg p-2 cursor-pointer`}
+                      onClick={() => handleOpenReport(index)}>
                       Report
                     </div>
+                  )}
+
+                  {/* modal report */}
+                  {isReport === index && (
+                    <ModalReportComment comment={comment} handleIsModal={handleOpenReport} />
                   )}
                 </div>
               </div>
@@ -134,8 +142,6 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
           handleComment={handleComment}
         />
       </div>
-
-      <div>{isReport !== "" && <ModalReportComment />}</div>
     </div>
   );
 };

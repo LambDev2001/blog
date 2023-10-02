@@ -144,3 +144,13 @@ export const increaseShare = (idBlog, token) => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const reportBlog = ({blog, content, token}) => async (dispatch) => {
+  try {
+    const res = await postAPI(`report`, {ids: blog._id, type: "blog", content}, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+  } catch (err) {
+    console.error(err);
+  }
+};
