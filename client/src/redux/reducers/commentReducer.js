@@ -1,6 +1,7 @@
 const commentReducer = (state = [], action) => {
   function findComment(comments, idComment, data, type) {
     for (let i = 0; i < comments.length; i++) {
+      comments[i].isComment = false;
       if (comments[i]._id === idComment) {
         if (type === "get") {
           comments[i].replies = data;

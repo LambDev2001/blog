@@ -51,9 +51,11 @@ const Home = () => {
         {/* blog */}
         <div className={`w-3/5 custom-scroll-container`} style={{ height: `${height}px` }}>
           <div className="custom-scroll-content h-100 overflow-auto">
+
+            {/* create blog */}
             <div className="flex justify-between m-4">
               <Link
-                to={`/user/create`}
+                to={`/user/create-blog`}
                 className="py-2 px-3 border rounded-full cursor-pointer text-white">
                 Create a post
               </Link>
@@ -97,7 +99,6 @@ const Home = () => {
           style={{ height: `${height}px` }}>
           <div className="custom-scroll-content h-100 overflow-auto">
             <Friend />
-
             <Group />
           </div>
         </div>

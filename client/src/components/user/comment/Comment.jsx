@@ -8,7 +8,7 @@ import InputComment from "./InputComment";
 import ModalReportComment from "../modal/ModalReportComment";
 
 const Comment = ({ idBlog, comments, idComment = "" }) => {
-  const [comment, setComment] = useState("");
+  const [contentComment, setContentComment] = useState("");
   const [isReply, setIsReply] = useState(-1);
   const [isMore, setIsMore] = useState(-1);
   const [isReport, setIsReport] = useState({});
@@ -20,7 +20,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
 
   const handleComment = (e) => {
     const { value } = e.target;
-    setComment(value);
+    setContentComment(value);
   };
 
   const handleReply = async (index, idComment) => {
@@ -48,12 +48,13 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
   const handleSubmit = async (e, idComment) => {
     e.preventDefault();
 
-    if (idComment === "") dispatch(sendComment({ comment, idBlog, token }));
-    else {
-      await dispatch(sendReply({ comment, idBlog, idComment, token }));
+    if (idComment === "") {
+      dispatch(sendComment({ comment: contentComment, idBlog, token }));
+    } else {
+      await dispatch(sendReply({ comment: contentComment, idBlog, idComment, token }));
       dispatch(getReply(idComment, token));
     }
-    setComment("");
+    setContentComment("");
   };
 
   return (
@@ -61,77 +62,78 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
       {comments.length > 0 &&
         comments.map((comment, index) => (
           <div key={index}>
-            {/* comment parent */}
-            <div className="my-2 flex">
-              {/* Avatar */}
-              <img
-                src={comment.author.avatar}
-                alt="avatar"
-                className="rounded-circle h-[32px] w-[32px] my-2"
-              />
+            <div>
+              {/* comment parent */}
+              <div className="my-2 flex">
+                {/* Avatar */}
+                <img
+                  src={comment.author.avatar}
+                  alt="avatar"
+                  className="rounded-circle h-[32px] w-[32px] my-2"
+                />
 
-              {/* Info comment */}
-              <div>
-                {/* info */}
-                <div className="ml-2 relative">
-                  <div className={`${themeColor.input} p-2 rounded-lg max-w-prose`}>
-                    <div className="font-bold">{comment.author.username}</div>
-                    <div className="block">{comment.message}</div>
+                {/* Info comment */}
+                <div>
+                  {/* info */}
+                  <div className="ml-2 relative">
+                    <div className={`${themeColor.input} p-2 rounded-lg max-w-prose`}>
+                      <div className="font-bold">{comment.author.username}</div>
+                      <div className="block">{comment.message}</div>
+                    </div>
+
+                    <div className="flex justify-between text-sm text-gray-500">
+                      <div
+                        className="font-semibold cursor-pointer mr-2"
+                        onClick={() => handleReply(index, comment._id)}>
+                        Reply
+                      </div>
+                      <div>{comment.timeAgo}</div>
+                    </div>
                   </div>
 
-                  <div className="flex justify-between text-sm text-gray-500">
+                  {isReply !== index && comment.countReply > 0 && (
                     <div
-                      className="font-semibold cursor-pointer mr-2"
+                      className="ml-2 mt-1 text-gray-400"
                       onClick={() => handleReply(index, comment._id)}>
-                      Reply
+                      {comment.countReply} Reply
                     </div>
-                    <div>{comment.timeAgo}</div>
-                  </div>
+                  )}
                 </div>
 
-                {isReply !== index && comment.countReply > 0 && (
+                {/* more */}
+                <div className="mx-3 ">
                   <div
-                    className="ml-2 mt-1 text-gray-400"
-                    onClick={() => handleReply(index, comment._id)}>
-                    {comment.countReply} Reply
+                    className={`${isMore === index && themeColor.input} ${
+                      themeColor.hover
+                    } mb-auto rounded-full p-2 cursor-pointer`}
+                    onClick={() => handleMore(index)}>
+                    <LuMoreHorizontal size={16} />
                   </div>
-                )}
-              </div>
+                  <div className={`${themeColor.input} relative mt-1`}>
+                    {/* modal more */}
+                    {isMore === index && (
+                      <div
+                        className={`${themeColor.input} absolute top-0 left-0 rounded-lg p-2 cursor-pointer`}
+                        onClick={() => handleOpenReport(index)}>
+                        Report
+                      </div>
+                    )}
 
-              {/* more */}
-              <div className="mx-3 ">
-                <div
-                  className={`${isMore === index && themeColor.input} ${
-                    themeColor.hover
-                  } mb-auto rounded-full p-2 cursor-pointer`}
-                  onClick={() => handleMore(index)}>
-                  <LuMoreHorizontal size={16} />
-                </div>
-                <div className={`${themeColor.input} relative mt-1`}>
-                  {/* modal more */}
-                  {isMore === index && (
-                    <div
-                      className={`${themeColor.input} absolute top-0 left-0 rounded-lg p-2 cursor-pointer`}
-                      onClick={() => handleOpenReport(index)}>
-                      Report
-                    </div>
-                  )}
-
-                  {/* modal report */}
-                  {isReport === index && (
-                    <ModalReportComment comment={comment} handleIsModal={handleOpenReport} />
-                  )}
+                    {/* modal report */}
+                    {isReport === index && (
+                      <ModalReportComment comment={comment} handleIsModal={handleOpenReport} />
+                    )}
+                  </div>
                 </div>
               </div>
+
+              {/* reply */}
+              {isReply === index && (
+                <Comment idBlog={idBlog} comments={comment.replies} idComment={comment._id} />
+              )}
             </div>
-
-            {/* reply */}
-            {isReply === index && (
-              <Comment idBlog={idBlog} comments={comment.replies} idComment={comment._id} />
-            )}
           </div>
         ))}
-
       {/* send comment */}
       <div className="w-100 flex-grow">
         <InputComment
@@ -140,6 +142,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
           themeColor={themeColor}
           handleSubmit={handleSubmit}
           handleComment={handleComment}
+          comment={contentComment}
         />
       </div>
     </div>

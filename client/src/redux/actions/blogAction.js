@@ -102,6 +102,15 @@ export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
   }
 };
 
+export const removeBlog = (idBlog) => async(dispatch) => {
+  try {
+    dispatch({ type: "REMOVE_BLOG", payload: idBlog });
+  
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const deleteBlog = (idBlog, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

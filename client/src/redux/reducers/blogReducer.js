@@ -12,6 +12,15 @@ const blogReducer = (state = [], action) => {
     case "UPDATE_BLOG":
       return [{ ...state[0], ...action.payload }];
 
+    case "REMOVE_BLOG":
+      const result = state.map((item) => {
+        if (item._id === action.payload) {
+          return {...item, isRemove: true};
+        }
+        return item;
+      });
+      return result;
+
     case "LIKE_BLOG":
       let resultLike = state.map((item) => {
         if (item._id === action.payload._id) {
@@ -52,7 +61,7 @@ const blogReducer = (state = [], action) => {
           return { ...item, isFollowing: true };
         }
         return item;
-      })
+      });
 
     case "INCREASE_SHARE":
       return state.map((item) => {

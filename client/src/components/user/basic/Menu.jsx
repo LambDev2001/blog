@@ -36,6 +36,7 @@ const Menu = () => {
         <div className="my-auto">Friend</div>
       </div>
 
+      
       {/* resource */}
       <div className="text-lg">Resources</div>
       <div

@@ -8,7 +8,7 @@ const Header = Quill.import("formats/header");
 Header.whitelist = [1, 2, 3, 4, 5, 6];
 Quill.register(Header, true);
 
-const Blog = ({ blog, readOnly }) => {
+const Blog = ({ blog, setBlog="", readOnly = false }) => {
   const color = useSelector((state) => state.themeReducer.themeColor);
   const modules = {
     toolbar: [
@@ -22,8 +22,14 @@ const Blog = ({ blog, readOnly }) => {
 
   return (
     <div className={`${color.outside} rounded-lg shadow-md overflow-hidden p-1`}>
-      <div className="bg-white">
-        <ReactQuill value={blog.content} readOnly={readOnly} theme={"snow"} modules={modules} />
+      <div className="bg-white text-black">
+        <ReactQuill
+          value={blog.content}
+          readOnly={readOnly}
+          onChange={e=>setBlog({...blog, content: e})}
+          theme={"snow"}
+          modules={modules}
+        />
       </div>
     </div>
   );

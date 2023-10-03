@@ -1,23 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 
-const test = () => {
+const Test = () => {
+  const [data, setData] = useState("");
+  const handleChangeInput = (e) => {
+    setData(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setData("");
+  };
+
   return (
-    <div className="my-container">
-      <div className="group block bg-white">
-        <div className="">
-          <div className="flex items-center space-x-">
-            <h3 className="text-slate-900 group-hover:text-red-600 text-sm font-semibold">
-              New project
-            </h3>
-          </div>
-          <p className="text-slate-500 group-hover:text-gray-900 text-sm">
-            Create a new project from a variety of starting templates.
-          </p>
-          <div className="hover:opacity-1" style={{opacity: 0}}>test</div>
-        </div>
-      </div>
-    </div>
+    <form onSubmit={(e) => handleSubmit(e)} className="bg-gray-300 p-2 w-[200px] m-auto">
+      <input type="text" name="value" value={data} onChange={(e) => handleChangeInput(e)} />
+      <button type="submit" className="bg-blue-500">Send</button>
+    </form>
   );
 };
 
-export default test;
+export default Test;

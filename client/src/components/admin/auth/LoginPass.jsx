@@ -22,7 +22,7 @@ const LoginPass = () => {
     setInfoUser({ ...infoUser, [name]: value }); // update new name: account or password = value
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     Object.keys(infoUser).forEach((key) => {
       if (infoUser[key] === "") {
@@ -30,8 +30,7 @@ const LoginPass = () => {
       }
     });
 
-    dispatch(loginAdmin(infoUser));
-    history.goBack();
+    await dispatch(loginAdmin(infoUser));
   };
 
   return (
