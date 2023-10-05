@@ -18,6 +18,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add your password"],
     },
+    birthday: {
+      type: Date,
+    },
+    numberPhone: {
+      type: Number,
+      maxLength: 12,
+      minLength: 10,
+    },
     friends: {
       type: [String],
       default: [],

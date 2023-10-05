@@ -3,6 +3,16 @@ import { formatDistanceToNow } from "date-fns";
 import { getAPI, postAPI, patchAPI, deleteAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
 
+export const createBlog = (blog, token) => async (dispatch) => {
+  try {
+    const res = await postAPI("blog", blog, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getBlogs = (token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
@@ -51,7 +61,41 @@ export const getBlogsUser = (token) => async (dispatch) => {
         } else if (timeAgo.startsWith("over ")) {
           timeAgo = timeAgo.slice(5);
         }
-        
+
+        return { ...item, timeAgo };
+      });
+    }
+
+    dispatch({ type: "GET_BLOGS", payload: blogs.data });
+
+    dispatch({ type: "LOADING", payload: { loading: false } });
+    return blogs.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getMyBlogs = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+
+    let blogs = await getAPI("my-blogs", token);
+
+    ResErrorData(blogs.data, dispatch);
+    if (blogs.data.length > 0) {
+      blogs.data = blogs.data.map((item) => {
+        const date = new Date(item.updatedAt);
+        item.updatedAt = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
+        if (timeAgo.startsWith("about ")) {
+          timeAgo = timeAgo.slice(6);
+        } else if (timeAgo.startsWith("over ")) {
+          timeAgo = timeAgo.slice(5);
+        }
 
         return { ...item, timeAgo };
       });
@@ -102,14 +146,13 @@ export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
   }
 };
 
-export const removeBlog = (idBlog) => async(dispatch) => {
+export const removeBlog = (idBlog) => async (dispatch) => {
   try {
     dispatch({ type: "REMOVE_BLOG", payload: idBlog });
-  
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const deleteBlog = (idBlog, token) => async (dispatch) => {
   try {
@@ -154,12 +197,14 @@ export const increaseShare = (idBlog, token) => async (dispatch) => {
   }
 };
 
-export const reportBlog = ({blog, content, token}) => async (dispatch) => {
-  try {
-    const res = await postAPI(`report`, {ids: blog._id, type: "blog", content}, token);
-    ResErrorData(res.data, dispatch);
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
-  } catch (err) {
-    console.error(err);
-  }
-};
+export const reportBlog =
+  ({ blog, content, token }) =>
+  async (dispatch) => {
+    try {
+      const res = await postAPI(`report`, { ids: blog._id, type: "blog", content }, token);
+      ResErrorData(res.data, dispatch);
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    } catch (err) {
+      console.error(err);
+    }
+  };

@@ -150,10 +150,11 @@ const userCtrl = {
 
   updateUser: async (req, res) => {
     try {
+      console.log(req.body);
       if (req.user.id !== req.params.idUser) return res.json({ msg: "You are not owner" });
-
-      const { username, avatar } = req.body;
-      await Users.findByIdAndUpdate({ _id: req.user.id }, { username, avatar });
+      
+      
+      await Users.findByIdAndUpdate({ _id: req.user.id }, req.body);
 
       return res.status(200).json({ msg: "Updated information successfully" });
     } catch (err) {

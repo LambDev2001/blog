@@ -187,6 +187,79 @@ const blogCtrl = {
     }
   },
 
+  myBlogs: async (req, res) => {
+    try {
+      const countBlogs = await Blogs.count();
+      const allBlogs = await Blogs.find({idUser: req.user.id}).select("-report -status -content");
+
+      let blogs = await Promise.all(
+        allBlogs.map(async (blog) => {
+          const author = await Users.findById(blog.idUser).select(
+            "-password -__v -report -status -friends"
+          );
+
+          const category = await Categories.findById(blog.category);
+
+          const likes = await Likes.count({
+            idBlog: blog._id,
+            like: true,
+          });
+
+          const dislikes = await Likes.count({
+            idBlog: blog._id,
+            like: false,
+          });
+
+          const views = await Views.findOne({ idBlog: blog._id });
+
+          let comments = await Comments.count({
+            idBlog: blog._id,
+          });
+
+          let isLike = await Likes.findOne({
+            idBlog: blog._id,
+            idUser: req.user.id,
+          });
+
+          if (!isLike) isLike = { like: null };
+
+          const isFollowing = await Users.findOne({
+            _id: req.user.id,
+            following: author._id,
+          });
+
+          return {
+            ...blog._doc,
+            author,
+            category: category.name,
+            likes,
+            dislikes,
+            views: views.view,
+            comments,
+            isLike: isLike.like,
+            isFollowing: isFollowing ? true : false,
+          };
+        })
+      );
+
+      blogs = blogs.filter((n) => n.length !== 0).flat(); // remove empty array and [[value], [value, value]] -> [value, value]
+
+      if (countBlogs === 0) {
+        return res.status(200).json({ msg: "Not have any blog" });
+      }
+
+      blogs.sort((a, b) => {
+        return b.createdAt - a.createdAt;
+      });
+
+      return res.status(200).json(blogs);
+    } catch (err) {
+      console.log(err);
+
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   listFriendsBlogs: async (req, res) => {
     try {
       const user = await Users.findOne({ _id: req.user.id });
@@ -240,6 +313,7 @@ const blogCtrl = {
   createBlog: async (req, res) => {
     try {
       const idUser = req.user.id;
+
       const valid = checkData(req.body, "title", "content", "thumbnail", "description", "category");
 
       if (valid !== true) return res.json({ valid });
@@ -251,6 +325,7 @@ const blogCtrl = {
 
       return res.status(200).json({ msg: "Create blog successfully" });
     } catch (err) {
+      console.log(err);
       return res.status(500).json({ msg: err.message });
     }
   },

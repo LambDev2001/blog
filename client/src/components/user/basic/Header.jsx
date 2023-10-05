@@ -62,7 +62,7 @@ const Header = () => {
                 className={`${themeColor.input} absolute top-[60px] right-4 py-1 px-1 rounded-lg`}>
                 <div
                   className={`${themeColor.hoverBold} py-2 px-4 mx-2 my-1 rounded-lg cursor-pointer`}>
-                  <Link to="/user/profile">Profile</Link>
+                  <Link to={`/user/profile/${user._id}`}>Profile</Link>
                 </div>
                 <hr />
                 <div

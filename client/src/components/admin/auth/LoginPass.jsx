@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { loginAdmin } from "../../../redux/actions/authAction";
 import { Text } from "../form/Input";
@@ -15,14 +14,13 @@ const LoginPass = () => {
   const color = useSelector((state) => state.themeReducer.themeColor);
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setInfoUser({ ...infoUser, [name]: value }); // update new name: account or password = value
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     Object.keys(infoUser).forEach((key) => {
       if (infoUser[key] === "") {

@@ -8,7 +8,7 @@ const Header = Quill.import("formats/header");
 Header.whitelist = [1, 2, 3, 4, 5, 6];
 Quill.register(Header, true);
 
-const Blog = ({ blog, setBlog="", readOnly = false }) => {
+const Blog = ({ blog, setBlog=()=>{}, readOnly = false }) => {
   const color = useSelector((state) => state.themeReducer.themeColor);
   const modules = {
     toolbar: [

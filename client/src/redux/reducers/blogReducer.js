@@ -10,7 +10,7 @@ const blogReducer = (state = [], action) => {
       return [{ ...state[0], ...action.payload }];
 
     case "UPDATE_BLOG":
-      return [{ ...state[0], ...action.payload }];
+      return action.payload;
 
     case "REMOVE_BLOG":
       const result = state.map((item) => {

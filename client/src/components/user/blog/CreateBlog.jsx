@@ -5,17 +5,28 @@ import { IoMdClose } from "react-icons/io";
 
 import Blog from "../../global/Blog";
 import { getRooms } from "../../../redux/actions/roomAction";
+import { createBlog } from "../../../redux/actions/blogAction";
+import { getCategories } from "../../../redux/actions/categoryAction";
 
 const CreateBlog = () => {
   const [isReview, setIsReview] = useState(false);
+  const [nameCategory, setNameCategory] = useState("");
   const themeColor = useSelector((state) => state.themeUserReducer);
-  const token = useSelector(state=> state.authReducer.accessToken)
-  const [blog, setBlog] = useState({ title: "", description: "", thumbnail: "", content: "" });
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const categories = useSelector((state) => state.categoryReducer);
+  const [blog, setBlog] = useState({
+    title: "",
+    category: "",
+    description: "",
+    thumbnail: "",
+    content: "",
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getRooms(token))
-  }, [dispatch, token])
+    dispatch(getRooms(token));
+    dispatch(getCategories(token));
+  }, [dispatch, token]);
 
   const handleShowReview = () => {
     setIsReview(!isReview);
@@ -24,10 +35,16 @@ const CreateBlog = () => {
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setBlog({ ...blog, [name]: value });
+    if (name === "category") {
+      categories.map((item) => {
+        if (item._id === value) setNameCategory(item.name);
+        return item;
+      });
+    }
   };
 
   const handleSubmit = () => {
-    console.log(blog);
+    dispatch(createBlog(blog, token));
   };
 
   return (
@@ -61,6 +78,27 @@ const CreateBlog = () => {
         </div>
 
         <div className="mb-4">
+          <label className="block text-sm mb-1">Category</label>
+          <select
+            name="category"
+            value={blog.category}
+            onChange={(e) => {
+              handleChangeInput(e);
+            }}
+            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
+            <option value="">Select a category</option>
+            {categories.length > 0 &&
+              categories.map((item, index) => {
+                return (
+                  <option key={index} value={item._id}>
+                    {item.name}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
+
+        <div className="mb-4">
           <label className="block text-sm mb-1">Thumbnail</label>
           <input
             type="text"
@@ -73,12 +111,8 @@ const CreateBlog = () => {
         </div>
 
         <div className=" flex justify-end">
-          <div className={`${themeColor.input} `} onClick={handleShowReview}>
-            {isReview ? (
-              <div></div>
-            ) : (
-              <div className="py-2 px-3 rounded-lg cursor-pointer">See review</div>
-            )}
+          <div className={`${themeColor.input} rounded-lg`} onClick={handleShowReview}>
+            {isReview ? <div></div> : <div className="py-2 px-3 cursor-pointer">See review</div>}
           </div>
         </div>
       </div>
@@ -100,7 +134,10 @@ const CreateBlog = () => {
           <div className="flex flex-wrap justify-between">
             <div className="w-3/4">
               {/* title */}
-              <div className="my-1 text-lg font-bold">{blog.title}</div>
+              <div className="flex">
+                <div className="my-1 text-lg font-bold">{blog.title}</div>
+                <div className={`${themeColor.input} mx-2 p-2 rounded-full`}>{nameCategory}</div>
+              </div>
 
               {/* description */}
               <div className="my-1 text-md">{blog.description}</div>
