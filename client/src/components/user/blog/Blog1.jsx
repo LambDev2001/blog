@@ -81,13 +81,14 @@ const Blog1 = ({ readOnly }) => {
                           src={blog.author.avatar}
                           alt="thumbnail"
                           className="h-[28px] w-[28px] rounded-circle"
+                
                         />
                         <div className="mx-1">{blog.author.username}</div>
                       </Link>
                       <div className="mx-2">{blog.timeAgo}</div>
                     </div>
 
-                    <div className={`${themeColor.input} mx-2 px-3 py-2 rounded-full`}>
+                    <div className={`${themeColor.input} mx-2 px-3 py-2 rounded-full cursor-pointer`}>
                       {blog.category}
                     </div>
                   </div>
@@ -125,9 +126,9 @@ const Blog1 = ({ readOnly }) => {
                 <div className="my-1 text-md">{blog.description}</div>
 
                 {/* thumbnail */}
-                <div>
-                  <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md" />
-                </div>
+                <Link to={"/user/blog/" + blog._id}>
+                  <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md max-h-[400px]" />
+                </Link>
 
                 {/* interact */}
                 <div className="flex">

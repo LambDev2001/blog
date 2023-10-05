@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import ModalEditUser from "../modal/ModalEditUser";
 import Blog2 from "../blog/Blog2";
 import { getMyBlogs } from "../../../redux/actions/blogAction";
+import ProfileFriend from "../ProfileFriend";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState("posts");
@@ -12,7 +13,6 @@ const Profile = () => {
   const otherUser = useSelector((state) => state.userReducer);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
-  const blogs = useSelector((state)=>state.blogReducer)
   const dispatch = useDispatch();
   const history = useHistory;
 
@@ -28,8 +28,10 @@ const Profile = () => {
     setIsModal(!isModal);
   };
 
+  const height = window.innerHeight - 234;
+
   return (
-    <div className="w-3/5 mx-2">
+    <div className="w-3/5">
       {Object.keys(otherUser).length > 0 && (
         <div>
           {/* Header */}
@@ -54,7 +56,9 @@ const Profile = () => {
 
             {/* End */}
             {!isModal && (
-              <div className= {`${themeColor.border} ${themeColor.hover} border-1 mb-3 mt-auto mx-2 p-2 rounded-md z-50 cursor-pointer`} onClick={() => handleModalProfile()}>
+              <div
+                className={`${themeColor.border} ${themeColor.hover} border-1 mb-3 mt-auto mx-2 p-2 rounded-md z-50 cursor-pointer`}
+                onClick={() => handleModalProfile()}>
                 Edit Profile
               </div>
             )}
@@ -62,12 +66,12 @@ const Profile = () => {
             <div className={`${themeColor.sub} absolute h-[70%] w-100 bottom-0 rounded-md`}></div>
           </div>
 
-          <div className={`${themeColor.border} border-t mx-4 my-2`}></div>
+          <div className={`${themeColor.border} border-t mx-4 my-1`}></div>
 
           {/* Info  */}
           <div>
             {/* Tab */}
-            <div className="flex">
+            <div className="flex mb-1">
               <div
                 className={`${themeColor.sub} ${themeColor.border} ${
                   currentTab === "posts" && themeColor.input
@@ -91,10 +95,14 @@ const Profile = () => {
               </div>
             </div>
 
-            {
-              Object.keys(blogs).length > 0 &&
-              <Blog2 />
-            }
+            <div className={`custom-scroll-container`} style={{ height: `${height}px` }}>
+              <div className="custom-scroll-content h-100 overflow-auto">
+                {currentTab === "posts" && <Blog2 />}
+                {currentTab === "friends" && <ProfileFriend friends= {otherUser.friends} />}
+              </div>
+            </div>
+
+            {/* {Object.keys(blogs).length > 0 && <Blog2 />} */}
           </div>
         </div>
       )}
