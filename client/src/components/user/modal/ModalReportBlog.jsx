@@ -57,7 +57,7 @@ const ModalReportBlog = ({ blog, handleShowReport }) => {
         <div className="flex justify-end">
           <button
             className="mx-2 py-2 px-3 text-white bg-red-500 hover:bg-red-600 rounded-lg"
-            onClick={() => handleShowReport()}>
+            onClick={() => handleShowReport(null)}>
             Cancel
           </button>
           <button

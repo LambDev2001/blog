@@ -87,7 +87,7 @@ const Blog1 = ({ readOnly }) => {
                       <div className="mx-2">{blog.timeAgo}</div>
                     </div>
 
-                    <div className={`${themeColor.input} mx-2 p-2 rounded-full`}>
+                    <div className={`${themeColor.input} mx-2 px-3 py-2 rounded-full`}>
                       {blog.category}
                     </div>
                   </div>
@@ -175,7 +175,7 @@ const Blog1 = ({ readOnly }) => {
               {/* Report blog */}
               <div>
                 {isReport === blog._id && (
-                  <ModalReportBlog blog={blog} handleIsModal={handleShowReport} />
+                  <ModalReportBlog blog={blog} handleShowReport={handleShowReport} />
                 )}
               </div>
             </div>
