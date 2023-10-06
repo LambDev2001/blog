@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { LuMoreHorizontal } from "react-icons/lu";
 
-const ProfileFriend = ({ friends }) => {
+import { unFollowUser } from "../../redux/actions/userAction";
+
+const ProfileFollowing = ({ follows }) => {
   const [isMore, setIsMore] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
-  // const token = useSelector((state) => state.authReducer.accessToken);
-  // const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const dispatch = useDispatch();
 
   const handleMore = (index) => {
     if (isMore === index) {
@@ -17,26 +19,26 @@ const ProfileFriend = ({ friends }) => {
     }
   };
 
-  const handleUnfriend = (idFriend) => {
+  const handleUnFollow = (idFollow) => {
     setIsMore(-1);
-    console.log(idFriend);
+    dispatch(unFollowUser(idFollow, token));
   };
 
   return (
     <div className={`${themeColor.sub} text-white mt-1 mx-1 p-2 rounded-lg`}>
-      <div className="flex flex-wrap">
-        {friends.length > 0 &&
-          friends.map((friend, index) => (
+      <div className="flex flex-wrap w-100">
+        {follows.length > 0 &&
+          follows.map((follow, index) => (
             <div key={index} className="p-1 w-1/2">
               <div className={themeColor.border + " border-1 m-1 flex justify-between rounded-xl"}>
                 {/* start */}
                 <div className="flex">
                   <img
-                    src={friend.avatar}
+                    src={follow.avatar}
                     alt="avatar"
                     className="rounded-full w-[60px] h-[60px] m-2"
                   />
-                  <div className="text-2xl mx-4 my-auto">{friend.username}</div>
+                  <div className="text-2xl mx-4 my-auto">{follow.username}</div>
                 </div>
 
                 {/* end */}
@@ -57,12 +59,12 @@ const ProfileFriend = ({ friends }) => {
                         themeColor.hover +
                         " " +
                         themeColor.border +
-                        " " +
-                        (index % 2 !== 0 && "right-0 ") +
+                        " " + 
+                        (index%2 !== 0 && "right-0 ") + 
                         " border-1 absolute px-3 py-2 rounded-lg cursor-pointer my-1"
                       }
-                      onClick={() => handleUnfriend(friend._id)}>
-                      Unfriend
+                      onClick={() => handleUnFollow(follow._id)}>
+                      UnFollow
                     </div>
                   )}
                 </div>
@@ -74,4 +76,4 @@ const ProfileFriend = ({ friends }) => {
   );
 };
 
-export default ProfileFriend;
+export default ProfileFollowing;

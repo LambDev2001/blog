@@ -6,6 +6,7 @@ import ModalEditUser from "../modal/ModalEditUser";
 import Blog2 from "../blog/Blog2";
 import { getMyBlogs } from "../../../redux/actions/blogAction";
 import ProfileFriend from "../ProfileFriend";
+import ProfileFollowing from "../ProfileFollowing";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState("posts");
@@ -98,7 +99,8 @@ const Profile = () => {
             <div className={`custom-scroll-container`} style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto">
                 {currentTab === "posts" && <Blog2 />}
-                {currentTab === "friends" && <ProfileFriend friends= {otherUser.friends} />}
+                {currentTab === "friends" && <ProfileFriend friends={otherUser.friends} />}
+                {currentTab === "following" && <ProfileFollowing follows={otherUser.following} />}
               </div>
             </div>
 

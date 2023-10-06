@@ -6,6 +6,12 @@ const userReducer = (state = {}, action) => {
     case "UPDATE_USER":
       return { ...state, ...action.payload };
 
+    case "UN_FOLLOW_USER":
+      return {
+        ...state,
+        following: state.following.filter((item) => item._id !== action.payload),
+      }
+
     default:
       return state;
   }

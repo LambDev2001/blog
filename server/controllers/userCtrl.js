@@ -32,10 +32,14 @@ const userCtrl = {
       }
 
       const friends = await Users.find({ _id: { $in: user.friends } }).select(
-        "-account -friends -password -__v -createdAt -updatedAt -report -status"
+        "-friends -password -following -__v -createdAt -updatedAt -report -status"
       );
 
-      return res.status(200).json({ ...user._doc, friends });
+      const following = await Users.find({ _id: { $in: user.following } }).select(
+        "-friends -password -following -__v -createdAt -updatedAt -report -status"
+      )
+
+      return res.status(200).json({ ...user._doc, friends, following });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -122,6 +126,18 @@ const userCtrl = {
       }).select("friends");
 
       return res.status(200).json(friends);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  listFollowing: async (req, res) => {
+    try {
+      const { following } = await Users.findById({
+        _id: req.user.id,
+      }).select("following");
+
+      return res.status(200).json(following);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

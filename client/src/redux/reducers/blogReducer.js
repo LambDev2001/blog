@@ -55,7 +55,7 @@ const blogReducer = (state = [], action) => {
 
       return resultDislike;
 
-    case "FOLLOW_USER_BLOGS":
+    case "FOLLOW_USER":
       return state.map((item) => {
         if (item.author._id === action.payload.idUser) {
           return { ...item, isFollowing: true };
