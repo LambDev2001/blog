@@ -4,7 +4,7 @@ const blogReducer = (state = [], action) => {
       return action.payload;
 
     case "GET_BLOG":
-      return action.payload;
+      return state = action.payload;
 
     case "CREATE_BLOG":
       return [{ ...state[0], ...action.payload }];

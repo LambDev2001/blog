@@ -124,7 +124,14 @@ export const getBlog = (idBlog, token) => async (dispatch) => {
       day: "numeric",
     });
 
-    dispatch({ type: "GET_BLOG", payload: blog.data });
+    let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
+    if (timeAgo.startsWith("about ")) {
+      timeAgo = timeAgo.slice(6);
+    } else if (timeAgo.startsWith("over ")) {
+      timeAgo = timeAgo.slice(5);
+    }
+
+    dispatch({ type: "GET_BLOG", payload: [{ ...blog.data, timeAgo }] });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
     return blog.data;
@@ -140,6 +147,17 @@ export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
     ResErrorData(res.data, dispatch);
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
     dispatch({ type: "UPDATE_BLOG", payload: { ...blog, status } });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+export const updateBlog = (idBlog, blog, token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await patchAPI(`blog/${idBlog}`, blog, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);

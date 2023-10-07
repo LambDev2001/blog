@@ -81,9 +81,26 @@ const blogCtrl = {
 
       const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
 
+      const category = await Categories.findOne({
+        _id: blog.category,
+      });
+
+      const author = await Users.findById(blog.idUser).select(
+        "-__v -password -createdAt -updatedAt -status -friends -report"
+      );
+
       return res
         .status(200)
-        .json({ ...blog._doc, likes, dislikes, comments, views: view, viewMonthly });
+        .json({
+          ...blog._doc,
+          author,
+          likes,
+          dislikes,
+          comments,
+          views: view,
+          viewMonthly,
+          category: category.name,
+        });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -190,7 +207,7 @@ const blogCtrl = {
   myBlogs: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
-      const allBlogs = await Blogs.find({idUser: req.user.id}).select("-report -status -content");
+      const allBlogs = await Blogs.find({ idUser: req.user.id }).select("-report -status -content");
 
       let blogs = await Promise.all(
         allBlogs.map(async (blog) => {
@@ -334,8 +351,11 @@ const blogCtrl = {
     try {
       const { idBlog } = req.params;
 
+      console.log(idBlog);
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
       if (ownerBlog.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
+
+      
 
       const blog = await Blogs.findOneAndUpdate({ _id: idBlog }, { ...req.body }, { new: true });
 

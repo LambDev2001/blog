@@ -8,9 +8,9 @@ const Header = Quill.import("formats/header");
 Header.whitelist = [1, 2, 3, 4, 5, 6];
 Quill.register(Header, true);
 
-const Blog = ({ blog, setBlog=()=>{}, readOnly = false }) => {
+const Blog = ({ blog, setBlog = () => {}, readOnly = false }) => {
   const color = useSelector((state) => state.themeReducer.themeColor);
-  const modules = {
+  let modules = {
     toolbar: [
       [{ font: [] }, { header: Header.whitelist }],
       ["bold", "italic", "underline", "strike"],
@@ -20,17 +20,17 @@ const Blog = ({ blog, setBlog=()=>{}, readOnly = false }) => {
     ],
   };
 
+  if (readOnly) modules = { toolbar: [] };
+
   return (
-    <div className={`${color.outside} rounded-lg shadow-md overflow-hidden p-1`}>
-      <div className="bg-white text-black">
-        <ReactQuill
-          value={blog.content}
-          readOnly={readOnly}
-          onChange={e=>setBlog({...blog, content: e})}
-          theme={"snow"}
-          modules={modules}
-        />
-      </div>
+    <div className="text-white" style={{ backgroundColor: "#242427" }}>
+      <ReactQuill
+        value={blog.content}
+        readOnly={readOnly}
+        onChange={(e) => setBlog({ ...blog, content: e })}
+        theme={"snow"}
+        modules={modules}
+      />
     </div>
   );
 };
