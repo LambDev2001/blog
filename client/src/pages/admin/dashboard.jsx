@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Header from "../../components/global/Header";
-import Menu from "../../components/admin/Menu";
-import StatisticalBlog from "../../components/admin/dashboard/StatisticalBlog";
-import PieChart from "../../components/admin/dashboard/PieChart";
-import LineChart from "../../components/admin/dashboard/LineChart";
+import Menu from "../../components/Menu";
+import StatisticalBlog from "../../components/dashboard/StatisticalBlog";
+import PieChart from "../../components/dashboard/PieChart";
+import LineChart from "../../components/dashboard/LineChart";
 import Card from "../../components/global/Card";
 import { getDashboard } from "../../redux/actions/dashboardAction";
 

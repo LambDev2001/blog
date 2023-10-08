@@ -7,7 +7,7 @@ import Header from "../../../components/global/Header";
 import InfoBlog from "../../../components/global/InfoBlog";
 import Blog from "../../../components/global/Blog";
 import Button from "../../../components/global/theme/button/Button";
-import Menu from "../../../components/admin/Menu";
+import Menu from "../../../components/Menu";
 import { acceptReport, declineReport, getReport } from "../../../redux/actions/reportAction";
 
 const Report = () => {

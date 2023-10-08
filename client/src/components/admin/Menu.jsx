@@ -28,18 +28,18 @@ const Menu = () => {
     name: "BLOG NEW",
   };
   const listFunctions = [
-    [LuGauge, "Dashboard", [["/admin/dashboard"]]],
-    [LuUser, "Manager User", [["/admin/all-users"]]],
-    [LiaFileAltSolid, "Manager Blog", [["/admin/blogs"]]],
-    [LuTags, "Manager Categories", [["/admin/categories"]]],
-    [LiaHandshakeSolid, "Manager Policies", [["/admin/policies"]]],
-    [LuFileWarning, "Manager Reports", [["/admin/reports"]]],
+    [LuGauge, "Dashboard", [["/dashboard"]]],
+    [LuUser, "Manager User", [["/all-users"]]],
+    [LiaFileAltSolid, "Manager Blog", [["/blogs"]]],
+    [LuTags, "Manager Categories", [["/categories"]]],
+    [LiaHandshakeSolid, "Manager Policies", [["/policies"]]],
+    [LuFileWarning, "Manager Reports", [["/reports"]]],
     [
       BsLayersHalf,
       "Theme",
       [
-        ["Button", "/admin/buttons"],
-        ["color", "/admin/colors"],
+        ["Button", "/buttons"],
+        ["color", "/colors"],
       ],
     ],
   ];
@@ -63,13 +63,13 @@ const Menu = () => {
   };
 
   const handleLogin = () => {
-    history.push("/admin/login");
+    history.push("/login");
   };
 
   const handleLogout = () => {
     dispatch(logoutAdmin(token));
     setMenu(false);
-    history.push("/admin/login");
+    history.push("/login");
   };
 
   // change with when click menu
@@ -99,7 +99,7 @@ const Menu = () => {
         {/* user */}
         <div className={`m-1 py-2 px-1 cursor-pointer ${color.inside} shadow-md rounded-lg `}>
           {user ? (
-            <Link to={`/admin/profile/${user._id}`} className="d-flex align-items-center">
+            <Link to={`/profile/${user._id}`} className="d-flex align-items-center">
               <img
                 src={user.avatar}
                 alt="avatar"

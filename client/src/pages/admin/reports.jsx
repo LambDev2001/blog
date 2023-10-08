@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import { getReports } from "../../redux/actions/reportAction";
-import TableReport from "../../components/admin/TableReport";
+import TableReport from "../../components/TableReport";
 import Header from "../../components/global/Header";
-import Menu from "../../components/admin/Menu";
+import Menu from "../../components/Menu";
 
 const Reports = () => {
   const reports = useSelector((state) => state.reportReducer.reports);

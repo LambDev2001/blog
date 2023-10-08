@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Header from "../../components/global/Header";
-import Menu from "../../components/admin/Menu";
+import Menu from "../../components/Menu";
 import Button1 from "../../components/global/theme/button/Button1";
 import Button2 from "../../components/global/theme/button/Button2";
 import Button3 from "../../components/global/theme/button/Button3";

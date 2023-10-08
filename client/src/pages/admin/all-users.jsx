@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Header from "../../components/global/Header";
 import { allUsers } from "../../redux/actions/userAction";
-import TableInfo from "../../components/admin/TableInfo";
+import TableInfo from "../../components/TableInfo";
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Search from "../../components/global/Search";
-import Menu from "../../components/admin/Menu";
+import Menu from "../../components/Menu";
 
 const AllUser = () => {
   const dispatch = useDispatch();

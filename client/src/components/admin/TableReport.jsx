@@ -64,9 +64,7 @@ const TableInfo = ({ data }) => {
         </thead>
         <tbody className="text-center">
           {currentItems.map((result, index) => (
-            <tr
-              className="border-b hover:bg-gray-200 transition-all duration-300"
-              key={index}>
+            <tr className="border-b hover:bg-gray-200 transition-all duration-300" key={index}>
               <td className="py-2">{result.author}</td>
               <td className="py-2 font-semibold">{result.type}</td>
               <td className="py-2">{result.content}</td>
@@ -75,7 +73,7 @@ const TableInfo = ({ data }) => {
                   icon={faCircleUser}
                   className="h-[30px] mx-3 cursor-pointer"
                   style={{ marginLeft: "auto" }}
-                  onClick={() => history.push(`/admin/report/${result._id}`)}
+                  onClick={() => history.push(`/report/${result._id}`)}
                 />
               </td>
             </tr>

@@ -100,6 +100,7 @@ const blogCtrl = {
           views: view,
           viewMonthly,
           category: category.name,
+          idCategory: category._id,
         });
     } catch (err) {
       return res.status(500).json({ msg: err.message });

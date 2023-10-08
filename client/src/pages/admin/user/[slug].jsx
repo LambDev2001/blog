@@ -6,9 +6,9 @@ import AdminRouteWrapper from "../../../utils/AdminRouteWrapper";
 import Friend from "../../../components/global/Friend";
 import Header from "../../../components/global/Header";
 import Card from "../../../components/global/Card";
-import TableReport from "../../../components/admin/TableReport";
+import TableReport from "../../../components/TableReport";
 import Button from "../../../components/global/theme/button/Button";
-import Menu from "../../../components/admin/Menu";
+import Menu from "../../../components/Menu";
 import { getUser, changeStatus } from "../../../redux/actions/userAction";
 
 const User = () => {

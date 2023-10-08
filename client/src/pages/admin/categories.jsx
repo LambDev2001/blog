@@ -11,7 +11,7 @@ import {
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Header from "../../components/global/Header";
 import Button from "../../components/global/theme/button/Button";
-import Menu from "../../components/admin/Menu";
+import Menu from "../../components/Menu";
 
 const Categories = () => {
   const [name, setName] = useState("");

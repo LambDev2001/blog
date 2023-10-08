@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AdminRouteWrapper from "../../../utils/AdminRouteWrapper";
 import { profileAdmin } from "../../../redux/actions/profileAction";
 import Header from "../../../components/global/Header";
-import Menu from "../../../components/admin/Menu";
+import Menu from "../../../components/Menu";
 import ChangePass from "../../../components/global/ChangePass";
 
 const Profile = () => {

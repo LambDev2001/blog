@@ -96,7 +96,7 @@ const TableInfo = ({ data }) => {
                   icon={faCircleUser}
                   className="h-[30px] mx-3 cursor-pointer"
                   style={{ marginLeft: "auto" }}
-                  onClick={() => history.push(`/admin/user/${result._id}`)}
+                  onClick={() => history.push(`/user/${result._id}`)}
                 />
               </td>
             </tr>

@@ -8,7 +8,7 @@ import Header from "../../components/global/Header";
 import AdminRouterWrapper from "../../utils/AdminRouteWrapper";
 import Pagination from "../../components/global/Pagination";
 import Button from "../../components/global/theme/button/Button";
-import Menu from "../../components/admin/Menu";
+import Menu from "../../components/Menu";
 import { getAllPolicies } from "../../redux/actions/policiesAction";
 import { updatePolicy, createPolicy, deletePolicy } from "../../redux/actions/policiesAction";
 

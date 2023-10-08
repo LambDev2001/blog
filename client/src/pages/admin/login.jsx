@@ -1,8 +1,8 @@
 import React from "react";
 
-import LoginPass from "../../components/admin/auth/LoginPass.jsx";
+import LoginPass from "../../components/auth/LoginPass.jsx";
 import Header from "../../components/global/Header.jsx";
-import Menu from "../../components/admin/Menu.jsx";
+import Menu from "../../components/Menu.jsx";
 
 const Login = () => {
   return (

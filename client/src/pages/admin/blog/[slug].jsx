@@ -8,7 +8,7 @@ import Header from "../../../components/global/Header";
 import Blog from "../../../components/global/Blog";
 import DeleteModal from "../../../components/global/modal/DeleteModal";
 import Button from "../../../components/global/theme/button/Button";
-import Menu from "../../../components/admin/Menu";
+import Menu from "../../../components/Menu";
 import { deleteBlog, getBlog } from "../../../redux/actions/blogAction";
 import { updateBlogStatus } from "../../../redux/actions/blogAction";
 
@@ -41,7 +41,7 @@ const MyEditor = () => {
   const handleDelete = () => {
     setOpenAction(false);
     dispatch(deleteBlog(blog._id, token));
-    history.push("/admin/blogs");
+    history.push("/blogs");
   };
 
   const handleStatus = (e, status) => {

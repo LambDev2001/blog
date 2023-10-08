@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import Header from "../../components/global/Header";
-import Menu from "../../components/admin/Menu";
+import Menu from "../../components/Menu";
 
 const Color = () => {
   const dispatch = useDispatch();
