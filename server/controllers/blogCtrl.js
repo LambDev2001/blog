@@ -11,6 +11,7 @@ import Reports from "../models/reportModel.js";
 const blogCtrl = {
   // none auth
   searchBlog: async (req, res) => {
+    
     try {
       const blogs = await Blogs.aggregate([
         {
@@ -89,19 +90,17 @@ const blogCtrl = {
         "-__v -password -createdAt -updatedAt -status -friends -report"
       );
 
-      return res
-        .status(200)
-        .json({
-          ...blog._doc,
-          author,
-          likes,
-          dislikes,
-          comments,
-          views: view,
-          viewMonthly,
-          category: category.name,
-          idCategory: category._id,
-        });
+      return res.status(200).json({
+        ...blog._doc,
+        author,
+        likes,
+        dislikes,
+        comments,
+        views: view,
+        viewMonthly,
+        category: category.name,
+        idCategory: category._id,
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -352,11 +351,8 @@ const blogCtrl = {
     try {
       const { idBlog } = req.params;
 
-      console.log(idBlog);
       const ownerBlog = await Blogs.findOne({ _id: idBlog });
       if (ownerBlog.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
-
-      
 
       const blog = await Blogs.findOneAndUpdate({ _id: idBlog }, { ...req.body }, { new: true });
 

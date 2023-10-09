@@ -21,7 +21,7 @@ const Friend = () => {
   return (
     <div className={`${themeColor.sub} m-2 p-1 rounded-lg`}>
       <div className="text-xl font-semibold my-2 mx-3">Friends</div>
-      {user &&
+      {user && user.friends &&
         user.friends.map((friend, index) => (
           <div
             key={index}

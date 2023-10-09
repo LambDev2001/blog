@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 import Header from "../components/global/Header";
-import Menu from "../components/Menu";
 
 const Color = () => {
   const dispatch = useDispatch();
@@ -31,35 +29,29 @@ const Color = () => {
   };
 
   return (
-    <div className="d-flex">
-      <Menu />
-      <div className="w-100">
-        <div className="mx-2">
-          <AdminRouteWrapper />
-          <Header content="Colors Theme" />
+    <div>
+      <Header content="Colors Theme" />
 
-          <div className="text-2xl">Choose Color</div>
-          <div className="flex flex-wrap">
-            {colors.map((color, index) => {
-              return (
-                <div key={index} className={`${color.outside} py-3 px-4 m-4 rounded-md`}>
-                  <div className="flex mb-2">
-                    <input
-                      type="radio"
-                      className="checked:bg-blue-500"
-                      checked={selectedStyle === index}
-                      onChange={() => handleStyleChange(index)}
-                    />{" "}
-                    <div className="mx-2">Style {index + 1}</div>
-                  </div>
-                  <div className={`${color.inside} p-3 rounded-md`}>
-                    <div className={`${color.active} p-2 rounded-sm`}></div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <div className="text-2xl">Choose Color</div>
+      <div className="flex flex-wrap">
+        {colors.map((color, index) => {
+          return (
+            <div key={index} className={`${color.outside} py-3 px-4 m-4 rounded-md`}>
+              <div className="flex mb-2">
+                <input
+                  type="radio"
+                  className="checked:bg-blue-500"
+                  checked={selectedStyle === index}
+                  onChange={() => handleStyleChange(index)}
+                />{" "}
+                <div className="mx-2">Style {index + 1}</div>
+              </div>
+              <div className={`${color.inside} p-3 rounded-md`}>
+                <div className={`${color.active} p-2 rounded-sm`}></div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

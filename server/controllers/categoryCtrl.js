@@ -2,6 +2,38 @@ import Categories from "../models/categoryModel.js";
 import Admins from "../models/adminModel.js";
 
 const categoryCtrl = {
+  // none
+  searchCategory: async (req, res) => {
+    
+    try {
+      const categories = await Categories.aggregate([
+        {
+          $search: {
+            index: "searchCategory",
+            autocomplete: {
+              query: `${req.query.search}`,
+              path: "name",
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 1,
+            name: 1
+          },
+        },
+      ]);
+
+      if (categories.length < 1) return res.json({ msg: "No Category." });
+
+      return res.status(200).json(categories);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // auth
   getAllCategories: async (req, res) => {
     try {

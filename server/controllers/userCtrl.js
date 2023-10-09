@@ -261,6 +261,7 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  
   changeStatus: async (req, res) => {
     try {
       const { idUser } = req.params;

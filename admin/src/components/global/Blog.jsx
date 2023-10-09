@@ -1,7 +1,6 @@
 import React from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import styles
-import { useSelector } from "react-redux";
 
 // Add fonts to whitelist and register them
 const Header = Quill.import("formats/header");
@@ -22,7 +21,7 @@ const Blog = ({ blog, setBlog = () => {}, readOnly = false }) => {
   if (readOnly) modules = { toolbar: [] };
 
   return (
-    <div className="text-white" style={{ backgroundColor: "#242427" }}>
+    <div className="text-white">
       <ReactQuill
         value={blog.content}
         readOnly={readOnly}

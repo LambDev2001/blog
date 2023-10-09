@@ -5,6 +5,9 @@ import auth from "../middleware/auth.js";
 import admin from "../middleware/admin.js";
 
 const router = express.Router();
+// none
+router.get("/search-category", categoryCtrl.searchCategory);
+
 // auth
 router.get("/categories", auth, categoryCtrl.getAllCategories);
 
