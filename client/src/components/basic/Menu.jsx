@@ -27,7 +27,7 @@ const Menu = () => {
   };
 
   return (
-    <div className={`${themeColor.border} w-1/5 border-r`} style={{ height: `${height}px` }}>
+    <div style={{ height: `${height}px` }}>
       <div className="ml-2 mt-2">
         <div
           className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}

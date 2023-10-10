@@ -13,20 +13,12 @@ const BlogPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
 
-  const height = window.innerHeight - 60;
-
   useEffect(() => {
     dispatch(getBlog(slug, token));
     dispatch(getComments(slug, token));
   }, [dispatch, token, slug]);
 
-  return (
-    <div className={`w-3/5 custom-scroll-container `} style={{ height: `${height}px` }}>
-      <div className="custom-scroll-content h-100 overflow-auto px-4">
-        {blog && <ShowBlog blog={blog} comments={comments} />}
-      </div>
-    </div>
-  );
+  return <div>{blog && <ShowBlog blog={blog} comments={comments} />}</div>;
 };
 
 export default BlogPage;

@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { IoMdClose } from "react-icons/io";
 
-import Blog from "../../global/Blog";
-import { getRooms } from "../../../redux/actions/roomAction";
-import { createBlog } from "../../../redux/actions/blogAction";
-import { getCategories } from "../../../redux/actions/categoryAction";
+import Blog from "./BlogCard";
+import { getRooms } from "../../redux/actions/roomAction";
+import { createBlog } from "../../redux/actions/blogAction";
+import { getCategories } from "../../redux/actions/categoryAction";
 
 const CreateBlog = () => {
   const [isReview, setIsReview] = useState(false);

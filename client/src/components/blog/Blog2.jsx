@@ -167,7 +167,7 @@ const Blogs2 = () => {
 
                   {/* thumbnail */}
                   <Link to={"/blog/" + blog._id} className="w-1/4 max-w-[200px] h-100">
-                    <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md" />
+                    <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md object-cover" />
                   </Link>
                 </div>
               </div>

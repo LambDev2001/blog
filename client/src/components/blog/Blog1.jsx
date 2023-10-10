@@ -128,7 +128,7 @@ const Blog1 = ({ readOnly }) => {
 
                 {/* thumbnail */}
                 <Link to={"/blog/" + blog._id}>
-                  <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md max-h-[400px]" />
+                  <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md max-h-[400px] object-cover" />
                 </Link>
 
                 {/* interact */}

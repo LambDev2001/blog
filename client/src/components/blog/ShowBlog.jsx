@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 import { LuMoreHorizontal } from "react-icons/lu";
 
-import Blog from "../global/Blog";
+import Blog from "./BlogCard";
 import Comment from "../comment/Comment";
 import ModalReportBlog from "../modal/ModalReportBlog";
 

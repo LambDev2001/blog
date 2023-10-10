@@ -22,14 +22,22 @@ function App() {
 
         {/* body */}
         <div className={`${themeColor.main} flex justify-between h-100`}>
-          {/* menu */}
-          <Menu />
+              {/* menu */}
+          <div className={`w-1/5 custom-scroll-container ${themeColor.border} border-r`} style={{ height: `${height}px` }}>
+            <div className="custom-scroll-content h-100 overflow-auto px-2">
+              <Menu />
+            </div>
+          </div>
 
-          <Switch>
-            <Route exact path="/" component={PageRender} />
-            <Route exact path="/:page" component={PageRender} />
-            <Route exact path="/:page/:slug" component={PageRender} />
-          </Switch>
+          <div className={`w-3/5 custom-scroll-container`} style={{ height: `${height}px` }}>
+            <div className="custom-scroll-content h-100 overflow-auto px-2">
+              <Switch>
+                <Route exact path="/" component={PageRender} />
+                <Route exact path="/:page" component={PageRender} />
+                <Route exact path="/:page/:slug" component={PageRender} />
+              </Switch>
+            </div>
+          </div>
           {/* <Footer /> */}
 
           {/* social */}

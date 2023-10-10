@@ -40,6 +40,35 @@ export const getBlogs = (token) => async (dispatch) => {
   }
 };
 
+export const getBlogsByCategory = (idCategory) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+
+    const result = await getAPI(`blogs-category/${idCategory}`);
+    ResErrorData(result.data, dispatch);
+
+    let { nameCategory, blogs } = result.data;
+    if (blogs.length > 0) {
+      blogs = blogs.map((item) => {
+        const date = new Date(item.updatedAt);
+        item.updatedAt = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return item;
+      });
+    }
+
+    dispatch({ type: "GET_BLOGS", payload: blogs });
+
+    dispatch({ type: "LOADING", payload: { loading: false } });
+    return nameCategory;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getBlogsUser = (token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

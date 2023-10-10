@@ -1,7 +1,6 @@
 import React from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import styles
-import { useSelector } from "react-redux";
 
 // Add fonts to whitelist and register them
 const Header = Quill.import("formats/header");
@@ -9,7 +8,7 @@ Header.whitelist = [1, 2, 3, 4, 5, 6];
 Quill.register(Header, true);
 
 const Blog = ({ blog, setBlog = () => {}, readOnly = false }) => {
-  const color = useSelector((state) => state.themeReducer.themeColor);
+
   let modules = {
     toolbar: [
       [{ font: [] }, { header: Header.whitelist }],

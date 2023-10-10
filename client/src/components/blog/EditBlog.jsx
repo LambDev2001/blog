@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { IoMdClose } from "react-icons/io";
 
-import Blog from "../global/Blog";
+import Blog from "./BlogCard";
 import { getRooms } from "../../redux/actions/roomAction";
 import { updateBlog } from "../../redux/actions/blogAction";
 import { getCategories } from "../../redux/actions/categoryAction";

@@ -32,7 +32,7 @@ const Profile = () => {
   const height = window.innerHeight - 234;
 
   return (
-    <div className="w-3/5">
+    <div>
       {Object.keys(otherUser).length > 0 && (
         <div>
           {/* Header */}

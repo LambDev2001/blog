@@ -14,15 +14,7 @@ const EditDataBlog = () => {
     dispatch(getBlog(slug, token));
   }, [dispatch, slug, token]);
 
-  const height = window.innerHeight - 60;
-
-  return (
-    <div className={`w-3/5 custom-scroll-container`} style={{ height: `${height}px` }}>
-      <div className="custom-scroll-content h-100 overflow-auto px-4">
-        <EditBlog />
-      </div>
-    </div>
-  );
+  return <EditBlog />;
 };
 
 export default EditDataBlog;

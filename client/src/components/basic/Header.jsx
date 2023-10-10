@@ -67,7 +67,7 @@ const Header = () => {
           name="search"
           onChange={(e) => handleSearch(e)}
         />
-        <div className={`${themeColor.input} absolute top-1 right-3 flex text-white`}>
+        <div className={`${themeColor.input} absolute top-1 right-3 flex text-white text-right focus:border-none`}>
           <select
             className={themeColor.input + " focus:border-none"}
             name="type"

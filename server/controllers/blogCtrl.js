@@ -11,7 +11,6 @@ import Reports from "../models/reportModel.js";
 const blogCtrl = {
   // none auth
   searchBlog: async (req, res) => {
-    
     try {
       const blogs = await Blogs.aggregate([
         {
@@ -39,6 +38,62 @@ const blogCtrl = {
 
       return res.status(200).json(blogs);
     } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getBlogsByCategory: async (req, res) => {
+    try {
+      const { idCategory } = req.params;
+
+      const categoryCheck = await Categories.findById(idCategory).select("-__v");
+      if (!categoryCheck) return res.json({ err: "Category not found" });
+
+      const blogs = await Blogs.find({ category: idCategory }).select("-__v");
+
+      if (blogs.length < 1) return res.status(200).json({nameCategory: categoryCheck, blogs: []});
+
+      const result = await Promise.all(
+        blogs.map(async (blog) => {
+          const likes = await Likes.count({
+            idBlog: blog._id,
+            like: true,
+          });
+          const dislikes = await Likes.count({
+            idBlog: blog._id,
+            like: false,
+          });
+
+          const comments = await Comments.count({
+            idBlog: blog._id,
+          });
+
+          const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
+
+          const category = await Categories.findOne({
+            _id: blog.category,
+          });
+
+          const author = await Users.findById(blog.idUser).select(
+            "-__v -password -createdAt -updatedAt -status -friends -report"
+          );
+
+          return {
+            ...blog._doc,
+            category: category.name,
+            likes,
+            dislikes,
+            comments,
+            views: view,
+            viewMonthly,
+            author,
+          };
+        })
+      );
+
+      return res.status(200).json({nameCategory: categoryCheck, blogs: result});
+    } catch (err) {
+      console.log(err);
       return res.status(500).json({ msg: err.message });
     }
   },
