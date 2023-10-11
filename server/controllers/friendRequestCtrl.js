@@ -8,7 +8,12 @@ const friendRequestCtl = {
       const idUser = req.user.id;
 
       const listRequest = await Requests.find({ idUser }).select("idUser receiver");
-      return res.status(200).json(listRequest);
+      const friendIds = listRequest.map((request) => request.idUser);
+
+      const allFriends = await Users.find({ _id: { $in: friendIds } }).select(
+        "-password -__v -createdAt -updatedAt -report -status -friends -following"
+      );
+      return res.status(200).json(allFriends);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -17,8 +22,14 @@ const friendRequestCtl = {
   listWaitingRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
+
       const listRequest = await Requests.find({ receiver: idUser }).select("idUser receiver");
-      return res.status(200).json(listRequest);
+      const friendIds = listRequest.map((request) => request.idUser);
+
+      const allFriends = await Users.find({ _id: { $in: friendIds } }).select(
+        "-password -__v -createdAt -updatedAt -report -status -friends -following"
+      );
+      return res.status(200).json(allFriends);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -31,8 +42,9 @@ const friendRequestCtl = {
 
       const { receiver } = req.body;
       const receiverUser = await Users.findOne({ _id: receiver });
-      if (!receiver || !receiverUser)
-        return res.json({ msg: "User receiver not found" });
+      console.log(receiver);
+
+      if (!receiver || !receiverUser) return res.json({ msg: "User receiver not found" });
 
       const friends = user.friends;
       if (friends.indexOf(req.user.id) !== -1) {
@@ -54,22 +66,19 @@ const friendRequestCtl = {
   acceptRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const { idRequest } = req.params;
-
-      const request = await Requests.findOne({
-        _id: idRequest,
-      });
-      if (!request) return res.json({ msg: "This quest does not exit" });
+      const { idSender } = req.body;
 
       const sender = await Users.findByIdAndUpdate(
         { _id: idUser },
-        { $push: { friends: request.receiver } }
+        { $push: { friends: idSender } }
       );
       const userReceiver = await Users.findByIdAndUpdate(
-        { _id: request.receiver },
+        { _id: idSender },
         { $push: { friends: idUser } }
       );
-      if (!sender || !userReceiver) return res.json({ msg: "Some err from back-end" });
+      if (!sender || !userReceiver) return res.json({ err: "Some err from back-end" });
+
+      await Requests.findOneAndDelete({ idUser: idSender, receiver: idUser });
 
       return res.status(200).json({ msg: "Accept the request" });
     } catch (err) {
@@ -80,12 +89,9 @@ const friendRequestCtl = {
   declineRequest: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const { idRequest } = req.params;
+      const { idSender } = req.params;
 
-      const result = await Requests.findOneAndDelete({
-        _id: idRequest,
-      });
-      if (!result) return res.json({ msg: "This quest does not exit" });
+      await Requests.findOneAndDelete({ idUser: idSender, receiver: idUser });
 
       return res.status(200).json({ msg: "Declined the request" });
     } catch (err) {

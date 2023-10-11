@@ -165,7 +165,7 @@ const Header = () => {
                 themeColor.hoverBold +
                 " flex mb-1 p-1 cursor-pointer rounded-md"
               }
-              onClick={() => handleLink(`/user/${user._id}`)}>
+              onClick={() => handleLink(`/profile/${user._id}`)}>
               <img
                 src={user.avatar}
                 alt="thumbnail"

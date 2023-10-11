@@ -30,7 +30,7 @@ const Friend = () => {
             } p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
             onMouseEnter={() => handleMouseEnter(1)}
             onMouseLeave={handleMouseLeave}
-            onClick={() => history.push("/profile/{friend._id}")}>
+            onClick={() => history.push(`/profile/${friend._id}`)}>
             <div className="flex">
               <img
                 src={friend.avatar}

@@ -7,6 +7,7 @@ import Blog2 from "../blog/Blog2";
 import { getMyBlogs } from "../../redux/actions/blogAction";
 import ProfileFriend from "../ProfileFriend";
 import ProfileFollowing from "../ProfileFollowing";
+import { sendRequest } from "../../redux/actions/friendAction";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState("posts");
@@ -27,6 +28,10 @@ const Profile = () => {
 
   const handleModalProfile = () => {
     setIsModal(!isModal);
+  };
+
+  const handleSendReq = () => {
+    dispatch(sendRequest({ receiver: otherUser._id, token }));
   };
 
   const height = window.innerHeight - 234;
@@ -51,6 +56,17 @@ const Profile = () => {
                   className="cursor-pointer text-gray-200 hover:underline"
                   onClick={() => history.push(`/friend/${otherUser._id}`)}>
                   {otherUser.friends.length} friends
+                </div>
+              </div>
+
+              {/* Action */}
+              <div className="mx-3 mt-auto my-2">
+                <div
+                  className={
+                    themeColor.border + " p-2 border-1 hover:bg-blue-500 cursor-pointer rounded-md"
+                  }
+                  onClick={handleSendReq}>
+                  Add friend
                 </div>
               </div>
             </div>

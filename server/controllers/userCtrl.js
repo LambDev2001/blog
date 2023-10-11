@@ -37,7 +37,7 @@ const userCtrl = {
 
       const following = await Users.find({ _id: { $in: user.following } }).select(
         "-friends -password -following -__v -createdAt -updatedAt -report -status"
-      )
+      );
 
       return res.status(200).json({ ...user._doc, friends, following });
     } catch (err) {
@@ -125,7 +125,11 @@ const userCtrl = {
         _id: req.user.id,
       }).select("friends");
 
-      return res.status(200).json(friends);
+      const allFriends = await Users.find({ _id: { $in: friends } }).select(
+        "-password -__v -createdAt -updatedAt -report -status -friends -following"
+      );
+
+      return res.status(200).json(allFriends);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -166,10 +170,8 @@ const userCtrl = {
 
   updateUser: async (req, res) => {
     try {
-      console.log(req.body);
       if (req.user.id !== req.params.idUser) return res.json({ msg: "You are not owner" });
-      
-      
+
       await Users.findByIdAndUpdate({ _id: req.user.id }, req.body);
 
       return res.status(200).json({ msg: "Updated information successfully" });
@@ -187,8 +189,7 @@ const userCtrl = {
       user.following.push(idUser);
       await user.save();
       return res.status(200).json({ msg: "Follow successfully" });
-    }
-    catch (err) {
+    } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -202,8 +203,7 @@ const userCtrl = {
       user.following.splice(user.following.indexOf(idUser), 1);
       await user.save();
       return res.status(200).json({ msg: "Follow successfully" });
-    }
-    catch (err) {
+    } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -261,12 +261,12 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-  
+
   changeStatus: async (req, res) => {
     try {
       const { idUser } = req.params;
       const { status } = req.body;
-      
+
       const user = await Users.findById({ _id: idUser });
       if (!user) return res.json({ msg: "User not found" });
 
