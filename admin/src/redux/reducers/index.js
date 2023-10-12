@@ -14,6 +14,7 @@ import themeReducer from "./themeReducer";
 import themeUserReducer from "./themeUserReducer";
 import roomReducer from "./roomReducer";
 import commentReducer from "./commentReducer";
+import chatReducer from "./chatReducer";
 
 export default combineReducers({
   authReducer,
@@ -30,4 +31,5 @@ export default combineReducers({
   themeUserReducer,
   roomReducer,
   commentReducer,
+  chatReducer,
 });

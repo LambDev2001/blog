@@ -17,7 +17,7 @@ const Group = () => {
 
   return (
     <div className={`${themeColor.sub} m-2 p-1 rounded-lg`}>
-      <div className="text-xl font-semibold my-2 mx-3">Groups Chat</div>
+      <div className="text-xl font-semibold my-2 mx-3 cursor-pointer" onClick={() => history.push("/group-chat")}>Groups Chat</div>
       {rooms.length > 0 &&
         rooms.map((room, index) => (
           <div

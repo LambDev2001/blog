@@ -1,49 +1,51 @@
-import React, { useState, useRef } from "react";
-import { BsSend } from "react-icons/bs";
+import React, { useState } from "react";
 
-const ImageUpload = () => {
-  const [selectedImages, setSelectedImages] = useState([]);
-  const inputTextRef = useRef(null);
+const Test = () => {
+  const [uploadedImage, setUploadedImage] = useState(null);
 
-  const handleImageChange = (event) => {
-    const files = event.target.files;
+  const imageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "mq0jvhgj");
+    formData.append("cloud_name", "dfuaq9ggj");
 
-    if (files && files.length > 0) {
-      const imageUrls = Array.from(files).map((file) => URL.createObjectURL(file));
+    const res = await fetch("https://api.cloudinary.com/v1_1/dfuaq9ggj/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    return { public_id: data.public_id, url: data.secure_url };
+  };
 
-      setSelectedImages([...selectedImages, ...imageUrls]);
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    
+    if (!file) {
+      alert("Please select an image.");
+      return;
+    }
+
+    try {
+      const result = await imageUpload(file);
+      setUploadedImage(result.url);
+    } catch (error) {
+      alert("Error uploading image.");
     }
   };
 
-  const handleSendClick = () => {
-    console.log("Text:", inputTextRef.current.value);
-    console.log("Selected Images:", selectedImages);
-  };
-
   return (
-    <div className="max-w-md mx-auto p-4">
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        className="hidden"
-        id="imageUpload"
-        multiple
-      />
-      <label htmlFor="imageUpload" className="my-auto mx-2 cursor-pointer rounded-md">
-        Upload Image
-      </label>
-      <input
-        type="text"
-        ref={inputTextRef}
-        value={selectedImages.join(", ")}
-        className="w-full rounded-full mx-2 p-2 border focus:outline-none text-black"
-      />
-      <button onClick={handleSendClick} className="bg-blue-400 rounded-full py-2 px-3">
-        <BsSend size={24} />
-      </button>
+    <div>
+      <h1>Image Upload</h1>
+      <input type="file" accept="image/*" onChange={handleImageUpload} />
+      {uploadedImage && (
+        <div>
+          <h2>Uploaded Image:</h2>
+          <img src={uploadedImage} alt="Uploaded" />
+        </div>
+      )}
     </div>
   );
 };
 
-export default ImageUpload;
+export default Test;

@@ -14,6 +14,10 @@ const chatSchema = new mongoose.Schema(
       type: String,
       require: [true, "Please fill the message"],
     },
+    type: {
+      type: String,
+      default: "text",
+    }
   },
   { timestamps: true }
 );
