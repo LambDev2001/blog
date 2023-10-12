@@ -77,23 +77,25 @@ const EditBlog = () => {
 
         <div className="mb-4">
           <label className="block text-sm mb-1">Category</label>
-          <select
-            name="category"
-            value={dataBlog.category}
-            onChange={(e) => {
-              handleChangeInput(e);
-            }}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
-            <option value={dataBlog.idCategory}>{dataBlog.category}</option>
-            {categories.length > 0 &&
-              categories.map((item, index) => {
-                return (
-                  <option key={index} value={item._id}>
-                    {item.name}
-                  </option>
-                );
-              })}
-          </select>
+          {blog[0] && (
+            <select
+              name="category"
+              value={dataBlog.category}
+              onChange={(e) => {
+                handleChangeInput(e);
+              }}
+              className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
+              <option value={dataBlog.idCategory}>{blog[0].category}</option>
+              {categories.length > 0 &&
+                categories.map((item, index) => {
+                  return (
+                    <option key={index} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+            </select>
+          )}
         </div>
 
         <div className="mb-4">
@@ -134,7 +136,9 @@ const EditBlog = () => {
               {/* title */}
               <div className="flex">
                 <div className="my-1 text-lg font-bold">{dataBlog.title}</div>
-                <div className={`${themeColor.input} mx-2 p-2 rounded-full`}>{nameCategory.length > 0 ? nameCategory : dataBlog.category}</div>
+                <div className={`${themeColor.input} mx-2 p-2 rounded-full`}>
+                  {nameCategory.length > 0 ? nameCategory : dataBlog.category}
+                </div>
               </div>
 
               {/* description */}
