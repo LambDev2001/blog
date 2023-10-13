@@ -1,7 +1,20 @@
-import React from "react";
+import { useEffect } from "react";
+import io from "socket.io-client";
+import { useDispatch } from "react-redux";
 
 const Chat = ({ themeColor, data }) => {
+  const dispatch = useDispatch();
+
   const height = window.innerHeight - 196;
+
+  useEffect(() => {
+    const socket = io();
+    socket.emit("test", "hello");
+
+    return () => {
+      socket.close();
+    };
+  }, [dispatch]);
 
   return (
     <div
@@ -41,7 +54,9 @@ const Chat = ({ themeColor, data }) => {
                     className="h-[40px] w-[40px] mt-auto mb-2 mx-2 rounded-full"
                   />
                   <div className="my-auto mx-2">
-                    <div className="flex justify-end text-md text-gray-500 mx-2">{item.author.username}</div>
+                    <div className="flex justify-end text-md text-gray-500 mx-2">
+                      {item.author.username}
+                    </div>
                     <div className="flex flex-warp">
                       {item.message.map((image, index) => (
                         <img
@@ -52,7 +67,9 @@ const Chat = ({ themeColor, data }) => {
                         />
                       ))}
                     </div>
-                    <div className="flex justify-end text-sm text-gray-500 mx-2">{item.createdAt}</div>
+                    <div className="flex justify-end text-sm text-gray-500 mx-2">
+                      {item.createdAt}
+                    </div>
                   </div>
                 </div>
               )}

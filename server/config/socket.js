@@ -1,5 +1,11 @@
 
 const socketServer = async (socket) => {
+  console.log("connected");
+  
+  socket.on("test" , (data)=>{
+    console.log(data)
+  })
+
   socket.on("join-room", (idRoom) => {
     socket.join(idRoom);
   });
@@ -19,6 +25,10 @@ const socketServer = async (socket) => {
   socket.on("leave-room", (socket) => {
     socket.leave(idRoom);
   });
+
+  socket.on('connect_error', (error) => {
+    console.log(error);
+  })
   
 
   socket.on("disconnect", () => {

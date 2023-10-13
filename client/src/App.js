@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import PageRender from "./PageRender";
-import Alert from "./components/global/Alert";
-import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import Alert from "./components/global/Alert";
+import PageRender from "./PageRender";
 
 import Menu from "../src/components/basic/Menu";
 import Header from "../src/components/basic/Header";
@@ -22,8 +22,10 @@ function App() {
 
         {/* body */}
         <div className={`${themeColor.main} flex justify-between h-100`}>
-              {/* menu */}
-          <div className={`w-1/5 custom-scroll-container ${themeColor.border} border-r`} style={{ height: `${height}px` }}>
+          {/* menu */}
+          <div
+            className={`w-1/5 custom-scroll-container ${themeColor.border} border-r`}
+            style={{ height: `${height}px` }}>
             <div className="custom-scroll-content h-100 overflow-auto px-2">
               <Menu />
             </div>

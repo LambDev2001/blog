@@ -1,37 +1,52 @@
 import Chats from "../models/chatModel.js";
 import Rooms from "../models/roomModel.js";
+import Users from "../models/userModel.js";
 
 const chatCtrl = {
   listChat: async (req, res) => {
     try {
+      const idUser = req.user.id;
       const { idRoom } = req.params;
+
       const room = await Rooms.findOne({ _id: idRoom });
-      if (!room) return res.json({ msg: "Room not found" });
-      if (room.member.indexOf(req.user.id) === -1)
-        return res.json({ msg: "You are not a member of this room" });
+      if (!room) return res.json({ err: "Room not found" });
 
       let listChat = await Chats.find({ idRoom: idRoom })
-        .sort({ createdAt: 1 })
+        .sort({ createdAt: -1 })
         .select("-__v -updatedAt");
+
+      listChat = await Promise.all(
+        listChat.map(async (item) => {
+          const owner = idUser === item.idUser ? true : false;
+          const author = await Users.findById(item.idUser).select("_id username avatar");
+          
+          return {
+            ...item._doc,
+            author,
+            owner,
+            message: item.message,
+          };
+        })
+      );
 
       return res.status(200).json(listChat);
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ err: err.message });
     }
   },
 
   createChat: async (req, res) => {
     try {
-      const { idRoom, message } = req.body;
+      const { idRoom, message, type } = req.body;
       const idUser = req.user.id;
 
-      const newMessage = new Chats({ idRoom, idUser, message });
+      const newMessage = new Chats({ idRoom, idUser, message, type });
       await newMessage.save();
 
-      socket.broadcast.to(idRoom).emit("new-message", { message });
+      // socket.broadcast.to(idRoom).emit("new-message", { message });
       return res.status(200).json({ msg: "Send message successfully!" });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ err: err.message });
     }
   },
 
