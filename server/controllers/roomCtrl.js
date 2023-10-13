@@ -100,21 +100,17 @@ const groupCtrl = {
     try {
       const idUser = req.user.id;
       const { idRoom } = req.params;
-      const { idMember } = req.body;
 
       const room = await Rooms.findOne({ _id: idRoom });
       if (!room) return res.json({ msg: "Room not found" });
       if (room.member.indexOf(idUser) === -1)
-        return res.json({ msg: "You are not a member of this room" });
+        return res.json({ err: "You are not a member of this room" });
 
-      if (idUser !== room.idUser && idUser !== idMember)
-        return res.json({ msg: "You are not owner" });
-
-      await Rooms.findOneAndUpdate({ _id: idRoom }, { $pull: { member: idMember } });
+      await Rooms.findOneAndDelete({ _id: idRoom });
 
       return res.status(200).json({ msg: "Remove member successfully!" });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ err: err.message });
     }
   },
 };

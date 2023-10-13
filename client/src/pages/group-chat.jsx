@@ -5,21 +5,36 @@ import { useHistory } from "react-router-dom";
 
 import { LuMoreHorizontal } from "react-icons/lu";
 import ModalCreateRoom from "../components/modal/ModalCreateRoom";
+import ModalDeleteRoom from "../components/modal/ModalDeleteRoom";
 
 const GroupChat = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [openAction, setOpenAction] = useState(-1);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [roomDelete, setRoomDelete] = useState({});
   const themeColor = useSelector((state) => state.themeUserReducer);
   const rooms = useSelector((state) => state.roomReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const history = useHistory();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleOpenModal = () => {
     setOpenModal(!openModal);
   };
 
-  const handleAction = (index, e) => {
+  const handleOpenModalDelete = () => {
+    setOpenAction(-1);
+    setOpenModalDelete(!openModalDelete);
+  };
+
+  const handleAction = (index, room, e) => {
     e.stopPropagation();
+    if (index === openAction) {
+      setOpenAction(-1);
+    } else {
+      setOpenAction(index);
+      setRoomDelete(room);
+    }
   };
 
   return (
@@ -40,10 +55,11 @@ const GroupChat = () => {
           rooms.map((room, index) => (
             <div
               key={index}
-              className={`${themeColor.main} p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
-              onClick={() => history.push(`/room/${room._id}`)}>
+              className={`${themeColor.main} p-2 my-1 flex justify-between rounded-lg`}>
               {/* Start */}
-              <div className="flex">
+              <div
+                className="flex cursor-pointer"
+                onClick={() => history.push(`/room/${room._id}`)}>
                 <img
                   src={room.avatarRoom}
                   alt="avatar room"
@@ -56,16 +72,46 @@ const GroupChat = () => {
               </div>
 
               {/* End */}
-              <div
-                className={`${themeColor.input} ${themeColor.hoverBold} mx-2 my-auto p-2 rounded-full overflow-hidden`}
-                onClick={(e) => handleAction(index, e)}>
-                <LuMoreHorizontal size={20} />
+              <div className="relative mx-2 my-auto">
+                <div
+                  className={`${themeColor.input} ${themeColor.hoverBold} p-2 rounded-full overflow-hidden`}
+                  onClick={(e) => handleAction(index, room, e)}>
+                  <LuMoreHorizontal size={20} />
+                </div>
+                {openAction === index && (
+                  <div
+                    className={`${themeColor.main} ${themeColor.border} absolute right-0 border-1 flex rounded-md z-[60]`}
+                    style={{ whiteSpace: "nowrap", overflow: "hidden" }}>
+                    <div
+                      className={`${themeColor.hoverBold} flex py-2 px-3 cursor-pointer mx-auto`}
+                      onClick={handleOpenModalDelete}>
+                      Delete Room
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
       </div>
 
-      {openModal && <ModalCreateRoom themeColor={themeColor} dispatch={dispatch} token={token} handleOpenModal={handleOpenModal} />}
+      {openModal && (
+        <ModalCreateRoom
+          themeColor={themeColor}
+          dispatch={dispatch}
+          token={token}
+          handleOpenModal={handleOpenModal}
+        />
+      )}
+
+      {openModalDelete && (
+        <ModalDeleteRoom
+          room={roomDelete}
+          themeColor={themeColor}
+          token={token}
+          dispatch={dispatch}
+          handleOpen={handleOpenModalDelete}
+        />
+      )}
     </div>
   );
 };
