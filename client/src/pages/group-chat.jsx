@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoMdCreate } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { LuMoreHorizontal } from "react-icons/lu";
@@ -10,7 +10,9 @@ const GroupChat = () => {
   const [openModal, setOpenModal] = useState(false);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const rooms = useSelector((state) => state.roomReducer);
+  const token = useSelector((state) => state.authReducer.accessToken);
   const history = useHistory();
+  const dispatch = useDispatch()
 
   const handleOpenModal = () => {
     setOpenModal(!openModal);
@@ -63,7 +65,7 @@ const GroupChat = () => {
           ))}
       </div>
 
-      {openModal && <ModalCreateRoom themeColor={themeColor} handleOpenModal={handleOpenModal} />}
+      {openModal && <ModalCreateRoom themeColor={themeColor} dispatch={dispatch} token={token} handleOpenModal={handleOpenModal} />}
     </div>
   );
 };

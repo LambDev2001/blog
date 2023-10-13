@@ -2,26 +2,31 @@ import React, { useState } from "react";
 
 import { BsImage } from "react-icons/bs";
 
-const ModalCreateRoom = ({ themeColor, handleOpenModal }) => {
-  const [room, setRoom] = useState({});
-  const [selectedImages, setSelectedImages] = useState("");
+import { createRoom } from "../../redux/actions/roomAction";
 
+const ModalCreateRoom = ({ themeColor, dispatch, token, handleOpenModal }) => {
+  const [room, setRoom] = useState({
+    nameRoom: "",
+    avatarRoom: "",
+  });
+  const [selectedImage, setSelectedImage] = useState("");
 
   const handleChangeInput = (e) => {
     let { name, value } = e.target;
     if (name === "avatarRoom") {
       value = e.target.files[0];
-      if (e && e.length > 0) {
-        const imageUrls =  URL.createObjectURL(value);
-        setSelectedImages(imageUrls);
+      if (value) {
+        const imageUrl = URL.createObjectURL(value);
+        setSelectedImage(imageUrl);
       }
     }
     setRoom({ ...room, [name]: value });
   };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     handleOpenModal();
-    console.log(room);
+    dispatch(createRoom(room, token));
   };
 
   return (
@@ -56,11 +61,11 @@ const ModalCreateRoom = ({ themeColor, handleOpenModal }) => {
               id="imageUpload"
               multiple
             />
-            {selectedImages !== "" && (
-              <div className={themeColor.input + " absolute p-1 flex top-[-120px] right-0"}>
+            {selectedImage && (
+              <div className={" z-50"}>
                 <div className="m-1 relative">
                   <img
-                    src={selectedImages[0]}
+                    src={selectedImage}
                     alt=""
                     className="my-auto"
                     style={{

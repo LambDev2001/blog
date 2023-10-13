@@ -36,13 +36,12 @@ const groupCtrl = {
   createRoom: async (req, res) => {
     try {
       const idUser = req.user.id;
-      const { nameRoom, avatarRoom, idMember } = req.body; // member: id user
-      console.log({ idUser, idMember });
+      const { nameRoom, avatarRoom } = req.body; // member: id user
 
-      const newGroup = new Rooms({ idUser, nameRoom, avatarRoom, member: [idUser, idMember] });
-      await newGroup.save();
+      const newRoom = new Rooms({ idUser, nameRoom, avatarRoom, member: [idUser] });
+      await newRoom.save();
 
-      return res.status(200).json({ msg: "Create new room successfully!" });
+      return res.status(200).json(newRoom);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
