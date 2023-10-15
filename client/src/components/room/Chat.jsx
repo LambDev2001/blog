@@ -15,7 +15,7 @@ const Chat = ({ themeColor, data }) => {
           data.map((item, index) => (
             <div key={index} className="m-2">
               {item.type === "text" && (
-                <div className={`${item.owner===true ? "flex-row-reverse" : "flex-row"} flex`}>
+                <div className={`flex ${item.owner === true ? "flex-row-reverse" : "flex-row"} `}>
                   <img
                     src={item.author.avatar}
                     alt="avatar room"
@@ -32,7 +32,7 @@ const Chat = ({ themeColor, data }) => {
               )}
 
               {item.type === "image" && (
-                <div className={`${item.owner ? "flex-row-reverse" : ""} flex`}>
+                <div className={`flex ${item.owner === true ? "flex-row-reverse" : "flex-row"} `}>
                   <img
                     src={item.author.avatar}
                     alt="avatar room"

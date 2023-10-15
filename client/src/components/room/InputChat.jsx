@@ -33,9 +33,9 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
     setInputText(event.target.value);
   };
 
-  const handleSendClick = () => {
-    if (inputText !== "") dispatch(sendTextChat({ idRoom, message: inputText, token }));
-    if (fileImage.length > 0) dispatch(sendImageChat({ idRoom, message: fileImage, token }));
+  const handleSendClick =  async () => {
+    if (inputText !== "") await dispatch(sendTextChat({ idRoom, message: inputText, token }));
+    if (fileImage.length > 0) await dispatch(sendImageChat({ idRoom, message: fileImage, token }));
 
     setFileImage([]);
     setSelectedImages([]);
