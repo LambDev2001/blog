@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors("http://localhost:3000"));
+app.use(cors());
 
 // connect database
 import "./config/database.js";
@@ -26,10 +26,14 @@ const http = createServer(app);
 export const io = new Server(http);
 
 import socketServer from "./config/socket.js";
-
 io.on("connection", (socket) => {
   socketServer(socket);
 });
+
+// io.on("connection", (socket)=>{
+//   console.log(socket.id + " connected");
+  
+// });
 
 // start server
 http.listen(process.env.PORT, () => {

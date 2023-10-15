@@ -16,6 +16,7 @@ import roomReducer from "./roomReducer";
 import commentReducer from "./commentReducer";
 import friendReducer from "./friendReducer";
 import chatReducer from "./chatReducer";
+import socketReducer from "./socketReducer";
 
 export default combineReducers({
   authReducer,
@@ -34,4 +35,5 @@ export default combineReducers({
   commentReducer,
   friendReducer,
   chatReducer,
+  socketReducer,
 });

@@ -19,6 +19,7 @@ router.delete("/blog/:idBlog", auth, blogCtrl.deleteBlog);
 // user
 router.get("/blogs", user, blogCtrl.listBlogs);
 router.get("/my-blogs", user, blogCtrl.myBlogs);
+router.get("/user-blogs/:idUser", user, blogCtrl.otherUserBlogs);
 router.get("/blogs-friends", user, blogCtrl.listFriendsBlogs);
 
 router.post("/blog", user, blogCtrl.createBlog);

@@ -104,6 +104,41 @@ export const getBlogsUser = (token) => async (dispatch) => {
   }
 };
 
+export const getOtherUserBlogs = (idUser, token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+
+    let blogs = await getAPI(`user-blogs/${idUser}`, token);
+
+    ResErrorData(blogs.data, dispatch);
+    if (blogs.data.length > 0) {
+      blogs.data = blogs.data.map((item) => {
+        const date = new Date(item.updatedAt);
+        item.updatedAt = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
+        if (timeAgo.startsWith("about ")) {
+          timeAgo = timeAgo.slice(6);
+        } else if (timeAgo.startsWith("over ")) {
+          timeAgo = timeAgo.slice(5);
+        }
+
+        return { ...item, timeAgo };
+      });
+    }
+
+    dispatch({ type: "GET_BLOGS", payload: blogs.data });
+
+    dispatch({ type: "LOADING", payload: { loading: false } });
+    return blogs.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getMyBlogs = (token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

@@ -1,20 +1,5 @@
-import { useEffect } from "react";
-import io from "socket.io-client";
-import { useDispatch } from "react-redux";
-
 const Chat = ({ themeColor, data }) => {
-  const dispatch = useDispatch();
-
   const height = window.innerHeight - 196;
-
-  useEffect(() => {
-    const socket = io();
-    socket.emit("test", "hello");
-
-    return () => {
-      socket.close();
-    };
-  }, [dispatch]);
 
   return (
     <div
@@ -30,7 +15,7 @@ const Chat = ({ themeColor, data }) => {
           data.map((item, index) => (
             <div key={index} className="m-2">
               {item.type === "text" && (
-                <div className={`${item.owner ? "flex-row-reverse" : ""} flex`}>
+                <div className={`${item.owner===true ? "flex-row-reverse" : "flex-row"} flex`}>
                   <img
                     src={item.author.avatar}
                     alt="avatar room"

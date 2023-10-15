@@ -1,6 +1,7 @@
 import Chats from "../models/chatModel.js";
 import Rooms from "../models/roomModel.js";
 import Users from "../models/userModel.js";
+import {io} from "../server.js"
 
 const chatCtrl = {
   listChat: async (req, res) => {
@@ -19,7 +20,7 @@ const chatCtrl = {
         listChat.map(async (item) => {
           const owner = idUser === item.idUser ? true : false;
           const author = await Users.findById(item.idUser).select("_id username avatar");
-          
+
           return {
             ...item._doc,
             author,
@@ -43,8 +44,10 @@ const chatCtrl = {
       const newMessage = new Chats({ idRoom, idUser, message, type });
       await newMessage.save();
 
-      // socket.broadcast.to(idRoom).emit("new-message", { message });
-      return res.status(200).json({ msg: "Send message successfully!" });
+      const author = await Users.findById(idUser).select("_id username avatar");
+
+      io.to(idRoom).emit("new-message", { ...newMessage._doc, owner: false, author });
+      return res.status(200).json({ ...newMessage._doc, owner: true, author });
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }

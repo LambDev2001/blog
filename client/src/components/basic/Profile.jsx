@@ -4,10 +4,11 @@ import { useHistory } from "react-router-dom";
 
 import ModalEditUser from "../modal/ModalEditUser";
 import Blog2 from "../blog/Blog2";
-import { getMyBlogs } from "../../redux/actions/blogAction";
+import { getOtherUserBlogs } from "../../redux/actions/blogAction";
 import ProfileFriend from "../ProfileFriend";
 import ProfileFollowing from "../ProfileFollowing";
 import { sendRequest } from "../../redux/actions/friendAction";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState("posts");
@@ -15,12 +16,16 @@ const Profile = () => {
   const otherUser = useSelector((state) => state.userReducer);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
+  const friends = useSelector((state) => state.authReducer.user.friends);
   const dispatch = useDispatch();
-  const history = useHistory;
+  const history = useHistory();
+  const { slug } = useParams();
+
+  const isFriend = friends.find((friend) => friend._id === slug);
 
   useEffect(() => {
-    dispatch(getMyBlogs(token));
-  }, [dispatch, token]);
+    dispatch(getOtherUserBlogs(slug, token));
+  }, [dispatch, slug, token]);
 
   const handleTab = (tab) => {
     setCurrentTab(tab);
@@ -60,15 +65,18 @@ const Profile = () => {
               </div>
 
               {/* Action */}
-              <div className="mx-3 mt-auto my-2">
-                <div
-                  className={
-                    themeColor.border + " p-2 border-1 hover:bg-blue-500 cursor-pointer rounded-md"
-                  }
-                  onClick={handleSendReq}>
-                  Add friend
+              {!isFriend && (
+                <div className="mx-3 mt-auto my-2">
+                  <div
+                    className={
+                      themeColor.border +
+                      " p-2 border-1 hover:bg-blue-500 cursor-pointer rounded-md"
+                    }
+                    onClick={handleSendReq}>
+                    Add friend
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* End */}

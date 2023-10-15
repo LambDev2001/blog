@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,6 +7,7 @@ import { LuMoreHorizontal } from "react-icons/lu";
 import Chat from "../../components/room/Chat";
 import InputChat from "../../components/room/InputChat";
 import { getChat } from "../../redux/actions/chatAction";
+import SocketContext from "../../utils/SocketContext";
 
 const ChatPage = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -19,10 +20,20 @@ const ChatPage = () => {
   const dispatch = useDispatch();
 
   const room = rooms.filter((item) => item._id === slug)[0];
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
+    if (socket) socket.emit("join-room", slug);
     dispatch(getChat(slug, token));
-  }, [dispatch, slug, token]);
+  }, [dispatch, slug, token, socket]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("new-message", (data) => {
+        dispatch({ type: "SEND_CHAT", payload: data });
+      });
+    }
+  }, [dispatch, socket]);
 
   const handleOpenAction = () => {
     setOpenAction(!openAction);
@@ -117,7 +128,7 @@ const ChatPage = () => {
       {page === "chat" && (
         <div>
           {/* Chat */}
-          <Chat themeColor={themeColor} data={data} />
+          <Chat themeColor={themeColor} data={data} slug={slug} />
 
           {/* input */}
           <InputChat themeColor={themeColor} dispatch={dispatch} idRoom={slug} token={token} />

@@ -1,49 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
+import SocketContext from "../utils/SocketContext";
 
 const Test = () => {
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const socket = useContext(SocketContext);
 
-  const imageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "mq0jvhgj");
-    formData.append("cloud_name", "dfuaq9ggj");
-
-    const res = await fetch("https://api.cloudinary.com/v1_1/dfuaq9ggj/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    return { public_id: data.public_id, url: data.secure_url };
+  const handleEmit = () => {
+    socket.emit("test");
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    
-    if (!file) {
-      alert("Please select an image.");
-      return;
+  useEffect(() => {
+    if (socket) {
+      socket.on("test-server", (data) => {
+        console.log(data);
+      });
     }
-
-    try {
-      const result = await imageUpload(file);
-      setUploadedImage(result.url);
-    } catch (error) {
-      alert("Error uploading image.");
-    }
-  };
+  }, [socket]);
 
   return (
     <div>
-      <h1>Image Upload</h1>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      {uploadedImage && (
-        <div>
-          <h2>Uploaded Image:</h2>
-          <img src={uploadedImage} alt="Uploaded" />
-        </div>
-      )}
+      <button className="bg-blue-400 p-2" onClick={handleEmit}>
+        Click
+      </button>
     </div>
   );
 };

@@ -27,7 +27,7 @@ export const sendTextChat =
     try {
       const res = await postAPI("chat", { idRoom, message, type: "text" }, token);
       ResErrorData(res.data, dispatch);
-      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+      await dispatch({ type: "SEND_CHAT", payload: res.data });
       
     } catch (err) {
       console.error(err);
