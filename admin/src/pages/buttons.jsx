@@ -6,6 +6,7 @@ import Button2 from "../components/global/theme/button/Button2";
 import Button3 from "../components/global/theme/button/Button3";
 import Button4 from "../components/global/theme/button/Button4";
 import { useDispatch, useSelector } from "react-redux";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const Buttons = () => {
   const color = useSelector((state) => state.themeReducer.themeColor);
@@ -23,6 +24,7 @@ const Buttons = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Buttons Theme" />
       <div className="my-2">
         <div className="text-2xl font-semibold">Choose your theme style</div>

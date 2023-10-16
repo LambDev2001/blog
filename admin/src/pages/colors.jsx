@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Header from "../components/global/Header";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const Color = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const Color = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Colors Theme" />
 
       <div className="text-2xl">Choose Color</div>

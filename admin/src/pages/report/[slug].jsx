@@ -7,6 +7,7 @@ import InfoBlog from "../../components/global/InfoBlog";
 import Blog from "../../components/global/Blog";
 import Button from "../../components/global/theme/button/Button";
 import { acceptReport, declineReport, getReport } from "../../redux/actions/reportAction";
+import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 
 const Report = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -33,6 +34,7 @@ const Report = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager Report" />
 
       {/* action btn */}

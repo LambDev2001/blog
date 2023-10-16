@@ -7,6 +7,7 @@ import PieChart from "../components/dashboard/PieChart";
 import LineChart from "../components/dashboard/LineChart";
 import Card from "../components/global/Card";
 import { getDashboard } from "../redux/actions/dashboardAction";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const Dashboard = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
@@ -20,6 +21,7 @@ const Dashboard = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Dashboard" />
 
       <StatisticalBlog data={data} />

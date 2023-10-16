@@ -10,6 +10,7 @@ import {
 } from "../redux/actions/categoryAction";
 import Header from "../components/global/Header";
 import Button from "../components/global/theme/button/Button";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const Categories = () => {
   const [name, setName] = useState("");
@@ -47,6 +48,7 @@ const Categories = () => {
   };
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager Categories" />
       <div className="d-flex justify-center">
         <div className="w-50">

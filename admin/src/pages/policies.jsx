@@ -10,6 +10,7 @@ import Button from "../components/global/theme/button/Button";
 
 import { getAllPolicies } from "../redux/actions/policiesAction";
 import { updatePolicy, createPolicy, deletePolicy } from "../redux/actions/policiesAction";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const Policies = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,6 +81,7 @@ const Policies = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager Policies" />
       <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
         <table className="min-w-full bg-white rounded-lg overflow-hidden">

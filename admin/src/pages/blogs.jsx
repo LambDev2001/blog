@@ -8,6 +8,7 @@ import Pagination from "../components/global/Pagination";
 import Header from "../components/global/Header";
 import Search from "../components/global/Search";
 import { getBlogs } from "../redux/actions/blogAction";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const Blogs = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -83,6 +84,7 @@ const Blogs = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager Blogs" />
       <Search data={dataBlogs} type={"blog"} />
 

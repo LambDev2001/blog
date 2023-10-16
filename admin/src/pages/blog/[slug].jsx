@@ -10,6 +10,7 @@ import DeleteModal from "../../components/global/modal/DeleteModal";
 import Button from "../../components/global/theme/button/Button";
 import { deleteBlog, getBlog } from "../../redux/actions/blogAction";
 import { updateBlogStatus } from "../../redux/actions/blogAction";
+import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 
 const MyEditor = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -49,8 +50,12 @@ const MyEditor = () => {
     dispatch(updateBlogStatus(blog, status, token));
   };
 
+  console.log(blog);
+  
+
   return (
     <div className=" relative">
+      <AdminRouteWrapper />
       {openModal && <DeleteModal handleDelete={handleDelete} closeModal={closeModal} />}
       <Header content="Manager Blog" />
 
@@ -71,63 +76,67 @@ const MyEditor = () => {
       </div>
 
       {/* blog */}
-      <div className="w-[80%] m-auto">
-        <div
-          className={`${color.outside} p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around`}>
-          <div className={`${color.inside} flex-[5] mx-3 rounded-lg shadow-md p-3`}>
-            <div className="flex justify-content-start align-items-end m-2">
-              <h2 className="text-xl font-semibold mr-3">Title:</h2>
-              <p className="text-gray-600">{blog.title}</p>
-            </div>
-
-            <div className="flex justify-content-start align-items-end m-2">
-              <h2 className="text-xl font-semibold mr-3">Category:</h2>
-              <p className="text-gray-600">{blog.category}</p>
-            </div>
-
-            <div className="m-2">
-              <h2 className="text-xl font-semibold mr-3">Description:</h2>
-              <p className="text-gray-600">{blog.description}</p>
-            </div>
-
-            <div className="flex justify-content-start align-items-center m-2">
-              <h2 className="text-xl font-semibold mr-3">Status:</h2>
-              <p
-                className="text-gray-600 rounded text-center border-element w-[70px] p-1"
-                style={{
-                  backgroundColor: `${blog.status === "normal" ? colorStatus[1] : colorStatus[2]}`,
-                }}>
-                {blog.status}
-              </p>
-            </div>
-
-            <div className={`${color.outside} p-4 mb-2 rounded-lg shadow-md flex justify-around`}>
-              <div className="d-flex align-items-center">
-                <AiOutlineLike size={30} className="mx-2" /> {blog.likes}
-              </div>
-              <div className="d-flex align-items-center">
-                <AiOutlineDislike size={30} className="mx-2" /> {blog.dislikes}
-              </div>
-              <div className="d-flex align-items-center">
-                <AiOutlineComment size={30} className="mx-2" /> {blog.comments}
-              </div>
-              <div className="d-flex align-items-center">
-                <PiShareFat size={30} className="mx-2" /> {blog.share}
-              </div>
-              <div className="d-flex align-items-center">
-                <AiOutlineEye size={30} className="mx-2" /> {blog.views}
-              </div>
-            </div>
-          </div>
+      {blog && (
+        <div className="w-[80%] m-auto">
           <div
-            className={`${color.inside} flex-[2] mx-3 rounded-lg shadow-md p-3 flex flex-col align-items-center`}>
-            <h1 className="text-2xl font-semibold mb-2">Thumbnail</h1>
-            <img src={blog.thumbnail} alt="thumbnail" className="w-[333px] rounded-lg " />
-          </div>
-        </div>
+            className={`${color.outside} p-2 mb-2 rounded-lg shadow-md flex flex-wrap justify-around`}>
+            <div className={`${color.inside} flex-[5] mx-3 rounded-lg shadow-md p-3`}>
+              <div className="flex justify-content-start align-items-end m-2">
+                <h2 className="text-xl font-semibold mr-3">Title:</h2>
+                <p className="text-gray-600">{blog.title}</p>
+              </div>
 
-        <Blog blog={blog} readOnly={true} />
-      </div>
+              <div className="flex justify-content-start align-items-end m-2">
+                <h2 className="text-xl font-semibold mr-3">Category:</h2>
+                <p className="text-gray-600">{blog.category}</p>
+              </div>
+
+              <div className="m-2">
+                <h2 className="text-xl font-semibold mr-3">Description:</h2>
+                <p className="text-gray-600">{blog.description}</p>
+              </div>
+
+              <div className="flex justify-content-start align-items-center m-2">
+                <h2 className="text-xl font-semibold mr-3">Status:</h2>
+                <p
+                  className="text-gray-600 rounded text-center border-element w-[70px] p-1"
+                  style={{
+                    backgroundColor: `${
+                      blog.status === "normal" ? colorStatus[1] : colorStatus[2]
+                    }`,
+                  }}>
+                  {blog.status}
+                </p>
+              </div>
+
+              <div className={`${color.outside} p-4 mb-2 rounded-lg shadow-md flex justify-around`}>
+                <div className="d-flex align-items-center">
+                  <AiOutlineLike size={30} className="mx-2" /> {blog.likes}
+                </div>
+                <div className="d-flex align-items-center">
+                  <AiOutlineDislike size={30} className="mx-2" /> {blog.dislikes}
+                </div>
+                <div className="d-flex align-items-center">
+                  <AiOutlineComment size={30} className="mx-2" /> {blog.comments}
+                </div>
+                <div className="d-flex align-items-center">
+                  <PiShareFat size={30} className="mx-2" /> {blog.share}
+                </div>
+                <div className="d-flex align-items-center">
+                  <AiOutlineEye size={30} className="mx-2" /> {blog.views}
+                </div>
+              </div>
+            </div>
+            <div
+              className={`${color.inside} flex-[2] mx-3 rounded-lg shadow-md p-3 flex flex-col align-items-center`}>
+              <h1 className="text-2xl font-semibold mb-2">Thumbnail</h1>
+              <img src={blog.thumbnail} alt="thumbnail" className="w-[333px] rounded-lg " />
+            </div>
+          </div>
+
+          <Blog blog={blog} readOnly={true} />
+        </div>
+      )}
     </div>
   );
 };

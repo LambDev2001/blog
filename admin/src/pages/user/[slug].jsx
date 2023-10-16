@@ -8,6 +8,7 @@ import Card from "../../components/global/Card";
 import TableReport from "../../components/TableReport";
 import Button from "../../components/global/theme/button/Button";
 import { getUser, changeStatus } from "../../redux/actions/userAction";
+import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 
 const User = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -33,6 +34,7 @@ const User = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager User" />
 
       {/* action btn */}

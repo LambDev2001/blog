@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { profileAdmin } from "../../redux/actions/profileAction";
 import Header from "../../components/global/Header";
 import ChangePass from "../../components/global/ChangePass";
+import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 
 const Profile = () => {
   const { slug } = useParams();
@@ -25,6 +26,7 @@ const Profile = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Profile" />
 
       <div className={`${color.outside} rounded-lg shadow-md`}>

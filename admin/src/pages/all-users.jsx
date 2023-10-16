@@ -6,6 +6,7 @@ import TableInfo from "../components/TableInfo";
 import Search from "../components/global/Search";
 
 import { allUsers } from "../redux/actions/userAction";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 const AllUser = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const AllUser = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager Users" />
       {listUsers.length > 0 && (
         <div>

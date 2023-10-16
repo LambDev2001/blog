@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { LuFileWarning, LuGauge, LuUser, LuTags } from "react-icons/lu";
 import {
@@ -14,14 +14,14 @@ import { BsLayersHalf } from "react-icons/bs";
 import { logoutAdmin } from "../redux/actions/authAction";
 
 const Menu = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
   const [menu, setMenu] = useState(false);
   const [active, setActive] = useState(-1);
   const user = useSelector((state) => state.authReducer.user);
   const token = useSelector((state) => state.authReducer.accessToken);
   const openMenu = useSelector((state) => state.menuReducer);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const logo = {
     img: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
@@ -89,24 +89,26 @@ const Menu = () => {
         className="custom-scroll-content h-full overflow-auto"
         style={{ width: "100%", borderRadius: "0 10px 10px 0" }}>
         {/* logo */}
-        <Link
-          to="/admin"
-          className={`m-1 py-2 px-1 d-flex align-items-center ${color.inside} shadow-md rounded-lg`}>
+        <div
+          onClick={() => history.push("/")}
+          className={`m-1 py-2 px-1 d-flex align-items-center ${color.inside} shadow-md rounded-lg cursor-pointer`}>
           <img src={logo.img} alt="logo" className="ml-[1px] w-[40px] h-[40px] rounded-circle" />
           {menu && <div className="mx-3">{logo.name}</div>}
-        </Link>
+        </div>
 
         {/* user */}
         <div className={`m-1 py-2 px-1 cursor-pointer ${color.inside} shadow-md rounded-lg `}>
           {user ? (
-            <Link to={`/profile/${user._id}`} className="d-flex align-items-center">
+            <div
+              onClick={() => history.push(`/profile/${user._id}`)}
+              className="d-flex align-items-center">
               <img
                 src={user.avatar}
                 alt="avatar"
                 className="ml-[1px] w-[40px] h-[40px] rounded-circle"
               />
               {menu && <div className="mx-3">{user.username}</div>}
-            </Link>
+            </div>
           ) : (
             <div className="d-flex align-items-center" onClick={() => handleLogin}>
               <IoIosLogIn className="w-[40px] h-[40px]" />
@@ -134,11 +136,11 @@ const Menu = () => {
 
                 {/* name function or link */}
                 {menu && listUrl.length === 1 && (
-                  <Link
+                  <div
                     className="d-flex align-items-center justify-content-between w-100"
-                    to={listUrl[0][0]}>
+                    onClick={() => history.push(listUrl[0][0])}>
                     <p className="mx-3">{future}</p>
-                  </Link>
+                  </div>
                 )}
 
                 {menu && listUrl.length > 1 && (
@@ -155,11 +157,11 @@ const Menu = () => {
                   listUrl.length > 1 &&
                   listUrl.map((list, index) => (
                     <div key={index} className="py-2 pr-1">
-                      <Link
-                        className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg overflow-hidden`}
-                        to={list[1]}>
+                      <div
+                        className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg overflow-hidden cursor-pointer`}
+                        onClick={() => history.push(list[1])}>
                         <p className="mx-3">{list[0]}</p>
-                      </Link>
+                      </div>
                     </div>
                   ))}
               </div>

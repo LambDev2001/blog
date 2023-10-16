@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TableReport from "../components/TableReport";
 import Header from "../components/global/Header";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
 import { getReports } from "../redux/actions/reportAction";
 
@@ -17,6 +18,7 @@ const Reports = () => {
 
   return (
     <div>
+      <AdminRouteWrapper />
       <Header content="Manager Reports" />
       <div>{reports && <TableReport data={reports} />}</div>
     </div>
