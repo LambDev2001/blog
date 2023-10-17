@@ -50,9 +50,6 @@ const MyEditor = () => {
     dispatch(updateBlogStatus(blog, status, token));
   };
 
-  console.log(blog);
-  
-
   return (
     <div className=" relative">
       <AdminRouteWrapper />

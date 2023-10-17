@@ -8,10 +8,13 @@ import Chat from "../../components/room/Chat";
 import InputChat from "../../components/room/InputChat";
 import { getChat } from "../../redux/actions/chatAction";
 import SocketContext from "../../utils/SocketContext";
+import Member from "../../components/room/Member";
+import ModalLeaveRoom from "../../components/modal/ModalLeaveRoom";
 
 const ChatPage = () => {
   const [openAction, setOpenAction] = useState(false);
   const [page, setPage] = useState("chat");
+  const [openModalLeave, setOpenModalLeave] = useState(false)
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const rooms = useSelector((state) => state.roomReducer);
@@ -44,6 +47,10 @@ const ChatPage = () => {
   const handlePage = (page) => {
     setPage(page);
   };
+
+  const handleLeaveRoom = () =>{
+    setOpenModalLeave(!openModalLeave)
+  }
 
   // const handleImageChange = (event) => {
   //   const files = event.target.files;
@@ -122,6 +129,12 @@ const ChatPage = () => {
                 onClick={() => handlePage("member")}>
                 Member
               </div>
+
+              <div
+                className={`${themeColor.hoverBold} flex py-2 px-3 cursor-pointer mx-auto`}
+                onClick={() => handleLeaveRoom()}>
+                Leave Room
+              </div>
             </div>
           )}
         </div>
@@ -139,7 +152,18 @@ const ChatPage = () => {
 
       {page === "info" && <div>info</div>}
 
-      {page === "member" && <div>member</div>}
+      {page === "member" && (
+        <div>
+          <Member themeColor={themeColor} slug={slug} token={token} />
+        </div>
+      )}
+
+      {/* Modal Leave Room */}
+      {
+        openModalLeave && (
+          <ModalLeaveRoom themeColor={themeColor} token={token} handleLeaveRoom={handleLeaveRoom} />
+        )
+      }
     </div>
   );
 };
