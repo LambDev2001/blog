@@ -8,6 +8,7 @@ const router = express.Router();
 // user
 router.get("/rooms", user, roomCtrl.listRoom);
 router.get("/room-members/:idRoom", user, roomCtrl.listMember);
+router.get("/info-room/:idRoom", user, roomCtrl.infoRoom)
 
 router.post("/room", user, roomCtrl.createRoom);
 router.post("/add-member/:idRoom", user, roomCtrl.addMember);

@@ -1,5 +1,6 @@
 import Rooms from "../models/roomModel.js";
 import Users from "../models/userModel.js";
+import Chats from "../models/chatModel.js";
 
 const groupCtrl = {
   // user
@@ -32,6 +33,30 @@ const groupCtrl = {
       return res.status(200).json(members);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  infoRoom: async (req, res) => {
+    try {
+      const { idRoom } = req.params;
+      const idUser = req.user.id;
+
+      const infoRoom = await Rooms.findById(idRoom);
+      const author = await Users.findById(infoRoom.idUser);
+      let images = await Chats.find({ idRoom, type: "image" });
+      if (images.length > 0) {
+        images = images
+          .map((image) => {
+            const linkImage = image.message.split(" ");
+            return linkImage;
+          })
+          .flat();
+      }
+      const isAuthor = infoRoom.idUser === idUser ? true : false;
+
+      return res.status(200).json({ ...infoRoom._doc, author, isAuthor, images });
+    } catch (err) {
+      return res.status(500).json({ err: err.message });
     }
   },
 

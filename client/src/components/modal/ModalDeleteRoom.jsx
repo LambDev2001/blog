@@ -1,9 +1,13 @@
 import React from "react";
 
 import { deleteRoom } from "../../redux/actions/roomAction";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ModalDeleteRoom = ({ room, themeColor, token, dispatch, handleOpen }) => {
+  const history = useHistory();
+
   const handleDeleteRoom = () => {
+    history.push("/");
     dispatch(deleteRoom({ room, token }));
     handleOpen();
   };

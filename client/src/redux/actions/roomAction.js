@@ -12,6 +12,24 @@ export const getRooms = (token) => async (dispatch) => {
   }
 };
 
+export const infoRoom = (idRoom, token) => async (dispatch) => {
+  try {
+    let res = await getAPI(`info-room/${idRoom}`, token);
+    ResErrorData(res.data, dispatch);
+
+    const createdAt = new Date(res.data.createdAt);
+
+    const day = createdAt.getDate();
+    const month = createdAt.getMonth() + 1;
+    const year = createdAt.getFullYear();
+
+    res.data.createdAt = `${day}/${month}/${year}`;
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const createRoom = (room, token) => async (dispatch) => {
   try {
     const avatarRoom = await imageUpload(room.avatarRoom);
