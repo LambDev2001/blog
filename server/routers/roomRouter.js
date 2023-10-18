@@ -14,6 +14,8 @@ router.post("/add-member/:idRoom", user, roomCtrl.addMember);
 router.post("/kick-member/:idRoom", user, roomCtrl.removeMember);
 router.post("/leave-room/:idRoom", user, roomCtrl.leaveMember);
 
+router.patch("/room/:idRoom", user, roomCtrl.updateRoom);
+
 router.delete("/room/:idRoom", user, roomCtrl.deleteRoom);
 
 export default router;

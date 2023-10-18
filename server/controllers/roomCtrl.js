@@ -110,6 +110,26 @@ const groupCtrl = {
     }
   },
 
+  updateRoom: async (req, res) => {
+    try {
+      const idUser = req.user.id;
+      const { idRoom } = req.params;
+      const { nameRoom, avatarRoom } = req.body;
+
+      if (nameRoom !== undefined) {
+        await Rooms.findOneAndUpdate({ _id: idRoom }, { nameRoom });
+      }
+      if (avatarRoom !== undefined) {
+        await Rooms.findOneAndUpdate({ _id: idRoom }, { avatarRoom });
+      }
+
+      return res.status(200).json({ msg: "Update room successfully!" });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ err: err.message });
+    }
+  },
+
   deleteRoom: async (req, res) => {
     try {
       const idUser = req.user.id;

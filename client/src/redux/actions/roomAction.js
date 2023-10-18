@@ -1,4 +1,4 @@
-import { getAPI, postAPI, deleteAPI } from "../../utils/FetchData";
+import { getAPI, postAPI, patchAPI, deleteAPI } from "../../utils/FetchData";
 import { imageUpload } from "../../utils/HandleImage";
 import ResErrorData from "../../utils/ResErrorData";
 
@@ -25,8 +25,31 @@ export const createRoom = (room, token) => async (dispatch) => {
   }
 };
 
+export const updateNameRoom =
+  ({ slug, nameRoom, token }) =>
+  async (dispatch) => {
+    try {
+      const res = await patchAPI(`room/${slug}`, { nameRoom }, token);
+      ResErrorData(res.data, dispatch);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+export const updateAvatarRoom =
+  ({ slug, file, token }) =>
+  async (dispatch) => {
+    try {
+      const avatarRoom = await imageUpload(file);
+      const res = await patchAPI(`room/${slug}`, { avatarRoom: avatarRoom.url }, token);
+      ResErrorData(res.data, dispatch);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 export const deleteRoom =
-  ({  room, token }) =>
+  ({ room, token }) =>
   async (dispatch) => {
     try {
       const res = await deleteAPI(`room/${room._id}`, token);

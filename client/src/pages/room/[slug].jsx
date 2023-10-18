@@ -10,6 +10,7 @@ import { getChat } from "../../redux/actions/chatAction";
 import SocketContext from "../../utils/SocketContext";
 import Member from "../../components/room/Member";
 import ModalLeaveRoom from "../../components/modal/ModalLeaveRoom";
+import InfoRoom from "../../components/room/InfoRoom";
 
 const ChatPage = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -51,6 +52,7 @@ const ChatPage = () => {
   const handleLeaveRoom = () =>{
     setOpenModalLeave(!openModalLeave)
   }
+  
 
   // const handleImageChange = (event) => {
   //   const files = event.target.files;
@@ -150,7 +152,7 @@ const ChatPage = () => {
         </div>
       )}
 
-      {page === "info" && <div>info</div>}
+      {page === "info" && <div><InfoRoom room={room} themeColor={themeColor} token={token} /></div>}
 
       {page === "member" && (
         <div>
