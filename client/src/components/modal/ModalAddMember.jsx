@@ -29,7 +29,7 @@ const ModalAddMember = ({ themeColor, token, slug, handleOpenModalMember }) => {
 
   const handleAddFriend = (user, e) => {
     e.stopPropagation();
-    dispatch(addMember(slug, user, token));
+    dispatch(addMember({ idRoom: slug, user, token }));
     handleOpenModalMember();
   };
 

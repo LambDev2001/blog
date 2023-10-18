@@ -86,13 +86,8 @@ const groupCtrl = {
       // if (idUser !== room.idUser && idUser !== idMember)
       //   return res.json({ err: "You are not owner" });
 
-      if (room.member.length <= 2) {
-        await Rooms.findOneAndDelete({ _id: idRoom });
-        return res.status(200).json({ msg: "Room delete because no member" });
-      } else {
-        await Rooms.findOneAndUpdate({ _id: idRoom }, { $pull: { member: idMember } });
-        return res.status(200).json({ msg: "Remove member successfully!" });
-      }
+      await Rooms.findOneAndUpdate({ _id: idRoom }, { $pull: { member: idMember } });
+      return res.status(200).json({ msg: "Remove member successfully!" });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: err.message });

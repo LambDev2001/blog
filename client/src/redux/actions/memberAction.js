@@ -10,7 +10,7 @@ export const getMembers = (slug, token) => async (dispatch) => {
   }
 };
 
-export const addMember = (idRoom, user, token) => async (dispatch) => {
+export const addMember = ({idRoom, user, token}) => async (dispatch) => {
   try {
     const res = await postAPI(`add-member/${idRoom}`, { idMember: user._id }, token);
     ResErrorData(res.data, dispatch);

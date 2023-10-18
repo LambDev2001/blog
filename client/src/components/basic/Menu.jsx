@@ -17,7 +17,7 @@ const Menu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const height = window.innerHeight - 60;
+  const height = window.innerHeight - 80;
   useEffect(() => {
     dispatch(getCategories(token));
   }, [dispatch, token]);

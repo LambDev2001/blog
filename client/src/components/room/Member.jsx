@@ -83,7 +83,7 @@ const Member = ({ themeColor, slug, token }) => {
 
         {memberSearch.length > 0 && (
           <div
-            className={`${themeColor.main} ${themeColor.border} w-[30%] border-1 px-2 py-1 flex flex-col absolute left-1/2 translate-x-[-50%] rounded-md`}>
+            className={`${themeColor.main} ${themeColor.border} w-[30%] border-1 px-2 py-1 flex flex-col absolute left-1/2 translate-x-[-50%] rounded-md z-50`}>
             {memberSearch.map((member, index) => (
               <div
                 key={index}
@@ -103,7 +103,7 @@ const Member = ({ themeColor, slug, token }) => {
         {/* Member */}
         <div className="grid grid-cols-2">
           <div
-            className={`${themeColor.sub} ${themeColor.border} ${themeColor.hoverBold} border-1 m-auto py-2 rounded-full cursor-pointer`}
+            className={`${themeColor.sub} ${themeColor.border} ${themeColor.hoverBold} border-1 m-auto rounded-full cursor-pointer`}
             onClick={handleOpenModalMember}>
             <BsPlusCircle size={30} />
           </div>
@@ -143,6 +143,7 @@ const Member = ({ themeColor, slug, token }) => {
         <ModalAddMember
           themeColor={themeColor}
           token={token}
+          slug={slug}
           handleOpenModalMember={handleOpenModalMember}
         />
       )}
