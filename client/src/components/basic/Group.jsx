@@ -22,7 +22,7 @@ const Group = () => {
         rooms.map((room, index) => (
           <div
             key={index}
-            className={`${themeColor.main} p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
+            className={`${themeColor.main} ${themeColor.hover} p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
             onClick={() => history.push(`/room/${room._id}`)}>
             <div className="flex">
               <img

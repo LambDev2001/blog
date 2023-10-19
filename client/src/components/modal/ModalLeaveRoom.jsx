@@ -12,7 +12,7 @@ const ModalLeaveRoom = ({ themeColor, token, handleLeaveRoom }) => {
 
   const handleLeaveRoomAction = () => {
     dispatch(leaveRoom(slug, token));
-    history.push("/home");
+    history.push("/");
   };
 
   return (

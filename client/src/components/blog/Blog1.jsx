@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import { BiLike, BiDislike, BiSolidLike, BiSolidDislike, BiCommentDetail } from "react-icons/bi";
 import { FaRegEye } from "react-icons/fa";
@@ -11,16 +10,11 @@ import { MdOutlineBugReport } from "react-icons/md";
 import Comment from "../comment/Comment";
 import ModalReportBlog from "../modal/ModalReportBlog";
 
-import {
-  dislikeBlog,
-  likeBlog,
-  increaseShare,
-  removeBlog,
-} from "../../redux/actions/blogAction";
+import { dislikeBlog, likeBlog, increaseShare, removeBlog } from "../../redux/actions/blogAction";
 import { followUser } from "../../redux/actions/userAction";
 import { getComments } from "../../redux/actions/commentAction";
 
-const Blog1 = ({ readOnly }) => {
+const Blog1 = ({ handleLink, readOnly }) => {
   const [openComments, setOpenComments] = useState(-1);
   const [isReport, setIsReport] = useState(null);
   const themeColor = useSelector((state) => state.themeUserReducer);
@@ -30,23 +24,28 @@ const Blog1 = ({ readOnly }) => {
   const dispatch = useDispatch();
 
   const handleLike = (id) => {
-    dispatch(likeBlog(id, token));
+    if (!token) handleLink("");
+    else dispatch(likeBlog(id, token));
   };
 
   const handleDislike = (id) => {
-    dispatch(dislikeBlog(id, token));
+    if (!token) handleLink("");
+    else dispatch(dislikeBlog(id, token));
   };
 
   const handleFollow = (idUser) => {
-    dispatch(followUser(idUser, token));
+    if (!token) handleLink("");
+    else dispatch(followUser(idUser, token));
   };
 
   const handleShare = (idBlog) => {
-    dispatch(increaseShare(idBlog, token));
+    if (!token) handleLink("");
+    else dispatch(increaseShare(idBlog, token));
   };
 
   const handleComment = (index, idBlog) => {
-    if (openComments !== index) {
+    if (!token) handleLink("");
+    else if (openComments !== index) {
       dispatch(getComments(idBlog));
       setOpenComments(index);
     } else {
@@ -55,12 +54,14 @@ const Blog1 = ({ readOnly }) => {
   };
 
   const handleShowReport = (idBlog) => {
-    if (isReport === idBlog || idBlog === null) setIsReport(null);
+    if (!token) handleLink("");
+    else if (isReport === idBlog || idBlog === null) setIsReport(null);
     else setIsReport(idBlog);
   };
 
   const handleRemoveBlog = async (idBlog) => {
-    dispatch(removeBlog(idBlog));
+    if (!token) handleLink("");
+    else dispatch(removeBlog(idBlog));
   };
 
   return (
@@ -77,19 +78,21 @@ const Blog1 = ({ readOnly }) => {
                   {/* start */}
                   <div className="flex">
                     <div className="flex align-items-center">
-                      <Link to={"/profile/" + blog.author._id} className="flex">
+                      <div
+                        onClick={() => handleLink("/profile/" + blog.author._id)}
+                        className="flex cursor-pointer">
                         <img
                           src={blog.author.avatar}
                           alt="thumbnail"
                           className="h-[28px] w-[28px] rounded-circle"
-                
                         />
                         <div className="mx-1">{blog.author.username}</div>
-                      </Link>
+                      </div>
                       <div className="mx-2">{blog.timeAgo}</div>
                     </div>
 
-                    <div className={`${themeColor.input} mx-2 px-3 py-2 rounded-full cursor-pointer`}>
+                    <div
+                      className={`${themeColor.input} mx-2 px-3 py-2 rounded-full cursor-pointer`}>
                       {blog.category}
                     </div>
                   </div>
@@ -127,9 +130,13 @@ const Blog1 = ({ readOnly }) => {
                 <div className="my-1 text-md">{blog.description}</div>
 
                 {/* thumbnail */}
-                <Link to={"/blog/" + blog._id}>
-                  <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md max-h-[400px] object-cover" />
-                </Link>
+                <div onClick={() => handleLink("/blog/" + blog._id)}>
+                  <img
+                    src={blog.thumbnail}
+                    alt="thumbnail"
+                    className="w-100 rounded-md max-h-[400px] object-cover cursor-pointer"
+                  />
+                </div>
 
                 {/* interact */}
                 <div className="flex">

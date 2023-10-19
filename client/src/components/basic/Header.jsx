@@ -49,13 +49,13 @@ const Header = () => {
     <div
       className={`${themeColor.sub} ${themeColor.border} flex justify-between h-[60px] border-b relative`}>
       {/* logo */}
-      <div className="flex mx-2 my-auto">
+      <div className="flex mx-2 my-auto cursor-pointer">
         <img
           src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
           alt="logo"
           className="w-[32px] h-[32px] m-1"
         />
-        <div className="text-lg font-semibold m-1">Reddit</div>
+        <div className="text-lg font-semibold m-1">Blog</div>
       </div>
 
       {/* search */}

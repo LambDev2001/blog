@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ import SocketContext from "./utils/SocketContext";
 function App() {
   const themeColor = useSelector((state) => state.themeUserReducer);
   const height = window.innerHeight - 60;
-  const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.accessToken);
 
   const [socket, setSocket] = useState(null);
 
@@ -31,7 +31,6 @@ function App() {
     };
   }, [socket]);
 
-
   return (
     <SocketContext.Provider value={socket}>
       <div className="flex flex-col text-white">
@@ -46,7 +45,7 @@ function App() {
               className={`w-1/5 custom-scroll-container ${themeColor.border} border-r`}
               style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto px-2">
-                <Menu />
+                {token && <Menu />}
               </div>
             </div>
 
@@ -66,8 +65,12 @@ function App() {
               className={`${themeColor.border} w-1/5 border-l custom-scroll-container`}
               style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto">
-                <Friend />
-                <Group />
+                {token && (
+                  <div>
+                    <Friend />
+                    <Group />
+                  </div>
+                )}
               </div>
             </div>
           </div>

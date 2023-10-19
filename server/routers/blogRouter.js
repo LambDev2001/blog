@@ -10,6 +10,8 @@ const router = express.Router();
 router.get("/search-blog", blogCtrl.searchBlog);
 router.get("/blogs-category/:idCategory", blogCtrl.getBlogsByCategory);
 router.get("/popular-blogs", blogCtrl.getPopularBlogs);
+router.get("/blogs-unauthorized", blogCtrl.listUnauthorizedBlogs);
+
 
 router.patch("/increase-share/:idBlog", blogCtrl.increaseShare);
 

@@ -164,6 +164,69 @@ const blogCtrl = {
     }
   },
 
+  listUnauthorizedBlogs: async (req, res) => {
+    try {
+      const countBlogs = await Blogs.count();
+      const allBlogs = await Blogs.find({}).select("-report -status -content");
+
+      let blogs = await Promise.all(
+        allBlogs.map(async (blog) => {
+          const author = await Users.findById(blog.idUser).select(
+            "-password -__v -report -status -friends"
+          );
+
+          const category = await Categories.findById(blog.category);
+
+          const likes = await Likes.count({
+            idBlog: blog._id,
+            like: true,
+          });
+
+          const dislikes = await Likes.count({
+            idBlog: blog._id,
+            like: false,
+          });
+
+          const views = await Views.findOne({ idBlog: blog._id });
+
+          let comments = await Comments.count({
+            idBlog: blog._id,
+          });
+
+          const isLike = { like: null };
+          const isFollowing = false;
+          return {
+            ...blog._doc,
+            author,
+            category: category.name,
+            likes,
+            dislikes,
+            views: views.view,
+            comments,
+            isLike: isLike.like,
+            isFollowing: isFollowing ? true : false,
+          };
+        })
+      );
+
+      blogs = blogs.filter((n) => n.length !== 0).flat(); // remove empty array and [[value], [value, value]] -> [value, value]
+
+      if (countBlogs === 0) {
+        return res.status(200).json({ msg: "Not have any blog" });
+      }
+
+      blogs.sort((a, b) => {
+        return b.createdAt - a.createdAt;
+      });
+
+      return res.status(200).json(blogs);
+    } catch (err) {
+      console.log(err);
+
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // auth
   getBlog: async (req, res) => {
     try {

@@ -31,7 +31,7 @@ const Menu = () => {
       <div className="ml-2 mt-2">
         <div
           className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
-          onClick={() => history.push("/home")}>
+          onClick={() => history.push("/")}>
           <BiHomeAlt2 size={26} className="ml-2 mr-4" />
           <div className="my-auto">Home</div>
         </div>
