@@ -27,7 +27,7 @@ const Friend = () => {
             key={index}
             className={`${themeColor.main} ${
               hoveredItem === 1 ? "hovered" : ""
-            } p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
+            } p-2 my-1 flex justify-between rounded-lg cursor-pointer hover:bg-gray-700`}
             onMouseEnter={() => handleMouseEnter(1)}
             onMouseLeave={handleMouseLeave}
             onClick={() => history.push(`/profile/${friend._id}`)}>

@@ -18,13 +18,13 @@ const Card = ({ blog }) => {
       {/* body */}
       <div className="py-1 px-2">
         <Link to={`/blog/${blog._id}`}>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-blue-500 transition duration-300">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-blue-500 transition duration-300 leading-6">
             {blog.title}
           </h2>
         </Link>
 
         <p
-          className={`text-gray-700 text-md ${
+          className={`text-gray-700 text-md leading-6 ${
             showFullDescription ? "block" : "overflow-hidden h-11"
           }`}>
           {blog.description}

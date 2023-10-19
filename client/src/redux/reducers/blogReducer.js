@@ -1,10 +1,11 @@
 const blogReducer = (state = [], action) => {
+  let result = [];
   switch (action.type) {
     case "GET_BLOGS":
       return action.payload;
 
     case "GET_BLOG":
-      return state = action.payload;
+      return (state = action.payload);
 
     case "CREATE_BLOG":
       return [{ ...state[0], ...action.payload }];
@@ -13,9 +14,9 @@ const blogReducer = (state = [], action) => {
       return action.payload;
 
     case "REMOVE_BLOG":
-      const result = state.map((item) => {
+      result = state.map((item) => {
         if (item._id === action.payload) {
-          return {...item, isRemove: true};
+          return { ...item, isRemove: true };
         }
         return item;
       });

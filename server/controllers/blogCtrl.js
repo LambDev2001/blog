@@ -51,7 +51,7 @@ const blogCtrl = {
 
       const blogs = await Blogs.find({ category: idCategory }).select("-__v");
 
-      if (blogs.length < 1) return res.status(200).json({nameCategory: categoryCheck, blogs: []});
+      if (blogs.length < 1) return res.status(200).json({ nameCategory: categoryCheck, blogs: [] });
 
       const result = await Promise.all(
         blogs.map(async (blog) => {
@@ -91,7 +91,56 @@ const blogCtrl = {
         })
       );
 
-      return res.status(200).json({nameCategory: categoryCheck, blogs: result});
+      return res.status(200).json({ nameCategory: categoryCheck, blogs: result });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getPopularBlogs: async (req, res) => {
+    try {
+      const blogs = await Blogs.find().select("-__v");
+      const result = await Promise.all(
+        blogs.map(async (blog) => {
+          const likes = await Likes.count({
+            idBlog: blog._id,
+            like: true,
+          });
+          const dislikes = await Likes.count({
+            idBlog: blog._id,
+            like: false,
+          });
+
+          const comments = await Comments.count({
+            idBlog: blog._id,
+          });
+
+          const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
+
+          const category = await Categories.findOne({
+            _id: blog.category,
+          });
+
+          const author = await Users.findById(blog.idUser).select(
+            "-__v -password -createdAt -updatedAt -status -friends -report"
+          );
+
+          return {
+            ...blog._doc,
+            category: category.name,
+            likes,
+            dislikes,
+            comments,
+            views: view,
+            viewMonthly,
+            author,
+            idCategory: category._id,
+          };
+        })
+      );
+
+      return res.status(200).json(result);
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: err.message });
@@ -334,7 +383,7 @@ const blogCtrl = {
 
   otherUserBlogs: async (req, res) => {
     try {
-      const {idUser} = req.params;
+      const { idUser } = req.params;
       const countBlogs = await Blogs.count();
       const allBlogs = await Blogs.find({ idUser }).select("-report -status -content");
 

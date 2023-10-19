@@ -40,6 +40,18 @@ export const getBlogs = (token) => async (dispatch) => {
   }
 };
 
+export const getPopularBlogs = () => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await getAPI("popular-blogs");
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "GET_BLOGS", payload: res.data });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getBlogsByCategory = (idCategory) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

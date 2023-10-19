@@ -9,6 +9,7 @@ const router = express.Router();
 // none auth
 router.get("/search-blog", blogCtrl.searchBlog);
 router.get("/blogs-category/:idCategory", blogCtrl.getBlogsByCategory);
+router.get("/popular-blogs", blogCtrl.getPopularBlogs);
 
 router.patch("/increase-share/:idBlog", blogCtrl.increaseShare);
 
