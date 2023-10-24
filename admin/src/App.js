@@ -1,13 +1,17 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import PageRender from "./PageRender";
 import Alert from "./components/global/Alert";
 import Menu from "./components/Menu";
-import React from "react";
+import Loading from "./components/basic/Loading";
 
 function App() {
+  const loading = useSelector((state) => state.loadingReducer.loading);
+
   return (
     <div className="d-flex">
+      {loading && <Loading />}
       <Router>
         <Menu />
         <div className="w-100">

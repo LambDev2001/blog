@@ -11,11 +11,13 @@ import Friend from "../src/components/basic/Friend";
 import Group from "../src/components/basic/Group";
 
 import SocketContext from "./utils/SocketContext";
+import Loading from "./components/basic/Loading";
 
 function App() {
   const themeColor = useSelector((state) => state.themeUserReducer);
   const height = window.innerHeight - 60;
   const token = useSelector((state) => state.authReducer.accessToken);
+  const loading = useSelector((state) => state.loadingReducer.loading);
 
   const [socket, setSocket] = useState(null);
 
@@ -34,6 +36,7 @@ function App() {
   return (
     <SocketContext.Provider value={socket}>
       <div className="flex flex-col text-white">
+        {loading && <Loading />}
         <Router>
           <Alert />
           <Header />
