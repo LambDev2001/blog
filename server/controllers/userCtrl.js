@@ -229,7 +229,7 @@ const userCtrl = {
       reports = await Promise.all(
         reports.map(async (report) => {
           const user = await Users.findById({ _id: report.idUser });
-          return { ...report._doc, sender: user.username };
+          return { ...report._doc, author: user.username };
         })
       );
 

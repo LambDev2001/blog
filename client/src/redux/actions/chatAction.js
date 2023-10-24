@@ -25,10 +25,7 @@ export const sendTextChat =
   ({ idRoom, message, token }) =>
   async (dispatch) => {
     try {
-      const res = await postAPI("chat", { idRoom, message, type: "text" }, token);
-      ResErrorData(res.data, dispatch);
-      res.data.createdAt = new Date(res.data.createdAt).toLocaleString();
-      await dispatch({ type: "SEND_CHAT", payload: res.data });
+      await postAPI("chat", { idRoom, message, type: "text" }, token);
     } catch (err) {
       console.error(err);
     }
@@ -44,11 +41,7 @@ export const sendImageChat =
       }
       message = message.join(" ");
 
-      const res = await postAPI("chat", { idRoom, message, type: "image" }, token);
-      ResErrorData(res.data, dispatch);
-      res.data.createdAt = new Date(res.data.createdAt).toLocaleString();
-
-      await dispatch({ type: "SEND_CHAT", payload: res.data });
+      await postAPI("chat", { idRoom, message, type: "image" }, token);
     } catch (err) {
       console.error(err);
     }

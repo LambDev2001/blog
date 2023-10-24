@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
 
-import { getAPI, postAPI } from "../../utils/FetchData";
+import { deleteAPI, getAPI, postAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
 
 export const getComments = (idBlog) => async (dispatch) => {
@@ -64,22 +64,7 @@ export const sendComment =
   ({ comment, idBlog, token }) =>
   async (dispatch) => {
     try {
-      let res = await postAPI(`comment`, { message: comment, idBlog }, token);
-      ResErrorData(res.data, dispatch);
-
-      const date = new Date(res.data.createdAt);
-
-      let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
-      if (timeAgo.startsWith("about ")) {
-        timeAgo = timeAgo.slice(6);
-      } else if (timeAgo.startsWith("over ")) {
-        timeAgo = timeAgo.slice(5);
-      } else if (timeAgo.startsWith("less than ")) {
-        timeAgo = timeAgo.slice(10);
-      }
-      res.data = { ...res.data, timeAgo };
-
-      dispatch({ type: "SEND_COMMENT", payload: res.data });
+      await postAPI(`comment`, { message: comment, idBlog }, token);
     } catch (err) {
       console.error(err);
     }
@@ -89,24 +74,7 @@ export const sendReply =
   ({ comment, idBlog, idComment, token }) =>
   async (dispatch) => {
     try {
-      let res = await postAPI(`comment`, { message: comment, idBlog, replyCM: idComment }, token);
-      ResErrorData(res.data, dispatch);
-
-      const date = new Date(res.data.createdAt);
-
-      let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
-      if (timeAgo.startsWith("about ")) {
-        timeAgo = timeAgo.slice(6);
-      } else if (timeAgo.startsWith("over ")) {
-        timeAgo = timeAgo.slice(5);
-      } else if (timeAgo.startsWith("less than ")) {
-        timeAgo = timeAgo.slice(10);
-      }
-
-      const replies = [];
-      res.data = { ...res.data, timeAgo, replies };
-
-      dispatch({ type: "SEND_REPLY", payload: { idComment, data: [res.data] } });
+      await postAPI(`comment`, { message: comment, idBlog, replyCM: idComment }, token);
     } catch (err) {
       console.error(err);
     }
@@ -123,3 +91,15 @@ export const reportComment =
       console.error(err);
     }
   };
+
+  export const deleteComment = (idComment, token) => async (dispatch) => {
+    try {
+      const res = await deleteAPI(`comment/${idComment}`, token)
+      ResErrorData(res.data, dispatch);
+      dispatch({ type: "DELETE_COMMENT", payload: idComment });
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    
+    } catch (err) {
+      console.error(err)
+    }
+  }

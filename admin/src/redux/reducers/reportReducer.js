@@ -1,15 +1,18 @@
-
-const reportReducer = (state = {}, action) => {
+const reportReducer = (state = {report: null, reports: []}, action) => {
   switch (action.type) {
     case "GET_REPORT":
-      return {report: action.payload};
+      return { report: action.payload, reports: state.reports };
 
     case "GET_REPORTS":
-      return {reports: action.payload};
+      return { report: state.report, reports: action.payload };
 
-    default: 
-      return state
+    case "ACCEPT_REPORT":
+      const result = state.reports.filter((report) => report._id !== action.payload);
+      return result;
+
+    default:
+      return state;
   }
-}
+};
 
-export default reportReducer
+export default reportReducer;

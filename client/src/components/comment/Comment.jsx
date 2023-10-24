@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LuMoreHorizontal } from "react-icons/lu";
 
-import { sendComment, getReply, sendReply } from "../../redux/actions/commentAction";
 import InputComment from "./InputComment";
 import ModalReportComment from "../modal/ModalReportComment";
+
+import { sendComment, getReply, sendReply, deleteComment } from "../../redux/actions/commentAction";
+import SocketContext from "../../utils/SocketContext";
 
 const Comment = ({ idBlog, comments, idComment = "" }) => {
   const [contentComment, setContentComment] = useState("");
@@ -15,8 +17,26 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const user = useSelector((state) => state.authReducer.user);
   const themeColor = useSelector((state) => state.themeUserReducer);
+  const socket = useContext(SocketContext);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("join-room", idBlog);
+    }
+  }, [idBlog, socket]);
+
+  useEffect(() => {
+    socket.on("create-comment", (data) => {
+      dispatch({ type: "SEND_COMMENT", payload: data });
+    });
+
+    socket.on("reply-comment", (idComment) => {
+      // await dispatch({ type: "SEND_REPLY", payload: { idComment: idComment, data } });
+      dispatch(getReply(idComment, token));
+    });
+  }, [dispatch, socket, idBlog, token]);
 
   const handleComment = (e) => {
     const { value } = e.target;
@@ -57,6 +77,10 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
     setContentComment("");
   };
 
+  const handleDeleteComment = (idComment) => {
+    dispatch(deleteComment(idComment, token));
+  };
+
   return (
     <div className={`${themeColor.sub} rounded-lg pt-2 pb-3 pl-4 `}>
       {comments.length > 0 &&
@@ -93,7 +117,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
 
                   {isReply !== index && comment.countReply > 0 && (
                     <div
-                      className="ml-2 mt-1 text-gray-400"
+                      className="ml-2 mt-1 text-gray-400 cursor-pointer"
                       onClick={() => handleReply(index, comment._id)}>
                       {comment.countReply} Reply
                     </div>
@@ -112,10 +136,17 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                   <div className={`${themeColor.input} relative mt-1`}>
                     {/* modal more */}
                     {isMore === index && (
-                      <div
-                        className={`${themeColor.input} absolute top-0 left-0 rounded-lg p-2 cursor-pointer`}
-                        onClick={() => handleOpenReport(index)}>
-                        Report
+                      <div className={`${themeColor.input} ${themeColor.border} border-1 absolute top-0 left-0 rounded-lg p-1`}>
+                        <div
+                          className={`${themeColor.main} ${themeColor.hoverBold} rounded-lg py-2 px-3 cursor-pointer my-1`}
+                          onClick={() => handleOpenReport(index)}>
+                          Report
+                        </div>
+                        <div
+                          className={`${themeColor.main} ${themeColor.hoverBold} rounded-lg py-2 px-3 cursor-pointer my-1`}
+                          onClick={() => handleDeleteComment(comment._id)}>
+                          Delete
+                        </div>
                       </div>
                     )}
 

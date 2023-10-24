@@ -8,6 +8,7 @@ import Categories from "../models/categoryModel.js";
 import Likes from "../models/likeModel.js";
 import Views from "../models/viewModel.js";
 
+
 const reportCtrl = {
   // auth
   deleteReport: async (req, res) => {
@@ -130,6 +131,9 @@ const reportCtrl = {
         case "comment":
           report.comment = await Comments.findById(report.ids);
           if (!report.comment) return res.json({ err: "Comment not found" });
+          report.comment.author = await Users.findById(report.comment.idUser).select(
+            "-__v -password -createdAt -updatedAt -status -friends -report"
+          );
           break;
       }
 
@@ -149,8 +153,6 @@ const reportCtrl = {
             "-__v -password -createdAt -updatedAt -status -friends -report"
           );
           if (!author) return res.json({ err: "User not found" });
-          
-            
 
           return { ...report._doc, author: author.username };
         })

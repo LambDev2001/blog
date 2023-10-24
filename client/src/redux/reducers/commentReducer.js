@@ -18,7 +18,7 @@ const commentReducer = (state = [], action) => {
         }
       }
     }
-    return null; // Trả về null nếu không tìm thấy
+    return null;
   }
 
   switch (action.type) {
@@ -26,11 +26,14 @@ const commentReducer = (state = [], action) => {
       return action.payload;
 
     case "SEND_COMMENT":
-      return [{ ...action.payload, replies: [] }, ...state];
+      if (state.length === 0) {
+        return [{ ...action.payload, replies: [] }];
+      } else {
+        return [{ ...action.payload, replies: [] }, ...state];
+      }
 
     case "GET_REPLY":
       findComment(state, action.payload.idComment, action.payload.data, "get");
-
       return state;
 
     case "SEND_REPLY":
@@ -39,6 +42,9 @@ const commentReducer = (state = [], action) => {
 
     case "REMOVE_REPLY":
       return state.map((item) => (item.replies = action.payload));
+
+    case "DELETE_COMMENT":
+      return state.filter((item) => item._id !== action.payload);
 
     default:
       return state;

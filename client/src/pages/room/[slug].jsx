@@ -20,6 +20,7 @@ const ChatPage = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const rooms = useSelector((state) => state.roomReducer);
   const data = useSelector((state) => state.chatReducer);
+  const idUser = useSelector(state=> state.authReducer.user._id)
   const { slug } = useParams();
   const dispatch = useDispatch();
 
@@ -36,10 +37,10 @@ const ChatPage = () => {
       socket.on("new-message", (data) => {
         data.createdAt = new Date(data.createdAt).toLocaleString();
 
-        dispatch({ type: "SEND_CHAT", payload: data });
+        dispatch({ type: "SEND_CHAT", payload: {data, idUser} });
       });
     }
-  }, [dispatch, socket]);
+  }, [dispatch, socket, idUser]);
 
   const handleOpenAction = () => {
     setOpenAction(!openAction);

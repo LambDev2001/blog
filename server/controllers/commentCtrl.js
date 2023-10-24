@@ -63,8 +63,6 @@ const commentCtrl = {
       else newComment = new Comments({ idUser, idBlog, message, replyCM });
       await newComment.save();
 
-      console.log(newComment);
-
       const author = await Users.findById(newComment.idUser).select(
         "-__v -password -createdAt -updatedAt -status -friends -report"
       );
@@ -79,7 +77,8 @@ const commentCtrl = {
         author,
       };
 
-      io.to(`${idBlog}`).emit("create-comment", comment);
+      if (!replyCM) io.to(idBlog).emit("create-comment", comment);
+      else io.to(idBlog).emit("reply-comment", replyCM);
       return res.status(200).json(comment);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -90,6 +89,7 @@ const commentCtrl = {
     try {
       const { idComment } = req.params;
       const { message } = req.body;
+      console.log(message);
 
       const comment = await Comments.findOne({ _id: idComment });
       if (!comment) return res.json({ msg: "Comment not found" });
@@ -98,13 +98,21 @@ const commentCtrl = {
       await newReply.save();
 
       await Comments.findOneAndUpdate({ _id: idComment }, { $push: { replyCM: newReply._id } });
+      const author = await Users.findById(comment.idUser).select("-password -__v -report -status");
+      const countReply = await Comments.count({ replyCM: comment._id });
+      const replies = [];
 
       const data = {
-        blog: { ...newReply._doc },
-        user: req.user,
+        idComment,
+        data: {
+          ...newReply._doc,
+          author,
+          replies,
+          countReply,
+        },
       };
 
-      io.to(`${comment.idBlog}`).emit("reply-comment", data);
+      io.to(comment.idBlog).emit("reply-comment", data);
       return res.status(200).json({ msg: "Reply successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -139,8 +147,8 @@ const commentCtrl = {
 
       await Comments.findOneAndDelete({ _id: idComment });
 
-      io.to(`${comment.idBlog}`).emit("delete-comment", comment);
-      return res.status(200).json({ msg: "Delete successfully" });
+      io.to(comment.idBlog).emit("delete-comment", idComment);
+      return res.status(200).json({ msg: "Delete comment successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

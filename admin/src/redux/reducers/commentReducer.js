@@ -18,7 +18,7 @@ const commentReducer = (state = [], action) => {
         }
       }
     }
-    return null; // Trả về null nếu không tìm thấy
+    return null;
   }
 
   switch (action.type) {

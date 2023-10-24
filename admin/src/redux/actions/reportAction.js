@@ -14,7 +14,10 @@ export const getReport = (idReport, token) => async (dispatch) => {
       day: "numeric",
     });
 
+    const comment = await getAPI(`comments/${report.data.comment.idBlog}`, token);
+
     dispatch({ type: "GET_REPORT", payload: report.data });
+    dispatch({ type: "GET_COMMENTS", payload: comment.data });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
 
@@ -48,10 +51,8 @@ export const getReports = (token) => async (dispatch) => {
 
 export const declineReport = (idReport, token) => async (dispatch) => {
   try {
-    dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await postAPI(`decline-report/${idReport}`, "", token);
     ResErrorData(res.data, dispatch);
-    dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);
   }
@@ -59,11 +60,8 @@ export const declineReport = (idReport, token) => async (dispatch) => {
 
 export const acceptReport = (idReport, token) => async (dispatch) => {
   try {
-    dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await postAPI(`accept-report/${idReport}`, "", token);
     ResErrorData(res.data, dispatch);
-
-    dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);
   }

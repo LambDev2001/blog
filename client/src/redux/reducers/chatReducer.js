@@ -4,12 +4,8 @@ const chatReducer = (state = [], action) => {
       return action.payload;
 
     case "SEND_CHAT":
-      const check = state.find((item) => item._id === action.payload._id);
-      if (check) {
-        return state;
-      } else {
-        return [action.payload, ...state];
-      }
+      if (action.payload.data.idUser === action.payload.idUser) action.payload.data.owner = true;
+      return [action.payload.data, ...state];
 
     default:
       return state;

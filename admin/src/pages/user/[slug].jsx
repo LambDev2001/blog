@@ -86,7 +86,7 @@ const User = () => {
             </div>
 
             {/* friend */}
-            <div className="flex-2">
+            <div className="flex-2 my-2">
               {user && (
                 <div className={`${color.inside} rounded-lg shadow-md p-4`}>
                   <h2 className="text-lg font-semibold mb-2">Friend</h2>
@@ -104,9 +104,11 @@ const User = () => {
         <div className={`${color.outside} rounded-lg shadow-md p-1`}>
           <div className={`${color.inside} rounded-lg shadow-md m-2`}>
             <div className="content p-2">Blogs ({user.blogs.length})</div>
-            <div className="d-flex flex-wrap justify-around mx-4">
+            <div className="d-flex flex-wrap justify-around mx-auto">
               {user.blogs.map((blog) => (
-                <Card blog={blog} key={blog._id} />
+                <div className="sm:w-1 md:w-1/2 lg:w-1/3">
+                  <Card blog={blog} key={blog._id} />
+                </div>
               ))}
             </div>
           </div>

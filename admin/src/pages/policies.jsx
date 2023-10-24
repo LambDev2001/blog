@@ -22,7 +22,7 @@ const Policies = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const color = useSelector((state) => state.themeReducer.themeColor);
   const dispatch = useDispatch();
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
 
   useEffect(() => {
     dispatch(getAllPolicies(token));
