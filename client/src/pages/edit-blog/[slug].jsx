@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom/";
 
@@ -9,12 +9,16 @@ const EditDataBlog = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const [blog, setBlog] = useState(null);
 
   useEffect(() => {
-    dispatch(getBlog(slug, token));
+    const functionGetBlog = async () => {
+      setBlog(await dispatch(getBlog(slug, token)));
+    };
+    functionGetBlog();
   }, [dispatch, slug, token]);
 
-  return <EditBlog />;
+  return <div>{blog && <EditBlog blog={blog} />}</div>;
 };
 
 export default EditDataBlog;

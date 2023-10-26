@@ -2,28 +2,35 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IoMdClose } from "react-icons/io";
+import { BsImage } from "react-icons/bs";
 
 import Blog from "./BlogCard";
 import { getRooms } from "../../redux/actions/roomAction";
 import { updateBlog } from "../../redux/actions/blogAction";
 import { getCategories } from "../../redux/actions/categoryAction";
 
-const EditBlog = () => {
+import validate from "../../utils/validate";
+
+const EditBlog = ({ blog }) => {
   const [isReview, setIsReview] = useState(false);
   const [nameCategory, setNameCategory] = useState("");
+  const [thumbnail, setThumbnail] = useState({});
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const categories = useSelector((state) => state.categoryReducer);
-  const blog = useSelector((state) => state.blogReducer);
-  const [dataBlog, setDataBlog] = useState({});
+  const [dataBlog, setDataBlog] = useState(blog);
   const dispatch = useDispatch();
+
+  const [errors, setErrors] = useState({
+    title: "",
+    category: "",
+    description: "",
+    thumbnail: "",
+  });
 
   useEffect(() => {
     dispatch(getRooms(token));
     dispatch(getCategories(token));
-    if (blog[0] !== undefined) {
-      setDataBlog(blog[0]);
-    }
   }, [dispatch, token, blog]);
 
   const handleShowReview = () => {
@@ -39,10 +46,31 @@ const EditBlog = () => {
         return item;
       });
     }
+    const error = validate(name, value);
+    setErrors({ ...errors, [name]: error });
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setDataBlog({ ...blog, thumbnail: imageUrl });
+    setThumbnail(file);
   };
 
   const handleSubmit = () => {
-    dispatch(updateBlog(blog[0]._id, dataBlog, token));
+    let temptErr = {};
+    for (const [name, value] of Object.entries(blog)) {
+      const error = validate(name, value);
+      temptErr = { ...temptErr, [name]: error };
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error,
+      }));
+    }
+
+    if (Object.values(temptErr).every((error) => error === "")) {
+      dispatch(updateBlog(dataBlog, thumbnail, token));
+    }
   };
 
   return (
@@ -61,6 +89,7 @@ const EditBlog = () => {
             onChange={(e) => handleChangeInput(e)}
             className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
+          <div className="text-red-500 text-md">{errors.title}</div>
         </div>
 
         <div className="mb-4">
@@ -73,43 +102,54 @@ const EditBlog = () => {
             onChange={(e) => handleChangeInput(e)}
             className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
+          <div className="text-red-500 text-md">{errors.description}</div>
         </div>
 
         <div className="mb-4">
           <label className="block text-sm mb-1">Category</label>
-          {blog[0] && (
-            <select
-              name="category"
-              value={dataBlog.category}
-              onChange={(e) => {
-                handleChangeInput(e);
-              }}
-              className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
-              <option value={dataBlog.idCategory}>{blog[0].category}</option>
-              {categories.length > 0 &&
-                categories.map((item, index) => {
-                  return (
-                    <option key={index} value={item._id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-            </select>
-          )}
+          <select
+            name="category"
+            value={dataBlog.category}
+            onChange={(e) => {
+              handleChangeInput(e);
+            }}
+            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
+            <option value={dataBlog.category}>
+              {nameCategory.length > 0 ? nameCategory : dataBlog.nameCategory}
+            </option>
+            {categories.length > 0 &&
+              categories.map((item, index) => {
+                return (
+                  <option key={index} value={item._id}>
+                    {item.name}
+                  </option>
+                );
+              })}
+          </select>
+          <div className="text-red-500 text-md">{errors.category}</div>
         </div>
 
         <div className="mb-4">
           <label className="block text-sm mb-1">Thumbnail</label>
+          <div className="w-1/4 max-w-[200px] h-100 my-2">
+            {dataBlog.thumbnail && (
+              <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md" />
+            )}
+          </div>
           <input
-            type="text"
-            placeholder="Enter thumbnail URL"
-            name="thumbnail"
-            value={dataBlog.thumbnail}
-            onChange={(e) => handleChangeInput(e)}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+            id="imageUpload"
+            multiple
           />
-        </div>
+          <label htmlFor="imageUpload" className="my-auto mx-2 cursor-pointer rounded-md">
+            <BsImage size={24} />
+          </label>
 
+          <div className="text-red-500 text-md">{errors.thumbnail}</div>
+        </div>
         <div className=" flex justify-end">
           <div className={`${themeColor.input} rounded-lg`} onClick={handleShowReview}>
             {isReview ? <div></div> : <div className="py-2 px-3 cursor-pointer">See review</div>}
@@ -137,7 +177,7 @@ const EditBlog = () => {
               <div className="flex">
                 <div className="my-1 text-lg font-bold">{dataBlog.title}</div>
                 <div className={`${themeColor.input} mx-2 p-2 rounded-full`}>
-                  {nameCategory.length > 0 ? nameCategory : dataBlog.category}
+                  {nameCategory.length > 0 ? nameCategory : dataBlog.nameCategory}
                 </div>
               </div>
 

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { reportBlog } from "../../redux/actions/blogAction";
+import validate from "../../utils/validate";
 
 const ModalReportBlog = ({ blog, handleShowReport }) => {
   const [content, setContent] = useState("");
+  const [errors, setErrors] = useState({});
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
@@ -12,11 +14,19 @@ const ModalReportBlog = ({ blog, handleShowReport }) => {
   const handleContent = (e) => {
     const value = e.target.value;
     setContent(value);
+    const error = validate("content", value);
+    setErrors({ content: error });
   };
 
   const handleReport = (e) => {
     e.preventDefault();
-    dispatch(reportBlog({ blog, content, token }));
+    const error = validate("content", content);
+    setErrors({ content: error });
+
+    if (errors.content === "") {
+      dispatch(reportBlog({ blog, content, token }));
+      handleShowReport(null);
+    }
   };
 
   return (
@@ -51,6 +61,7 @@ const ModalReportBlog = ({ blog, handleShowReport }) => {
             rows="5"
             placeholder=" Write your reason for report here"
             onChange={(e) => handleContent(e)}></textarea>
+          <div className="text-red-500 text-md">{errors.content}</div>
         </div>
 
         {/* button */}

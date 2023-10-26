@@ -2,11 +2,16 @@ import { formatDistanceToNow } from "date-fns";
 
 import { getAPI, postAPI, patchAPI, deleteAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
+import { imageUpload } from "../../utils/HandleImage";
 
-export const createBlog = (blog, token) => async (dispatch) => {
+export const createBlog = (blog, thumbnail, token) => async (dispatch) => {
   try {
-    const res = await postAPI("blog", blog, token);
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const image = await imageUpload(thumbnail);
+    const res = await postAPI("blog", { ...blog, thumbnail: image.url }, token);
+
     ResErrorData(res.data, dispatch);
+    dispatch({ type: "LOADING", payload: { loading: false } });
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
@@ -245,7 +250,7 @@ export const getBlog = (idBlog, token) => async (dispatch) => {
     dispatch({ type: "GET_BLOG", payload: [{ ...blog.data, timeAgo }] });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
-    return blog.data;
+    return { ...blog.data, timeAgo };
   } catch (err) {
     console.error(err);
   }
@@ -263,13 +268,14 @@ export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
     console.error(err);
   }
 };
-export const updateBlog = (idBlog, blog, token) => async (dispatch) => {
+export const updateBlog = (blog, thumbnail, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
-    const res = await patchAPI(`blog/${idBlog}`, blog, token);
+    const image = await imageUpload(thumbnail);
+    const res = await patchAPI(`blog/${blog._id}`, { ...blog, thumbnail: image.url }, token);
     ResErrorData(res.data, dispatch);
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
     dispatch({ type: "LOADING", payload: { loading: false } });
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
   }

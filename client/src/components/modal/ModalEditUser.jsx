@@ -5,9 +5,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { updateUser } from "../../redux/actions/userAction";
+import validate from "../../utils/validate";
 
 const ModalEditProfile = ({ user, handleShowModal }) => {
   const [infoUser, setInfoUser] = useState(user);
+  const [errors, setErrors] = useState({});
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
@@ -20,17 +22,33 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
 
   const handleInfoUser = (e) => {
     const { name, value } = e.target;
+    const error = validate(name, value);
+    setErrors({ ...errors, [name]: error });
     setInfoUser({ ...infoUser, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser({...infoUser, birthday: startDate}, token));
-  }
+    let temptErr = {};
+    for (const [name, value] of Object.entries(infoUser)) {
+      const error = validate(name, value);
+      temptErr = { ...temptErr, [name]: error };
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error,
+      }));
+    }
+
+    if (Object.values(temptErr).every((error) => error === "")) {
+      dispatch(updateUser({ ...infoUser, birthday: startDate }, token));
+    }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
-      <form className={`${themeColor.main} p-4 rounded-lg shadow-lg w-[500px]`} onSubmit={(e) => handleSubmit(e)}>
+      <form
+        className={`${themeColor.main} p-4 rounded-lg shadow-lg w-[500px]`}
+        onSubmit={(e) => handleSubmit(e)}>
         <div className="text-2xl font-semibold">Edit Information</div>
 
         <div className="flex flex-col justify-center my-2 p-2 rounded-lg shadow-md overflow-hidden">
@@ -45,18 +63,7 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
               name="username"
               onChange={(e) => handleInfoUser(e)}
             />
-          </div>
-
-          <div className="flex flex-col my-2 w-100">
-            <label htmlFor="username" className="font-semibold text-white text-xl mb-1">
-              Date of Birth
-            </label>
-
-            <DatePicker
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
-              selected={startDate}
-              onChange={handleDateChange}
-            />
+            <div className="text-red-500 text-md">{errors.username}</div>
           </div>
 
           <div className="flex flex-col my-2 w-100">
@@ -72,7 +79,17 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
             />
           </div>
 
+          <div className="flex flex-col my-2 w-100">
+            <label htmlFor="username" className="font-semibold text-white text-xl mb-1">
+              Date of Birth
+            </label>
 
+            <DatePicker
+              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
+              selected={startDate}
+              onChange={handleDateChange}
+            />
+          </div>
         </div>
 
         {/* button */}

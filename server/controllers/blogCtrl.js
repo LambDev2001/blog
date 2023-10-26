@@ -265,8 +265,8 @@ const blogCtrl = {
         comments,
         views: view,
         viewMonthly,
-        category: category.name,
-        idCategory: category._id,
+        category: category._id,
+        nameCategory: category.name,
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });

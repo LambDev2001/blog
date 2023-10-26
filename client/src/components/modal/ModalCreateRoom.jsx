@@ -3,30 +3,49 @@ import React, { useState } from "react";
 import { BsImage } from "react-icons/bs";
 
 import { createRoom } from "../../redux/actions/roomAction";
+import validate from "../../utils/validate";
 
 const ModalCreateRoom = ({ themeColor, dispatch, token, handleOpenModal }) => {
   const [room, setRoom] = useState({
     nameRoom: "",
     avatarRoom: "",
   });
-  const [selectedImage, setSelectedImage] = useState("");
+  const [errors, setErrors] = useState({
+    nameRoom: "",
+    avatarRoom: "",
+  });
+  const [tempImage, setTempImage] = useState({});
 
   const handleChangeInput = (e) => {
     let { name, value } = e.target;
-    if (name === "avatarRoom") {
-      value = e.target.files[0];
-      if (value) {
-        const imageUrl = URL.createObjectURL(value);
-        setSelectedImage(imageUrl);
-      }
-    }
+    const error = validate(name, value);
+    setErrors({ ...errors, [name]: error });
     setRoom({ ...room, [name]: value });
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setRoom({ ...room, avatarRoom: file });
+    const imageUrl = URL.createObjectURL(file);
+    setTempImage(imageUrl);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleOpenModal();
-    dispatch(createRoom(room, token));
+    let temptErr = {};
+    for (const [name, value] of Object.entries(room)) {
+      const error = validate(name, value);
+      temptErr = { ...temptErr, [name]: error };
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error,
+      }));
+    }
+
+    if (Object.values(temptErr).every((error) => error === "")) {
+      dispatch(createRoom(room, token));
+      handleOpenModal();
+    }
   };
 
   return (
@@ -48,24 +67,17 @@ const ModalCreateRoom = ({ themeColor, dispatch, token, handleOpenModal }) => {
               onChange={(e) => handleChangeInput(e)}
               className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
             />
+            <div className="text-red-500 text-md">{errors.nameRoom}</div>
           </div>
 
           <div className="mb-4">
             <label className="block text-md mb-1">Choose Avatar For Group</label>
-            <input
-              type="file"
-              accept="image/*"
-              name="avatarRoom"
-              onChange={(e) => handleChangeInput(e)}
-              className="hidden"
-              id="imageUpload"
-              multiple
-            />
-            {selectedImage && (
+
+            {tempImage && (
               <div className={" z-50"}>
                 <div className="m-1 relative">
                   <img
-                    src={selectedImage}
+                    src={tempImage}
                     alt=""
                     className="my-auto"
                     style={{
@@ -78,9 +90,19 @@ const ModalCreateRoom = ({ themeColor, dispatch, token, handleOpenModal }) => {
                 </div>
               </div>
             )}
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+              id="imageUpload"
+              multiple
+            />
             <label htmlFor="imageUpload" className="my-auto mx-2 cursor-pointer rounded-md">
               <BsImage size={24} />
             </label>
+            <div className="text-red-500 text-md">{errors.avatarRoom}</div>
           </div>
         </div>
 

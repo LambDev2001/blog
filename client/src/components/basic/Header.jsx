@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import { GoSearch } from "react-icons/go";
 
-import ModalLogin from "../../components/auth/ModalLogin";
+import ModalLogin from "../../components/modal/ModalLogin";
 
 import { logout } from "../../redux/actions/authAction";
 import { searchAll } from "../../redux/actions/menuAction";

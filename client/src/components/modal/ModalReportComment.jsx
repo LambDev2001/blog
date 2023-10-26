@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { reportComment } from "../../redux/actions/commentAction";
+import validate from "../../utils/validate";
 
 const ModalReportComment = ({ comment, handleIsModal }) => {
   const [content, setContent] = useState("");
+  const [errors, setErrors] = useState({});
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
@@ -12,12 +14,19 @@ const ModalReportComment = ({ comment, handleIsModal }) => {
   const handleContent = (e) => {
     const value = e.target.value;
     setContent(value);
+    const error = validate("content", value);
+    setErrors({ ...errors, content: error });
   };
 
   const handleReport = (e) => {
     e.preventDefault();
-    dispatch(reportComment({ comment, content, token }));
-    handleIsModal();
+    const error = validate("content", content);
+    setErrors({ content: error });
+
+    if (errors.content === "") {
+      dispatch(reportComment({ comment, content, token }));
+      handleIsModal();
+    }
   };
 
   return (
@@ -63,6 +72,7 @@ const ModalReportComment = ({ comment, handleIsModal }) => {
             rows="5"
             placeholder=" Write your reason for report here"
             onChange={(e) => handleContent(e)}></textarea>
+          <div className="text-red-500 text-md">{errors.content}</div>
         </div>
 
         {/* button */}

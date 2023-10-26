@@ -67,7 +67,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
 
   const handleSubmit = async (e, idComment) => {
     e.preventDefault();
-
+    if (contentComment === "") return;
     if (idComment === "") {
       dispatch(sendComment({ comment: contentComment, idBlog, token }));
     } else {
@@ -136,7 +136,8 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                   <div className={`${themeColor.input} relative mt-1`}>
                     {/* modal more */}
                     {isMore === index && (
-                      <div className={`${themeColor.input} ${themeColor.border} border-1 absolute top-0 left-0 rounded-lg p-1`}>
+                      <div
+                        className={`${themeColor.input} ${themeColor.border} border-1 absolute top-0 left-0 rounded-lg p-1`}>
                         <div
                           className={`${themeColor.main} ${themeColor.hoverBold} rounded-lg py-2 px-3 cursor-pointer my-1`}
                           onClick={() => handleOpenReport(index)}>

@@ -11,7 +11,7 @@ import {
 } from "react-icons/tb";
 
 import Blog from "../components/blog/Blog";
-import ModalLogin from "../components/auth/ModalLogin";
+import ModalLogin from "../components/modal/ModalLogin";
 
 import { getBlogsUser, getUnauthorizedBlogsUser } from "../redux/actions/blogAction";
 import { getRooms } from "../redux/actions/roomAction";

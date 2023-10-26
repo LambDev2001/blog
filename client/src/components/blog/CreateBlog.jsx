@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IoMdClose } from "react-icons/io";
+import { BsImage } from "react-icons/bs";
 
 import Blog from "./BlogCard";
-import { getRooms } from "../../redux/actions/roomAction";
 import { createBlog } from "../../redux/actions/blogAction";
 import { getCategories } from "../../redux/actions/categoryAction";
+import validate from "../../utils/validate";
 
 const CreateBlog = () => {
   const [isReview, setIsReview] = useState(false);
   const [nameCategory, setNameCategory] = useState("");
+  const [thumbnail, setThumbnail] = useState({});
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const categories = useSelector((state) => state.categoryReducer);
@@ -21,10 +23,16 @@ const CreateBlog = () => {
     thumbnail: "",
     content: "",
   });
+
+  const [errors, setErrors] = useState({
+    title: "",
+    category: "",
+    description: "",
+    thumbnail: "",
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getRooms(token));
     dispatch(getCategories(token));
   }, [dispatch, token]);
 
@@ -41,10 +49,32 @@ const CreateBlog = () => {
         return item;
       });
     }
+
+    const error = validate(name, value);
+    setErrors({ ...errors, [name]: error });
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setBlog({ ...blog, thumbnail: imageUrl });
+    setThumbnail(file);
   };
 
   const handleSubmit = () => {
-    dispatch(createBlog(blog, token));
+    let temptErr = {};
+    for (const [name, value] of Object.entries(blog)) {
+      const error = validate(name, value);
+      temptErr = { ...temptErr, [name]: error };
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error,
+      }));
+    }
+
+    if (Object.values(temptErr).every((error) => error === "")) {
+      dispatch(createBlog(blog, thumbnail, token));
+    }
   };
 
   return (
@@ -63,6 +93,7 @@ const CreateBlog = () => {
             onChange={(e) => handleChangeInput(e)}
             className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
+          <div className="text-red-500 text-md">{errors.title}</div>
         </div>
 
         <div className="mb-4">
@@ -75,6 +106,7 @@ const CreateBlog = () => {
             onChange={(e) => handleChangeInput(e)}
             className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
+          <div className="text-red-500 text-md">{errors.description}</div>
         </div>
 
         <div className="mb-4">
@@ -96,18 +128,29 @@ const CreateBlog = () => {
                 );
               })}
           </select>
+          <div className="text-red-500 text-md">{errors.category}</div>
         </div>
 
         <div className="mb-4">
           <label className="block text-sm mb-1">Thumbnail</label>
+          <div className="w-1/4 max-w-[200px] h-100 my-2">
+            {blog.thumbnail && (
+              <img src={blog.thumbnail} alt="thumbnail" className="w-100 rounded-md" />
+            )}
+          </div>
           <input
-            type="text"
-            placeholder="Enter thumbnail URL"
-            name="thumbnail"
-            value={blog.thumbnail}
-            onChange={(e) => handleChangeInput(e)}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+            id="imageUpload"
+            multiple
           />
+          <label htmlFor="imageUpload" className="my-auto mx-2 cursor-pointer rounded-md">
+            <BsImage size={24} />
+          </label>
+
+          <div className="text-red-500 text-md">{errors.thumbnail}</div>
         </div>
 
         <div className=" flex justify-end">
@@ -161,6 +204,7 @@ const CreateBlog = () => {
       <div className={`${themeColor.sub} pt-3 rounded-lg`}>
         <h1 className="text-2xl font-semibold mb-3 mx-4">Content</h1>
         <Blog blog={blog} setBlog={setBlog} />
+        <div className="mx-4 py-2 text-red-500 text-md">{errors.content}</div>
       </div>
 
       {/* Send button */}
