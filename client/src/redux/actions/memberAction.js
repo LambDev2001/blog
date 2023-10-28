@@ -15,6 +15,7 @@ export const addMember = ({idRoom, user, token}) => async (dispatch) => {
     const res = await postAPI(`add-member/${idRoom}`, { idMember: user._id }, token);
     ResErrorData(res.data, dispatch);
     dispatch({ type: "ADD_MEMBER", payload: user });
+    dispatch({ type: "INCREASE_MEMBER", payload: {idRoom, user }});
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
@@ -27,6 +28,7 @@ export const kickMember = (idRoom, user, token) => async (dispatch) => {
     ResErrorData(res.data, dispatch);
 
     dispatch({ type: "KICK_MEMBER", payload: user._id });
+    dispatch({ type: "DECREASE_MEMBER", payload: {idRoom, user }});
     dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);

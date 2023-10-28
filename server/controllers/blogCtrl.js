@@ -528,24 +528,55 @@ const blogCtrl = {
         friendsIds.map(async (friendId) => {
           const allBlogs = await Blogs.find({
             idUser: friendId,
-            status: "normal",
           }).select("-report -status -content");
 
           let blogs = await Promise.all(
             allBlogs.map(async (blog) => {
+              const author = await Users.findById(blog.idUser).select(
+                "-password -__v -report -status -friends"
+              );
+
               const category = await Categories.findById(blog.category);
 
               const likes = await Likes.count({
                 idBlog: blog._id,
                 like: true,
               });
+
               const dislikes = await Likes.count({
                 idBlog: blog._id,
                 like: false,
               });
+
               const views = await Views.findOne({ idBlog: blog._id });
 
-              return { ...blog._doc, category: category.name, likes, dislikes, views: views.view };
+              let comments = await Comments.count({
+                idBlog: blog._id,
+              });
+
+              let isLike = await Likes.findOne({
+                idBlog: blog._id,
+                idUser: req.user.id,
+              });
+
+              if (!isLike) isLike = { like: null };
+
+              const isFollowing = await Users.findOne({
+                _id: req.user.id,
+                following: author._id,
+              });
+
+              return {
+                ...blog._doc,
+                author,
+                category: category.name,
+                likes,
+                dislikes,
+                views: views.view,
+                comments,
+                isLike: isLike.like,
+                isFollowing: isFollowing ? true : false,
+              };
             })
           );
 
@@ -556,6 +587,87 @@ const blogCtrl = {
       const allBlogs = [];
       for (const friendBlogs of listBlogs) {
         allBlogs.push(...friendBlogs);
+      } // [{blog}, ...]
+
+      allBlogs.sort((a, b) => {
+        return b.createdAt - a.createdAt;
+      });
+
+      return res.status(200).json(allBlogs);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  listFollowingBlogs: async (req, res) => {
+    try {
+      const user = await Users.findOne({ _id: req.user.id });
+      const followingIds = user.following;
+      if (followingIds.length === 0) return res.status(200).json({ msg: "You have no following" });
+
+      const listBlogs = await Promise.all(
+        followingIds.map(async (friendId) => {
+          const allBlogs = await Blogs.find({
+            idUser: friendId,
+          }).select("-report -status -content");
+
+          let blogs = await Promise.all(
+            allBlogs.map(async (blog) => {
+              const author = await Users.findById(blog.idUser).select(
+                "-password -__v -report -status -friends"
+              );
+
+              const category = await Categories.findById(blog.category);
+
+              const likes = await Likes.count({
+                idBlog: blog._id,
+                like: true,
+              });
+
+              const dislikes = await Likes.count({
+                idBlog: blog._id,
+                like: false,
+              });
+
+              const views = await Views.findOne({ idBlog: blog._id });
+
+              let comments = await Comments.count({
+                idBlog: blog._id,
+              });
+
+              let isLike = await Likes.findOne({
+                idBlog: blog._id,
+                idUser: req.user.id,
+              });
+
+              if (!isLike) isLike = { like: null };
+
+              const isFollowing = await Users.findOne({
+                _id: req.user.id,
+                following: author._id,
+              });
+
+              return {
+                ...blog._doc,
+                author,
+                category: category.name,
+                likes,
+                dislikes,
+                views: views.view,
+                comments,
+                isLike: isLike.like,
+                isFollowing: isFollowing ? true : false,
+              };
+            })
+          );
+
+          return blogs;
+        })
+      ); // [[{blog}, ...]]
+
+      const allBlogs = [];
+      for (const followingBlogs of listBlogs) {
+        allBlogs.push(...followingBlogs);
       } // [{blog}, ...]
 
       allBlogs.sort((a, b) => {

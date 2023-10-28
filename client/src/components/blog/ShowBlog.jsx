@@ -12,7 +12,9 @@ const ShowBlog = ({ blog, comments }) => {
   const [isMore, setIsMore] = useState(false);
   const [isReport, setIsReport] = useState(false);
   const themeColor = useSelector((state) => state.themeUserReducer);
+  const user = useSelector((state) => state.authReducer.user);
   const history = useHistory();
+  const isOwner = user._id === blog.author._id;
 
   const handleIsMore = () => {
     setIsMore(!isMore);
@@ -52,11 +54,13 @@ const ShowBlog = ({ blog, comments }) => {
           />
           {isMore && (
             <div className={themeColor.input + " absolute right-0 p-2 w-[100px] mt-1 rounded-md"}>
-              <div
-                className={themeColor.hoverBold + " p-2 rounded-md cursor-pointer"}
-                onClick={() => history.push(`/edit-blog/${blog._id}`)}>
-                Edit Blog
-              </div>
+              {isOwner && (
+                <div
+                  className={themeColor.hoverBold + " p-2 rounded-md cursor-pointer"}
+                  onClick={() => history.push(`/edit-blog/${blog._id}`)}>
+                  Edit Blog
+                </div>
+              )}
               <div
                 className={themeColor.hoverBold + " p-2 rounded-md cursor-pointer"}
                 onClick={handleIsReport}>

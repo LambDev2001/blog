@@ -5,12 +5,11 @@ import { useHistory } from "react-router-dom";
 import { BiHomeAlt2 } from "react-icons/bi";
 import { LiaExclamationCircleSolid, LiaQuestionCircleSolid } from "react-icons/lia";
 import { BsArrowUpRightCircle } from "react-icons/bs";
-import { SlPeople } from "react-icons/sl";
+import { SlPeople, SlUserFollowing } from "react-icons/sl";
 import { getCategories } from "../../redux/actions/categoryAction";
 
 const Menu = () => {
   const [isMore, setIsMore] = useState(false);
-  const user = useSelector((state) => state.authReducer.user);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const categories = useSelector((state) => state.categoryReducer);
@@ -44,9 +43,16 @@ const Menu = () => {
 
         <div
           className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
-          onClick={() => history.push(`/friends/${user._id}`)}>
+          onClick={() => history.push(`/friend`)}>
           <SlPeople size={26} className="ml-2 mr-4" />
           <div className="my-auto">Friend</div>
+        </div>
+
+        <div
+          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          onClick={() => history.push(`/following`)}>
+          <SlUserFollowing size={26} className="ml-2 mr-4" />
+          <div className="my-auto">Following</div>
         </div>
 
         {/* Category */}

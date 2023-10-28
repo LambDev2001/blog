@@ -61,8 +61,7 @@ export const getReply = (idComment) => async (dispatch) => {
 };
 
 export const sendComment =
-  ({ comment, idBlog, token }) =>
-  async (dispatch) => {
+  async({ comment, idBlog, token }) => {
     try {
       await postAPI(`comment`, { message: comment, idBlog }, token);
     } catch (err) {

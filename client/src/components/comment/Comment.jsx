@@ -29,6 +29,8 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
 
   useEffect(() => {
     socket.on("create-comment", (data) => {
+      console.log(data);
+      
       dispatch({ type: "SEND_COMMENT", payload: data });
     });
 
@@ -69,7 +71,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
     e.preventDefault();
     if (contentComment === "") return;
     if (idComment === "") {
-      dispatch(sendComment({ comment: contentComment, idBlog, token }));
+      (sendComment({ comment: contentComment, idBlog, token }));
     } else {
       await dispatch(sendReply({ comment: contentComment, idBlog, idComment, token }));
       dispatch(getReply(idComment, token));

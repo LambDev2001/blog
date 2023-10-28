@@ -12,7 +12,6 @@ router.get("/blogs-category/:idCategory", blogCtrl.getBlogsByCategory);
 router.get("/popular-blogs", blogCtrl.getPopularBlogs);
 router.get("/blogs-unauthorized", blogCtrl.listUnauthorizedBlogs);
 
-
 router.patch("/increase-share/:idBlog", blogCtrl.increaseShare);
 
 // auth
@@ -24,6 +23,7 @@ router.get("/blogs", user, blogCtrl.listBlogs);
 router.get("/my-blogs", user, blogCtrl.myBlogs);
 router.get("/user-blogs/:idUser", user, blogCtrl.otherUserBlogs);
 router.get("/blogs-friends", user, blogCtrl.listFriendsBlogs);
+router.get("/blogs-following", user, blogCtrl.listFollowingBlogs);
 
 router.post("/blog", user, blogCtrl.createBlog);
 

@@ -1,5 +1,6 @@
 import { getAPI, patchAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
+import { imageUpload } from "../../utils/HandleImage";
 
 export const allUsers = (token) => async (dispatch) => {
   try {
@@ -100,6 +101,11 @@ export const unFollowUser = (idUser, token) => async (dispatch) => {
 
 export const updateUser = (user, token) => async (dispatch) => {
   try {
+    if(typeof(user.avatar) === "object"){
+      const image = await imageUpload(user.avatar);
+      user.avatar = image.url;
+    }
+
     const res = await patchAPI(`user/${user._id}`, user, token);
     ResErrorData(res.data, dispatch);
 

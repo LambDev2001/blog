@@ -26,11 +26,8 @@ const commentReducer = (state = [], action) => {
       return action.payload;
 
     case "SEND_COMMENT":
-      if (state.length === 0) {
-        return [{ ...action.payload, replies: [] }];
-      } else {
-        return [{ ...action.payload, replies: [] }, ...state];
-      }
+      const result = state.filter((item) => item._id !== action.payload._id);
+      return [{ ...action.payload, replies: [] }, ...result];
 
     case "GET_REPLY":
       findComment(state, action.payload.idComment, action.payload.data, "get");

@@ -22,9 +22,12 @@ body {
   border-radius: 10px;
 }
 
-/* Thiết lập màu sắc của phần nền thanh cuộn */
+body:hover ::-webkit-scrollbar-thumb {
+  width: 10px;
+}
+
 body::-webkit-scrollbar-track {
-  background-color: transparent; /* Màu nền của thanh cuộn */
+  background-color: transparent;
 }
 
 .avatar {

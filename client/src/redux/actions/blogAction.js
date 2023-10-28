@@ -226,6 +226,30 @@ export const getMyBlogs = (token) => async (dispatch) => {
   }
 };
 
+export const getFriendBlogs = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await getAPI("blogs-friends", token);
+    
+    dispatch({ type: "GET_BLOGS", payload: res.data });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getFollowingBlogs = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await getAPI("blogs-following", token);
+    
+    dispatch({ type: "GET_BLOGS", payload: res.data });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export const getBlog = (idBlog, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

@@ -20,23 +20,24 @@ const Friend = () => {
 
   return (
     <div className={`${themeColor.sub} m-2 p-1 rounded-lg`}>
-      <div className="text-xl font-semibold my-2 mx-3">Friends</div>
-      {user && user.friends &&
+      <div
+        className="text-xl font-semibold my-2 mx-3 cursor-pointer"
+        onClick={() => history.push(`/friends/${user._id}`)}>
+        Friends
+      </div>
+      {user &&
+        user.friends &&
         user.friends.map((friend, index) => (
           <div
             key={index}
-            className={`${themeColor.main} ${
-              hoveredItem === 1 ? "hovered" : ""
-            } ${themeColor.hover} p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
+            className={`${themeColor.main} ${hoveredItem === 1 ? "hovered" : ""} ${
+              themeColor.hover
+            } p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
             onMouseEnter={() => handleMouseEnter(1)}
             onMouseLeave={handleMouseLeave}
             onClick={() => history.push(`/profile/${friend._id}`)}>
             <div className="flex">
-              <img
-                src={friend.avatar}
-                alt=""
-                className="h-[28px] w-[28px]"
-              />
+              <img src={friend.avatar} alt="" className="h-[28px] w-[28px]" />
               <div className="mx-2">{friend.username}</div>
             </div>
             <div

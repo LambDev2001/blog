@@ -6,7 +6,7 @@ import Password from "../global/form/Password";
 import { login, register } from "../../redux/actions/authAction";
 import validate from "../../utils/validate";
 
-const ModalLogin = ({ handleModalLogin }) => {
+const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
   const [infoUser, setInfoUser] = useState({
     account: "",
     password: "",
@@ -19,7 +19,6 @@ const ModalLogin = ({ handleModalLogin }) => {
     username: "",
     confirmPassword: "",
   });
-  const [isRegister, setIsRegister] = useState(false);
   const dispatch = useDispatch();
 
   const handleChangeInput = (e) => {
@@ -41,11 +40,11 @@ const ModalLogin = ({ handleModalLogin }) => {
       }));
     }
 
-    if (!isRegister && errors.account === "" && errors.password === "") {
+    if (typeModal === "login" && errors.account === "" && errors.password === "") {
       dispatch(login(infoUser));
       handleModalLogin(false);
     }
-    if (isRegister && Object.values(temptErr).every((error) => error === "")) {
+    if (typeModal === "register" && Object.values(temptErr).every((error) => error === "")) {
       dispatch(register(infoUser));
       handleModalLogin(false);
     }
@@ -58,14 +57,12 @@ const ModalLogin = ({ handleModalLogin }) => {
       username: "",
       confirmPassword: "",
     });
-    setIsRegister(!isRegister);
+    typeModal === "login" ? setTypeModal("register") : setTypeModal("login");
   };
-
-  console.log(errors);
 
   return (
     <div className="fixed inset-x-0 top-1/2 transform -translate-y-1/2 flex justify-center z-[99999]">
-      {!isRegister && (
+      {typeModal === "login" && (
         <form className="bg-white w-96 p-6 rounded-lg shadow-md" onSubmit={(e) => handleSubmit(e)}>
           <p className="text-3xl font-semibold mb-4 text-black">Login</p>
 
@@ -93,7 +90,7 @@ const ModalLogin = ({ handleModalLogin }) => {
         </form>
       )}
 
-      {isRegister && (
+      {typeModal === "register" && (
         <form className="bg-white w-96 p-6 rounded-lg shadow-md" onSubmit={(e) => handleSubmit(e)}>
           <p className="text-3xl font-semibold mb-4 text-black">Register</p>
 

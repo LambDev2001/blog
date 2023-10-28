@@ -14,7 +14,7 @@ import { dislikeBlog, likeBlog, increaseShare, removeBlog } from "../../redux/ac
 import { followUser } from "../../redux/actions/userAction";
 import { getComments } from "../../redux/actions/commentAction";
 
-const Blog1 = ({ handleLink, readOnly }) => {
+const Blog1 = ({ handleLink }) => {
   const [openComments, setOpenComments] = useState(-1);
   const [isReport, setIsReport] = useState(null);
   const themeColor = useSelector((state) => state.themeUserReducer);
@@ -72,7 +72,7 @@ const Blog1 = ({ handleLink, readOnly }) => {
           return (
             <div key={index}>
               {/* Blog */}
-              <div className={`${themeColor.sub} mx-4 my-2 rounded-lg p-3`}>
+              <div className={`${themeColor.sub} mx-4 my-2 px-3 pt-3`}>
                 {/* header */}
                 <div className="flex justify-between">
                   {/* start */}
@@ -130,16 +130,16 @@ const Blog1 = ({ handleLink, readOnly }) => {
                 <div className="my-1 text-md">{blog.description}</div>
 
                 {/* thumbnail */}
-                <div onClick={() => handleLink("/blog/" + blog._id)}>
+                <div onClick={() => handleLink("/blog/" + blog._id)} className="cursor-pointer">
                   <img
                     src={blog.thumbnail}
                     alt="thumbnail"
-                    className="w-100 rounded-md max-h-[400px] object-cover cursor-pointer"
+                    className="w-100 max-h-[400px] h-auto w-auto m-auto object-cover cursor-pointer"
                   />
                 </div>
 
                 {/* interact */}
-                <div className="flex">
+                <div className="flex p-2">
                   <div className={`${themeColor.input} flex py-2 px-3 m-2 rounded-full`}>
                     <div className="flex cursor-pointer mr-2">
                       {blog.isLike === true ? (
@@ -177,9 +177,11 @@ const Blog1 = ({ handleLink, readOnly }) => {
               </div>
 
               {/* Comment */}
-              <div id={blog._id} className="ml-2 mr-6 pl-4">
-                {openComments === index && <Comment idBlog={blog._id} comments={comments} />}
-              </div>
+              {openComments === index && (
+                <div id={blog._id} className="ml-2 mr-6 pl-4 mb-2">
+                  <Comment idBlog={blog._id} comments={comments} />
+                </div>
+              )}
 
               {/* Report blog */}
               <div>
@@ -187,6 +189,8 @@ const Blog1 = ({ handleLink, readOnly }) => {
                   <ModalReportBlog blog={blog} handleShowReport={handleShowReport} />
                 )}
               </div>
+
+              <div className={`${themeColor.border} border-y w-[90%] mx-auto`}></div>
             </div>
           );
         })}

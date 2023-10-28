@@ -13,10 +13,9 @@ import {
 import Blog from "../components/blog/Blog";
 import ModalLogin from "../components/modal/ModalLogin";
 
-import { getBlogsUser, getUnauthorizedBlogsUser } from "../redux/actions/blogAction";
-import { getRooms } from "../redux/actions/roomAction";
+import { getFollowingBlogs, getUnauthorizedBlogsUser } from "../redux/actions/blogAction";
 
-const Home = () => {
+const Following = () => {
   const [typeBlog, setTypeBlog] = useState(1);
   const [modalType, setModalType] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
@@ -29,11 +28,10 @@ const Home = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(getBlogsUser(token));
+      dispatch(getFollowingBlogs(token));
     } else {
       dispatch(getUnauthorizedBlogsUser());
     }
-    dispatch(getRooms(token));
   }, [dispatch, token]);
 
   const handleOpenLogin = () => {
@@ -99,7 +97,7 @@ const Home = () => {
         }}>
         <Blog type={typeBlog} handleLink={handleLink} />
       </div>
-      
+
       {openLogin && (
         <ModalLogin
           handleModalLogin={handleOpenLogin}
@@ -111,4 +109,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Following;

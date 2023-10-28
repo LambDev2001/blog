@@ -10,7 +10,6 @@ const commentCtrl = {
       let comments = await Comments.find({ idBlog, status: "normal", replyCM: "" })
         .select("idUser message createdAt updatedAt")
         .sort({ createdAt: -1 });
-      if (comments.length === 0) return res.status(200).json({ msg: "This blog has no comment" });
 
       comments = await Promise.all(
         comments.map(async (comment) => {

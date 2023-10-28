@@ -13,6 +13,7 @@ const Header = () => {
   const [modalLogin, setModalLogin] = useState(false);
   const [modalUser, setModalUser] = useState(false);
   const [selectedOption, setSelectedOption] = useState("blog");
+  const [typeModal, setTypeModal] = useState("login");
   const [data, setData] = useState([]);
   const user = useSelector((state) => state.authReducer.user);
   const themeColor = useSelector((state) => state.themeUserReducer);
@@ -21,12 +22,14 @@ const Header = () => {
   const history = useHistory();
 
   const handleModalLogin = (state) => {
-    setModalLogin(state);
+    setTypeModal(state);
+    setModalLogin(!modalLogin);
   };
 
   const handleLogout = () => {
     dispatch(logout(token));
     setModalUser(false);
+    history.push("/");
   };
 
   const handleChange = (e) => {
@@ -67,7 +70,8 @@ const Header = () => {
           name="search"
           onChange={(e) => handleSearch(e)}
         />
-        <div className={`${themeColor.input} absolute top-1 right-3 flex text-white text-right focus:border-none`}>
+        <div
+          className={`${themeColor.input} absolute top-1 right-3 flex text-white text-right focus:border-none`}>
           <select
             className={themeColor.input + " focus:border-none"}
             name="type"
@@ -88,7 +92,7 @@ const Header = () => {
             <img
               src={user.avatar}
               alt="avatar"
-              className="rounded-full w-[40px] h-[40px]"
+              className="rounded-full w-[40px] h-[40px] object-cover"
               onClick={() => setModalUser(!modalUser)}
             />
             {modalUser && (
@@ -110,14 +114,27 @@ const Header = () => {
             )}
           </div>
         ) : (
-          <div
-            className={`${themeColor.hover} py-2 px-3 rounded-full cursor-pointer`}
-            onClick={() => handleModalLogin(!modalLogin)}>
-            <div>Login</div>
+          <div className="flex">
+            <div
+              className={`${themeColor.hover} ${themeColor.border} border-1 mx-1 py-2 px-3 rounded-full cursor-pointer`}
+              onClick={() => handleModalLogin("register")}>
+              <div>Register</div>
+            </div>
+            <div
+              className={`${themeColor.hover} ${themeColor.border} border-1 mx-1 py-2 px-3 rounded-full cursor-pointer`}
+              onClick={() => handleModalLogin("login")}>
+              <div>Login</div>
+            </div>
           </div>
         )}
 
-        {modalLogin && <ModalLogin handleModalLogin={handleModalLogin} />}
+        {modalLogin && (
+          <ModalLogin
+            handleModalLogin={handleModalLogin}
+            typeModal={typeModal}
+            setTypeModal={setTypeModal}
+          />
+        )}
       </div>
 
       {data.length > 0 && selectedOption === "blog" && (
