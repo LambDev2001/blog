@@ -5,7 +5,7 @@ export const getAllPolicies = (token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await getAPI("all-policies", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     if (res.data.length > 0) {
       res.data = res.data.map((item) => {
@@ -30,9 +30,8 @@ export const updatePolicy = (policy, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`policy/${policy._id}`, policy, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
     dispatch({ type: "UPDATE_POLICY", payload: policy });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
@@ -44,7 +43,7 @@ export const createPolicy = (content, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await postAPI("policy", { content }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     res.data.updatedAt = new Date(res.data.updatedAt).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -63,7 +62,7 @@ export const deletePolicy = (idPolicy, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await deleteAPI(`policy/${idPolicy}`, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     dispatch({ type: "ALERT", payload: { type: "success", msg: "Policy deleted" } });
 

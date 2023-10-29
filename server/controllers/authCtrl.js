@@ -117,14 +117,16 @@ const authCtrl = {
 
   forgotPassword: async (req, res) => {
     try {
-      const { account, password } = req.body;
-      if (!account) return res.json({ msg: "Password is required" });
+      const { account } = req.body;
+
+      if (!account) return res.json({ msg: "Account is required" });
 
       const user = await Users.findOne({ account });
       if (!user) return res.json({ msg: "Account not found" });
 
-      const token = generateToken({ id: user._id, password });
-      const url = `${BASE_URL}:${PORT}/api/resetPassword/${token}`; // have frond-end delete api
+      const token = generateToken({ id: user._id });
+      const url = `http://localhost:3000/reset-password/${token}`; // have frond-end delete api
+      console.log(url);
 
       sendMail(account, url, "Reset your password", "forgotPassword");
 

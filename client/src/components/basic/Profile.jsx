@@ -12,10 +12,12 @@ import ProfileFollowing from "../ProfileFollowing";
 import { getOtherUserBlogs } from "../../redux/actions/blogAction";
 import { sendRequest } from "../../redux/actions/friendAction";
 import { updateUser } from "../../redux/actions/userAction";
+import ModalChangePassword from "../modal/ModalChangePassoword";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState("posts");
   const [isModal, setIsModal] = useState(false);
+  const [isModalPassword, setIsModalPassword] = useState(false);
   const [currentAvatar, setCurrentAvatar] = useState("");
   const otherUser = useSelector((state) => state.userReducer);
   const themeColor = useSelector((state) => state.themeUserReducer);
@@ -38,6 +40,10 @@ const Profile = () => {
 
   const handleModalProfile = () => {
     setIsModal(!isModal);
+  };
+
+  const handleChangePassword = () => {
+    setIsModalPassword(!isModalPassword);
   };
 
   const handleSendReq = () => {
@@ -109,10 +115,17 @@ const Profile = () => {
 
             {/* End */}
             {!isModal && isOwner && (
-              <div
-                className={`${themeColor.border} ${themeColor.hover} border-1 mb-3 mt-auto mx-2 p-2 rounded-md z-50 cursor-pointer`}
-                onClick={() => handleModalProfile()}>
-                Edit Profile
+              <div className="z-[20] flex flex-wrap">
+                <div
+                  className={`${themeColor.border} ${themeColor.hover} border-1 mb-3 mt-auto mx-2 p-2 rounded-md cursor-pointer`}
+                  onClick={() => handleChangePassword()}>
+                  Change password
+                </div>
+                <div
+                  className={`${themeColor.border} ${themeColor.hover} border-1 mb-3 mt-auto mx-2 p-2 rounded-md cursor-pointer`}
+                  onClick={() => handleModalProfile()}>
+                  Edit Profile
+                </div>
               </div>
             )}
 
@@ -165,6 +178,9 @@ const Profile = () => {
 
       {/* Modal */}
       {isModal && <ModalEditUser user={otherUser} handleShowModal={handleModalProfile} />}
+      {isModalPassword && (
+        <ModalChangePassword token={token} handleShowModal={handleChangePassword} />
+      )}
     </div>
   );
 };

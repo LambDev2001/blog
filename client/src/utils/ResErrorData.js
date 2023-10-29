@@ -1,8 +1,10 @@
-const ResErrorData = (data, dispatch) => {
+const ResErrorData = async (data, dispatch) => {
   if (data.err) {
-    dispatch({ type: "ALERT", payload: { type: "danger", msg: data.err } });
-    dispatch({ type: "LOADING", payload: { loading: false } });
+    await dispatch({ type: "ALERT", payload: { type: "danger", msg: data.err } });
     return;
+  }
+  if (data.msg) {
+    await dispatch({ type: "ALERT", payload: { type: "success", msg: data.msg } });
   }
 };
 

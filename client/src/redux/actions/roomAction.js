@@ -5,7 +5,7 @@ import ResErrorData from "../../utils/ResErrorData";
 export const getRooms = (token) => async (dispatch) => {
   try {
     const res = await getAPI("rooms", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "GET_ROOMS", payload: res.data });
   } catch (err) {
     console.error(err);
@@ -15,7 +15,7 @@ export const getRooms = (token) => async (dispatch) => {
 export const infoRoom = (idRoom, token) => async (dispatch) => {
   try {
     let res = await getAPI(`info-room/${idRoom}`, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     const createdAt = new Date(res.data.createdAt);
 
@@ -34,7 +34,7 @@ export const createRoom = (room, token) => async (dispatch) => {
   try {
     const avatarRoom = await imageUpload(room.avatarRoom);
     const res = await postAPI("room", { ...room, avatarRoom: avatarRoom.url }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "ALERT", payload: { type: "success", msg: "Room created" } });
 
     dispatch({ type: "CREATE_ROOM", payload: res.data });
@@ -48,7 +48,7 @@ export const updateNameRoom =
   async (dispatch) => {
     try {
       const res = await patchAPI(`room/${slug}`, { nameRoom }, token);
-      ResErrorData(res.data, dispatch);
+      await ResErrorData(res.data, dispatch);
     } catch (err) {
       console.error(err);
     }
@@ -60,7 +60,7 @@ export const updateAvatarRoom =
     try {
       const avatarRoom = await imageUpload(file);
       const res = await patchAPI(`room/${slug}`, { avatarRoom: avatarRoom.url }, token);
-      ResErrorData(res.data, dispatch);
+      await ResErrorData(res.data, dispatch);
     } catch (err) {
       console.error(err);
     }
@@ -71,8 +71,8 @@ export const deleteRoom =
   async (dispatch) => {
     try {
       const res = await deleteAPI(`room/${room._id}`, token);
-      ResErrorData(res.data, dispatch);
-      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+      await ResErrorData(res.data, dispatch);
+      
       dispatch({ type: "DELETE_ROOM", payload: room });
     } catch (err) {
       console.error(err);

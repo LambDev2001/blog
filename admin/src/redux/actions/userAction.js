@@ -6,7 +6,7 @@ export const allUsers = (token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: true } });
 
     const res = await getAPI("users", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     dispatch({ type: "LOADING", payload: { loading: false } });
 
@@ -66,9 +66,8 @@ export const changeStatus = (idUser, status, token) => async (dispatch) => {
 
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`change-status/${idUser}`, { status }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "UPDATE_USER", payload: { status } });
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
@@ -79,9 +78,8 @@ export const changeStatus = (idUser, status, token) => async (dispatch) => {
 export const followUser = (idUser, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`follow`, { idUser }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "FOLLOW_USER", payload: { idUser } });
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
   }
@@ -90,9 +88,8 @@ export const followUser = (idUser, token) => async (dispatch) => {
 export const unFollowUser = (idUser, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`un-follow`, { idUser }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "UN_FOLLOW_USER", payload: idUser });
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
   }
@@ -101,7 +98,7 @@ export const unFollowUser = (idUser, token) => async (dispatch) => {
 export const updateUser = (user, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`user/${user._id}`, user, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     console.log(res.data);
   } catch (err) {

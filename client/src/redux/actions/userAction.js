@@ -1,4 +1,4 @@
-import { getAPI, patchAPI } from "../../utils/FetchData";
+import { getAPI, postAPI, patchAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
 import { imageUpload } from "../../utils/HandleImage";
 
@@ -7,7 +7,7 @@ export const allUsers = (token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: true } });
 
     const res = await getAPI("users", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     dispatch({ type: "LOADING", payload: { loading: false } });
 
@@ -67,9 +67,8 @@ export const changeStatus = (idUser, status, token) => async (dispatch) => {
 
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`change-status/${idUser}`, { status }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "UPDATE_USER", payload: { status } });
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
@@ -80,9 +79,8 @@ export const changeStatus = (idUser, status, token) => async (dispatch) => {
 export const followUser = (idUser, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`follow`, { idUser }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "FOLLOW_USER", payload: { idUser } });
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
   }
@@ -91,9 +89,8 @@ export const followUser = (idUser, token) => async (dispatch) => {
 export const unFollowUser = (idUser, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`un-follow`, { idUser }, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "UN_FOLLOW_USER", payload: idUser });
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
   } catch (err) {
     console.error(err);
   }
@@ -101,16 +98,39 @@ export const unFollowUser = (idUser, token) => async (dispatch) => {
 
 export const updateUser = (user, token) => async (dispatch) => {
   try {
-    if(typeof(user.avatar) === "object"){
+    if (typeof user.avatar === "object") {
       const image = await imageUpload(user.avatar);
       user.avatar = image.url;
     }
 
     const res = await patchAPI(`user/${user._id}`, user, token);
-    ResErrorData(res.data, dispatch);
-
-    console.log(res.data);
+    await ResErrorData(res.data, dispatch);
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const changePassword =
+  ({ currentPassword, newPassword }, token) =>
+  async (dispatch) => {
+    console.log({ currentPassword, newPassword });
+
+    try {
+      const res = await postAPI(`change-password`, { currentPassword, newPassword }, token);
+      await ResErrorData(res.data, dispatch);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const resetNewPassword = (newPassword, slug) => async (dispatch) => {
+  try {
+    const res = await postAPI("reset-password", { newPassword, token: slug }, "");
+    await ResErrorData(res.data, dispatch);
+    if(res.data) {
+      window.close()
+    }
+  } catch (err) {
+    console.log(err);
   }
 };

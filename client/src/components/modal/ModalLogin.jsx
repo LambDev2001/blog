@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import Text from "../global/form/Text";
 import Password from "../global/form/Password";
-import { login, register } from "../../redux/actions/authAction";
+import { login, register, forgotPassword } from "../../redux/actions/authAction";
 import validate from "../../utils/validate";
 
 const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
@@ -48,16 +48,21 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
       dispatch(register(infoUser));
       handleModalLogin(false);
     }
+
+    if (typeModal === "forget") {
+      dispatch(forgotPassword(infoUser));
+      handleChangeTypeModal("login");
+    }
   };
 
-  const handleRegister = () => {
+  const handleChangeTypeModal = (type) => {
     setErrors({
       account: "",
       password: "",
       username: "",
       confirmPassword: "",
     });
-    typeModal === "login" ? setTypeModal("register") : setTypeModal("login");
+    setTypeModal(type);
   };
 
   return (
@@ -72,8 +77,13 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
 
           <div
             className="text-md text-blue-500 underline cursor-pointer my-2"
-            onClick={handleRegister}>
+            onClick={() => handleChangeTypeModal("register")}>
             Don't have an account? Register here
+          </div>
+          <div
+            className="text-md text-blue-500 underline cursor-pointer my-2"
+            onClick={() => handleChangeTypeModal("forget")}>
+            Forget password? Click here.
           </div>
           <div className="flex justify-end">
             <button
@@ -101,7 +111,7 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
 
           <div
             className="text-md text-blue-500 underline cursor-pointer my-2"
-            onClick={handleRegister}>
+            onClick={() => handleChangeTypeModal("login")}>
             You already have an account? Login here.
           </div>
           <div className="flex justify-end">
@@ -114,6 +124,25 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">
               Register
+            </button>
+          </div>
+        </form>
+      )}
+
+      {typeModal === "forget" && (
+        <form className="bg-white w-96 p-6 rounded-lg shadow-md" onSubmit={(e) => handleSubmit(e)}>
+          <p className="text-3xl font-semibold mb-4 text-black">Forget password</p>
+          <Text name="account" onChange={handleChangeInput} errors={errors} />
+          <div className="flex justify-end">
+            <button
+              className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mx-2"
+              onClick={() => handleModalLogin(false)}>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">
+              Send
             </button>
           </div>
         </form>

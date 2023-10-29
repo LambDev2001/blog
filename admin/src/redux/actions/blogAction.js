@@ -6,8 +6,7 @@ import ResErrorData from "../../utils/ResErrorData";
 export const createBlog = (blog, token) => async (dispatch) => {
   try {
     const res = await postAPI("blog", blog, token);
-    ResErrorData(res.data, dispatch);
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    await ResErrorData(res.data, dispatch);
   } catch (err) {
     console.error(err);
   }
@@ -144,8 +143,7 @@ export const updateBlogStatus = (blog, status, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`status-blog/${blog._id}`, { status }, token);
-    ResErrorData(res.data, dispatch);
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "UPDATE_BLOG", payload: { ...blog, status } });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
@@ -156,8 +154,7 @@ export const updateBlog = (idBlog, blog, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`blog/${idBlog}`, blog, token);
-    ResErrorData(res.data, dispatch);
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);
@@ -176,8 +173,7 @@ export const deleteBlog = (idBlog, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await deleteAPI(`blog/${idBlog}`, token);
-    ResErrorData(res.data, dispatch);
-    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "DELETE_BLOG", payload: idBlog });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
@@ -188,7 +184,7 @@ export const deleteBlog = (idBlog, token) => async (dispatch) => {
 export const likeBlog = (idBlog, token) => async (dispatch) => {
   try {
     const res = await postAPI(`like/${idBlog}`, {}, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "LIKE_BLOG", payload: { _id: idBlog, isLike: true } });
   } catch (err) {
     console.error(err);
@@ -198,7 +194,7 @@ export const likeBlog = (idBlog, token) => async (dispatch) => {
 export const dislikeBlog = (idBlog, token) => async (dispatch) => {
   try {
     const res = await postAPI(`dislike/${idBlog}`, {}, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "DISLIKE_BLOG", payload: { _id: idBlog, isLike: false } });
   } catch (err) {
     console.error(err);
@@ -208,7 +204,7 @@ export const dislikeBlog = (idBlog, token) => async (dispatch) => {
 export const increaseShare = (idBlog, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`increase-share/${idBlog}`, {}, token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "INCREASE_SHARE", payload: { idBlog } });
   } catch (err) {
     console.error(err);
@@ -220,8 +216,7 @@ export const reportBlog =
   async (dispatch) => {
     try {
       const res = await postAPI(`report`, { ids: blog._id, type: "blog", content }, token);
-      ResErrorData(res.data, dispatch);
-      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+      await ResErrorData(res.data, dispatch);
     } catch (err) {
       console.error(err);
     }

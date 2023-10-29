@@ -52,7 +52,7 @@ export const getReports = (token) => async (dispatch) => {
 export const declineReport = (idReport, token) => async (dispatch) => {
   try {
     const res = await postAPI(`decline-report/${idReport}`, "", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
   } catch (err) {
     console.error(err);
   }
@@ -61,7 +61,7 @@ export const declineReport = (idReport, token) => async (dispatch) => {
 export const acceptReport = (idReport, token) => async (dispatch) => {
   try {
     const res = await postAPI(`accept-report/${idReport}`, "", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
   } catch (err) {
     console.error(err);
   }

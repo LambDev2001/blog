@@ -50,7 +50,7 @@ export const declineReport = (idReport, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await postAPI(`decline-report/${idReport}`, "", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);
@@ -61,7 +61,7 @@ export const acceptReport = (idReport, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await postAPI(`accept-report/${idReport}`, "", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {

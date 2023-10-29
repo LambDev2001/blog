@@ -11,6 +11,23 @@ import Reports from "../models/reportModel.js";
 import Views from "../models/viewModel.js";
 
 const userCtrl = {
+  // none auth
+  resetPassword: async (req, res) => {
+    try {
+      const { token, newPassword } = req.body;
+      const decode = jwt.decode(token, `${process.env.ACCESS_TOKEN_SECRET}`);
+
+      const user = await Users.findOne({ _id: decode.id }, { projection: { password: 0 } });
+      if (!user) return res.json({ err: "Account not found" });
+
+      user.password = await bcrypt.hash(newPassword, 12);
+      user.save();
+      return res.status(200).json({ msg: "Update password successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // auth
   checkInfoUser: async (req, res) => {
     try {
@@ -98,20 +115,17 @@ const userCtrl = {
   },
 
   // user
-  resetPassword: async (req, res) => {
+  changePassword: async (req, res) => {
     try {
-      const { token, value } = req.body;
-      const decode = jwt.decode(token, `${process.env.ACCESS_TOKEN_SECRET}`);
+      const { currentPassword, newPassword } = req.body;
 
-      const user =
-        (await Users.findOne({ _id: decode.id }, { projection: { password: 0 } })) ||
-        (await Admins.findOne({ _id: decode.id }, { projection: { password: 0 } }));
+      const user = await Users.findOne({ _id: req.user.id }, { projection: { password: 0 } });
 
       if (!user) return res.json({ err: "Account not found" });
 
-      const check = await bcrypt.compare(value.currentPassword, user.password);
+      const check = await bcrypt.compare(currentPassword, user.password);
       if (!check) return res.json({ err: "Wrong password" });
-      user.password = await bcrypt.hash(value.newPassword, 12);
+      user.password = await bcrypt.hash(newPassword, 12);
       user.save();
       return res.status(200).json({ msg: "Update password successfully" });
     } catch (err) {

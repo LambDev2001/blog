@@ -37,7 +37,7 @@ const Friend = () => {
             onMouseLeave={handleMouseLeave}
             onClick={() => history.push(`/profile/${friend._id}`)}>
             <div className="flex">
-              <img src={friend.avatar} alt="" className="h-[28px] w-[28px]" />
+              <img src={friend.avatar} alt="" className="h-[28px] w-[28px] rounded-full" />
               <div className="mx-2">{friend.username}</div>
             </div>
             <div

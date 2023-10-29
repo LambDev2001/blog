@@ -24,7 +24,7 @@ export const sendRequest =
   async (dispatch) => {
     try {
       const res = await postAPI("sending-friend", {receiver}, token);
-      ResErrorData(res, dispatch);
+      await ResErrorData(res, dispatch);
       dispatch({ type: "ALERT", payload: { type: "success", msg: "Sended request" } });
     } catch (err) {
       console.error(err);
@@ -36,7 +36,7 @@ export const accept =
   async (dispatch) => {
     try {
       const res = await postAPI("accept-friend", { idSender: idUser }, token);
-      ResErrorData(res, dispatch);
+      await ResErrorData(res, dispatch);
       dispatch({ type: "ACCEPT", payload: idUser });
       
     } catch (err) {
@@ -49,7 +49,7 @@ export const decline =
   async (dispatch) => {
     try {
       const res = await deleteAPI(`decline-friend/${idUser}`, token);
-      ResErrorData(res, dispatch);
+      await ResErrorData(res, dispatch);
       dispatch({ type: "DECLINE", payload: idUser });
     } catch (err) {
       console.error(err);

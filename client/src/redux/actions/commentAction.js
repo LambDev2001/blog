@@ -7,7 +7,7 @@ export const getComments = (idBlog) => async (dispatch) => {
   try {
     let res = await getAPI(`comments/${idBlog}`);
 
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     if (res.data.length > 0) {
       res.data = res.data.map((item) => {
@@ -36,7 +36,7 @@ export const getReply = (idComment) => async (dispatch) => {
   try {
     let res = await getAPI(`reply/${idComment}`);
 
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     if (res.data.length > 0) {
       res.data = res.data.map((item) => {
@@ -84,8 +84,8 @@ export const reportComment =
   async (dispatch) => {
     try {
       let res = await postAPI(`report`, { ids: comment._id, type: "comment", content }, token);
-      ResErrorData(res.data, dispatch);
-      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+      await ResErrorData(res.data, dispatch);
+      
     } catch (err) {
       console.error(err);
     }
@@ -94,9 +94,9 @@ export const reportComment =
   export const deleteComment = (idComment, token) => async (dispatch) => {
     try {
       const res = await deleteAPI(`comment/${idComment}`, token)
-      ResErrorData(res.data, dispatch);
+      await ResErrorData(res.data, dispatch);
       dispatch({ type: "DELETE_COMMENT", payload: idComment });
-      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+      
     
     } catch (err) {
       console.error(err)

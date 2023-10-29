@@ -6,7 +6,7 @@ export const getChat = (idRoom, token) => async (dispatch) => {
   try {
     const res = await getAPI(`chats/${idRoom}`, token);
 
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
     res.data.map((item) => {
       if (item.type === "image") {
         item.message = item.message.split(" ");

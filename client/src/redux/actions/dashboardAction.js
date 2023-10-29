@@ -6,7 +6,7 @@ export const getDashboard = (token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: true } });
 
     const res = await getAPI("dashboard", token);
-    ResErrorData(res.data, dispatch);
+    await ResErrorData(res.data, dispatch);
 
     dispatch({ type: "GET_DASHBOARD", payload: res.data });
 

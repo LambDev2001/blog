@@ -6,6 +6,9 @@ import admin from "../middleware/admin.js";
 import user from "../middleware/user.js";
 
 const router = express.Router();
+// none auth
+router.post("/reset-password", userCtrl.resetPassword);
+
 // auth
 router.get("/info-user/:idUser", auth, userCtrl.checkInfoUser);
 router.get("/search-user", auth, userCtrl.searchUser);
@@ -13,8 +16,8 @@ router.get("/search-user", auth, userCtrl.searchUser);
 // user
 router.get("/friends", user, userCtrl.listFriends);
 router.get("/following", user, userCtrl.listFollowing);
-router.post("/reset-password", userCtrl.resetPassword);
 
+router.post("/change-password", user, userCtrl.changePassword);
 router.post("/remove-friend/:idUser", user, userCtrl.removeFriend);
 
 router.patch("/user/:idUser", user, userCtrl.updateUser);
