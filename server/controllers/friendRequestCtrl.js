@@ -1,5 +1,6 @@
 import Users from "../models/userModel.js";
 import Requests from "../models/friendRequestModel.js";
+import Rooms from "../models/roomModel.js";
 
 const friendRequestCtl = {
   // user
@@ -42,7 +43,6 @@ const friendRequestCtl = {
 
       const { receiver } = req.body;
       const receiverUser = await Users.findOne({ _id: receiver });
-      console.log(receiver);
 
       if (!receiver || !receiverUser) return res.json({ msg: "User receiver not found" });
 
@@ -79,6 +79,19 @@ const friendRequestCtl = {
       if (!sender || !userReceiver) return res.json({ err: "Some err from back-end" });
 
       await Requests.findOneAndDelete({ idUser: idSender, receiver: idUser });
+
+      const room = new Rooms({
+        nameRoom: "Friend Chat",
+        avatarRoom:
+          "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698595035/blog/pngegg_x3qjfr.png",
+        idUser,
+        member: [idUser, idSender],
+        report: [],
+      });
+
+      console.log(room);
+
+      room.save();
 
       return res.status(200).json({ msg: "Accept the request" });
     } catch (err) {

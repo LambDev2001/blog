@@ -18,11 +18,12 @@ function App() {
   const height = window.innerHeight - 60;
   const token = useSelector((state) => state.authReducer.accessToken);
   const loading = useSelector((state) => state.loadingReducer.loading);
+  const user = useSelector((state) => state.authReducer.user);
 
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    if (!socket) {
+    if (!socket || !user) {
       setSocket(io());
     }
 
@@ -31,7 +32,7 @@ function App() {
         socket.close();
       }
     };
-  }, [socket]);
+  }, [socket, user]);
 
   return (
     <SocketContext.Provider value={socket}>

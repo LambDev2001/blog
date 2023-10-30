@@ -9,6 +9,7 @@ import Admins from "../models/adminModel.js";
 import Blogs from "../models/blogModel.js";
 import Reports from "../models/reportModel.js";
 import Views from "../models/viewModel.js";
+import Rooms from "../models/roomModel.js";
 
 const userCtrl = {
   // none auth
@@ -135,12 +136,23 @@ const userCtrl = {
 
   listFriends: async (req, res) => {
     try {
+      const idUser = req.user.id;
       const { friends } = await Users.findById({
-        _id: req.user.id,
+        _id: idUser,
       }).select("friends");
 
-      const allFriends = await Users.find({ _id: { $in: friends } }).select(
+      let allFriends = await Users.find({ _id: { $in: friends } }).select(
         "-password -__v -createdAt -updatedAt -report -status -friends -following"
+      );
+
+      allFriends = await Promise.all(
+        allFriends.map(async (user) => {
+          let room = await Rooms.findOne({
+            nameRoom: "Friend Chat",
+            member: { $in: [user._id, idUser] },
+          });
+          return { ...user._doc, room: room._id };
+        })
       );
 
       return res.status(200).json(allFriends);

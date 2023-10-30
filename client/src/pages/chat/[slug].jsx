@@ -36,6 +36,7 @@ const ChatPage = () => {
     if (socket) {
       socket.on("new-message", (data) => {
         data.createdAt = new Date(data.createdAt).toLocaleString();
+
         dispatch({ type: "SEND_CHAT", payload: {data, idUser} });
       });
     }

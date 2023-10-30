@@ -24,9 +24,9 @@ const Chat = ({ themeColor, data }) => {
                   <div
                     className={`${item.owner === true ? "text-right" : "text-left"} my-auto mx-2`}>
                     <div className="text-md text-gray-500 mx-2">{item.author.username}</div>
-                    <div className={themeColor.input + " rounded-full py-2 px-3 inline-block"}>
-                      {item.message}
-                    </div>
+                    <div
+                      className={themeColor.input + " rounded-full py-2 px-3 inline-block"}
+                      dangerouslySetInnerHTML={{ __html: item.message }}></div>
                     <div className="text-sm text-gray-500 mx-2 my-1">{item.createdAt}</div>
                   </div>
                 </div>

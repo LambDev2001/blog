@@ -8,7 +8,7 @@ const groupCtrl = {
     try {
       const idUser = req.user.id;
 
-      let rooms = await Rooms.find({ member: idUser }).select(
+      let rooms = await Rooms.find({ member: idUser, nameRoom: { $ne: "Friend Chat"} }).select(
         "-idUser -report -__v -createdAt -updatedAt"
       );
 

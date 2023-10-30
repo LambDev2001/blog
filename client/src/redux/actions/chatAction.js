@@ -2,6 +2,8 @@ import { getAPI, postAPI } from "../../utils/FetchData";
 import { imageUpload } from "../../utils/HandleImage";
 import ResErrorData from "../../utils/ResErrorData";
 
+import showLink from "../../utils/ShowLink";
+
 export const getChat = (idRoom, token) => async (dispatch) => {
   try {
     const res = await getAPI(`chats/${idRoom}`, token);
@@ -12,6 +14,10 @@ export const getChat = (idRoom, token) => async (dispatch) => {
         item.message = item.message.split(" ");
       }
       item.createdAt = new Date(item.createdAt).toLocaleString();
+      if (item.type === "text") {
+        item.message = showLink(item.message);
+      }
+
       return item;
     });
 
@@ -25,7 +31,8 @@ export const sendTextChat =
   ({ idRoom, message, token }) =>
   async (dispatch) => {
     try {
-      await postAPI("chat", { idRoom, message, type: "text" }, token);
+      let typeText = "text";
+      await postAPI("chat", { idRoom, message, type: typeText }, token);
     } catch (err) {
       console.error(err);
     }

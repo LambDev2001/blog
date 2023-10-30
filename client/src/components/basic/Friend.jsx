@@ -1,14 +1,22 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { IoChatbubblesOutline } from "react-icons/io5";
+import { getFriendPage } from "../../redux/actions/friendAction";
 
 const Friend = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const user = useSelector((state) => state.authReducer.user);
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const friends = useSelector((state) => state.friendReducer.friend);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFriendPage({ idUser: user._id, token }));
+  }, [dispatch, token, user]);
 
   const handleMouseEnter = (key) => {
     setHoveredItem(key);
@@ -26,8 +34,8 @@ const Friend = () => {
         Friends
       </div>
       {user &&
-        user.friends &&
-        user.friends.map((friend, index) => (
+        friends &&
+        friends.map((friend, index) => (
           <div
             key={index}
             className={`${themeColor.main} ${hoveredItem === 1 ? "hovered" : ""} ${
@@ -46,7 +54,7 @@ const Friend = () => {
               } ${themeColor.input} p-1 rounded-full`}
               onClick={(e) => {
                 e.stopPropagation();
-                history.push(`/chat/${friend._id}`);
+                history.push(`/chat/${friend.room}`);
               }}>
               <IoChatbubblesOutline size={20} />
             </div>

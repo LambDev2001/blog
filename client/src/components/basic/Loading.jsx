@@ -18,7 +18,7 @@ const Loading = () => {
         className="animate-spin h-10 w-10 text-white mr-3"
       />
 
-      <span class="text-white text-3xl font-middle">Loading...</span>
+      <span className="text-white text-3xl font-middle">Loading...</span>
     </div>
   );
 };

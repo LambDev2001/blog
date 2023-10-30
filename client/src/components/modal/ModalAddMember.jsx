@@ -8,7 +8,7 @@ import { addMember } from "../../redux/actions/memberAction";
 
 const ModalAddMember = ({ themeColor, token, slug, handleOpenModalMember }) => {
   const [textSearch, setTextSearch] = useState("");
-  const friends = useSelector((state) => state.authReducer.user.friends);
+  const friends = useSelector((state) => state.friendReducer.friend);
   const [memberSearch, setMemberSearch] = useState(friends);
   const history = useHistory();
   const dispatch = useDispatch();
