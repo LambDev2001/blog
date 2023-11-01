@@ -52,7 +52,6 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
       }>
       <input
         type="file"
-        accept="image/*"
         onChange={handleImageChange}
         className="hidden"
         id="imageUpload"

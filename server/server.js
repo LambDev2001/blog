@@ -30,11 +30,6 @@ io.on("connection", (socket) => {
   socketServer(socket);
 });
 
-// io.on("connection", (socket)=>{
-//   console.log(socket.id + " connected");
-  
-// });
-
 // start server
 http.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}/api`);
