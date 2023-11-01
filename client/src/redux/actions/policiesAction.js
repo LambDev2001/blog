@@ -26,13 +26,22 @@ export const getAllPolicies = (token) => async (dispatch) => {
   }
 };
 
+export const getPolices = () => async (dispatch) => {
+  try {
+    const res = await getAPI("policies");
+    await ResErrorData(res.data, dispatch);
+    dispatch({ type: "GET_POLICIES", payload: res.data });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const updatePolicy = (policy, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`policy/${policy._id}`, policy, token);
     await ResErrorData(res.data, dispatch);
 
-    
     dispatch({ type: "UPDATE_POLICY", payload: policy });
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {

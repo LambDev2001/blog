@@ -23,7 +23,7 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    if (!socket || !user) {
+    if (!socket) {
       setSocket(io());
     }
 

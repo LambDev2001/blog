@@ -5,6 +5,7 @@ import Text from "../global/form/Text";
 import Password from "../global/form/Password";
 import { login, register, forgotPassword } from "../../redux/actions/authAction";
 import validate from "../../utils/validate";
+import ModalPolicy from "./ModalPolicy";
 
 const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
   const [infoUser, setInfoUser] = useState({
@@ -19,6 +20,8 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
     username: "",
     confirmPassword: "",
   });
+  const [openPolicy, setOpenPolicy] = useState(false);
+  const [acceptPolicy, setAcceptPolicy] = useState(false);
   const dispatch = useDispatch();
 
   const handleChangeInput = (e) => {
@@ -44,7 +47,11 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
       dispatch(login(infoUser));
       handleModalLogin(false);
     }
-    if (typeModal === "register" && Object.values(temptErr).every((error) => error === "")) {
+    if (
+      typeModal === "register" &&
+      acceptPolicy &&
+      Object.values(temptErr).every((error) => error === "")
+    ) {
       dispatch(register(infoUser));
       handleModalLogin(false);
     }
@@ -63,6 +70,10 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
       confirmPassword: "",
     });
     setTypeModal(type);
+  };
+
+  const handleOpenPolicy = () => {
+    setOpenPolicy(!openPolicy);
   };
 
   return (
@@ -114,6 +125,21 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
             onClick={() => handleChangeTypeModal("login")}>
             You already have an account? Login here.
           </div>
+
+          <div className="flex">
+            <input
+              type="checkbox"
+              checked={acceptPolicy}
+              onChange={() => setAcceptPolicy(!acceptPolicy)}
+              className="mr-2"
+            />
+            <div
+              className="text-md text-blue-500 underline cursor-pointer my-2"
+              onClick={() => handleOpenPolicy()}>
+              Accept policy and terms of service here.
+            </div>
+          </div>
+
           <div className="flex justify-end">
             <button
               className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mx-2"
@@ -146,6 +172,14 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
             </button>
           </div>
         </form>
+      )}
+
+      {openPolicy && (
+        <ModalPolicy
+          handleOpenPolicy={handleOpenPolicy}
+          setAcceptPolicy={setAcceptPolicy}
+          acceptPolicy={acceptPolicy}
+        />
       )}
     </div>
   );

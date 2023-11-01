@@ -4,8 +4,8 @@ import auth from "../middleware/auth.js"
 import admin from "../middleware/admin.js";
 
 const router = express.Router();
-// auth
-router.get("/policies",auth, policyCtrl.getPolices) // user can see and accept
+// none auth
+router.get("/policies", policyCtrl.getPolices) // user can see and accept
 
 // admin
 router.get("/all-policies",admin, policyCtrl.getAllPolices) // for admin manager polices
