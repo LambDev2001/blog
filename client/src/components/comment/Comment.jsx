@@ -81,6 +81,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
 
   const handleDeleteComment = (idComment) => {
     dispatch(deleteComment(idComment, token));
+    setIsMore(-1);
   };
 
   return (
@@ -139,7 +140,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                     {/* modal more */}
                     {isMore === index && (
                       <div
-                        className={`${themeColor.input} ${themeColor.border} border-1 absolute top-0 left-0 rounded-lg p-1`}>
+                        className={`${themeColor.input} ${themeColor.border} border-1 absolute top-0 left-0 rounded-lg p-1 z-20`}>
                         <div
                           className={`${themeColor.main} ${themeColor.hoverBold} rounded-lg py-2 px-3 cursor-pointer my-1`}
                           onClick={() => handleOpenReport(index)}>

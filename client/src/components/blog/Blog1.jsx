@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { BiLike, BiDislike, BiSolidLike, BiSolidDislike, BiCommentDetail } from "react-icons/bi";
 import { FaRegEye } from "react-icons/fa";
@@ -9,19 +10,26 @@ import { MdOutlineBugReport } from "react-icons/md";
 
 import Comment from "../comment/Comment";
 import ModalReportBlog from "../modal/ModalReportBlog";
-
+import ModalDeleteBlog from "../modal/ModalDeleteBlog";
 import { dislikeBlog, likeBlog, increaseShare, removeBlog } from "../../redux/actions/blogAction";
 import { followUser } from "../../redux/actions/userAction";
 import { getComments } from "../../redux/actions/commentAction";
 
-const Blog1 = ({ handleLink }) => {
+const Blog1 = ({ handleLink = null, isOwner = false }) => {
   const [openComments, setOpenComments] = useState(-1);
   const [isReport, setIsReport] = useState(null);
+  const [modalDeleteBlog, setModalDeleteBlog] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const blogs = useSelector((state) => state.blogReducer);
   const comments = useSelector((state) => state.commentReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
+  const history = useHistory();
+  if (!handleLink) {
+    handleLink = (link) => {
+      history.push(link);
+    };
+  }
 
   const handleLike = (id) => {
     if (!token) handleLink("");
@@ -62,6 +70,10 @@ const Blog1 = ({ handleLink }) => {
   const handleRemoveBlog = async (idBlog) => {
     if (!token) handleLink("");
     else dispatch(removeBlog(idBlog));
+  };
+
+  const handleDeleteBlog = (idBlog) => {
+    idBlog === modalDeleteBlog ? setModalDeleteBlog(-1) : setModalDeleteBlog(idBlog);
   };
 
   return (
@@ -107,16 +119,24 @@ const Blog1 = ({ handleLink }) => {
                       </div>
                     )}
                     <div className="flex">
+                      {isOwner && (
+                        <div
+                          className="mx-1 mb-auto rounded-md bg-red-500 text-white py-1 px-2 cursor-pointer"
+                          onClick={() => handleDeleteBlog(blog._id)}>
+                          Delete
+                        </div>
+                      )}
+
                       <MdOutlineBugReport
                         color="white"
                         size={24}
-                        className="mx-1 cursor-pointer"
+                        className="mx-1 my-auto cursor-pointer"
                         onClick={() => handleShowReport(blog._id)}
                       />
                       <IoMdClose
                         color="white"
                         size={24}
-                        className="mx-1 cursor-pointer"
+                        className="mx-1 my-auto cursor-pointer"
                         onClick={() => handleRemoveBlog(blog._id)}
                       />
                     </div>
@@ -187,6 +207,16 @@ const Blog1 = ({ handleLink }) => {
               <div>
                 {isReport === blog._id && (
                   <ModalReportBlog blog={blog} handleShowReport={handleShowReport} />
+                )}
+
+                {modalDeleteBlog !== -1 && (
+                  <ModalDeleteBlog
+                    themeColor={themeColor}
+                    token={token}
+                    dispatch={dispatch}
+                    idBlog={modalDeleteBlog}
+                    handleOpen={handleDeleteBlog}
+                  />
                 )}
               </div>
 

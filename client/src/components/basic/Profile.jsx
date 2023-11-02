@@ -163,7 +163,7 @@ const Profile = () => {
 
             <div className={`custom-scroll-container`} style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto">
-                {currentTab === "posts" && <Blog2 />}
+                {currentTab === "posts" && <Blog2 isOwner={isOwner} />}
                 {currentTab === "friends" && <ProfileFriend friends={otherUser.friends} />}
                 {currentTab === "following" && otherUser.following.length > 0 && (
                   <ProfileFollowing follows={otherUser.following} />

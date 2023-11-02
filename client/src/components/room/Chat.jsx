@@ -61,6 +61,8 @@ const Chat = ({ themeColor, data }) => {
         </div>
       );
     } else {
+      console.log(file);
+      
       return (
         <div key={file} onMouseEnter={() => handleSetHover(file)} onMouseLeave={handleMouseLeave}>
           <a href={file} rel="noreferrer" target="_blank" className="relative">

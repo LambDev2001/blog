@@ -10,14 +10,53 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
   const [fileImage, setFileImage] = useState([]);
   const [inputText, setInputText] = useState("");
 
+  const getFileType = (filename) => {
+    const extension = filename.split(".").pop().toLowerCase();
+    return extension;
+  };
+
+  const isImage = (fileType) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+    return imageExtensions.includes(fileType);
+  };
+
+  const getFileIcon = (fileType) => {
+    switch (fileType) {
+      case "rar":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764038/blog/rar-icon_trdqon.jpg";
+      case "js":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764067/blog/js-icon_w5hshg.png";
+      case "tsx":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764067/blog/js-icon_w5hshg.png";
+      case "ps":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764383/blog/Photoshop_CC_icon_hiubej.webp";
+      case "css":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764617/blog/css-icon_pw3acs.png";
+      case "html":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764688/blog/html-icon_pyi4rj.png";
+      case "exe":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764738/blog/exe-icon_uvj470.png";
+      default:
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764738/blog/exe-icon_uvj470.png";
+    }
+  };
+
   const handleImageChange = (event) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const imageUrls = Array.from(files).map((file) => URL.createObjectURL(file));
-      setSelectedImages([...selectedImages, ...imageUrls]);
-      setFileImage([...fileImage, ...files]);
+      const fileType = getFileType(files[0].name);
+      if (isImage(fileType)) {
+        const imageUrls = Array.from(files).map((file) => URL.createObjectURL(file));
+        setSelectedImages([...selectedImages, ...imageUrls]);
+        setFileImage([...fileImage, ...files]);
+      } else {
+        const iconUrl = getFileIcon(fileType);
+        setSelectedImages([...selectedImages, iconUrl]);
+        setFileImage([...fileImage, ...files]);
+      }
     }
   };
+  console.log(selectedImages);
 
   const handleRemoveImage = (index) => {
     const updatedImages = [...selectedImages];
@@ -33,7 +72,7 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
     setInputText(event.target.value);
   };
 
-  const handleSendClick =  async () => {
+  const handleSendClick = async () => {
     if (inputText !== "") await dispatch(sendTextChat({ idRoom, message: inputText, token }));
     if (fileImage.length > 0) await dispatch(sendImageChat({ idRoom, message: fileImage, token }));
 

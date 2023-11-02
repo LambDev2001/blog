@@ -10,13 +10,15 @@ import { MdOutlineBugReport } from "react-icons/md";
 
 import Comment from "../comment/Comment";
 import ModalReportBlog from "../modal/ModalReportBlog";
+import ModalDeleteBlog from "../modal/ModalDeleteBlog";
 import { dislikeBlog, likeBlog, increaseShare, removeBlog } from "../../redux/actions/blogAction";
 import { followUser } from "../../redux/actions/userAction";
 import { getComments } from "../../redux/actions/commentAction";
 
-const Blogs2 = ({ handleLink = null }) => {
+const Blogs2 = ({ handleLink = null, isOwner = false }) => {
   const [openComments, setOpenComments] = useState(-1);
   const [isReport, setIsReport] = useState(null);
+  const [modalDeleteBlog, setModalDeleteBlog] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const blogs = useSelector((state) => state.blogReducer);
   const comments = useSelector((state) => state.commentReducer);
@@ -70,6 +72,10 @@ const Blogs2 = ({ handleLink = null }) => {
     else dispatch(removeBlog(idBlog));
   };
 
+  const handleDeleteBlog = (idBlog) => {
+    idBlog === modalDeleteBlog ? setModalDeleteBlog(-1) : setModalDeleteBlog(idBlog);
+  };
+
   return (
     <div>
       {blogs.length > 0 &&
@@ -113,16 +119,24 @@ const Blogs2 = ({ handleLink = null }) => {
                       </div>
                     )}
                     <div className="flex">
+                      {isOwner && (
+                        <div
+                          className="mx-1 mb-auto rounded-md bg-red-500 text-white py-1 px-2 cursor-pointer"
+                          onClick={() => handleDeleteBlog(blog._id)}>
+                          Delete
+                        </div>
+                      )}
+
                       <MdOutlineBugReport
                         color="white"
                         size={24}
-                        className="mx-1 cursor-pointer"
+                        className="mx-1 my-auto cursor-pointer"
                         onClick={() => handleShowReport(blog._id)}
                       />
                       <IoMdClose
                         color="white"
                         size={24}
-                        className="mx-1 cursor-pointer"
+                        className="mx-1 my-auto cursor-pointer"
                         onClick={() => handleRemoveBlog(blog._id)}
                       />
                     </div>
@@ -198,6 +212,16 @@ const Blogs2 = ({ handleLink = null }) => {
               <div>
                 {isReport === blog._id && (
                   <ModalReportBlog blog={blog} handleShowReport={handleShowReport} />
+                )}
+
+                {modalDeleteBlog !== -1 && (
+                  <ModalDeleteBlog
+                    themeColor={themeColor}
+                    token={token}
+                    dispatch={dispatch}
+                    idBlog={modalDeleteBlog}
+                    handleOpen={handleDeleteBlog}
+                  />
                 )}
               </div>
             </div>
