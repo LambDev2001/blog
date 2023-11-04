@@ -81,7 +81,9 @@ const Menu = () => {
 
   return (
     <div
-      className={`menu ${color.outside} rounded-lg d-flex sticky top-0 mr-1 p-1 custom-scroll-container h-32 overflow-hidden`}
+      className={`${!user ? "hidden" : "flex"} menu ${
+        color.outside
+      } rounded-lg sticky top-0 mr-1 p-1 custom-scroll-container h-32 overflow-hidden`}
       style={{ borderRadius: "0 10px 10px 0", zIndex: 999 }}
       onMouseEnter={() => handleOpenMenu()}
       onMouseLeave={() => handleOpenMenu()}>
@@ -125,7 +127,7 @@ const Menu = () => {
               data-index={index}
               className={`my-1 shadow-md rounded-lg ${
                 index === active ? color.active : color.inside
-              } overflow-hidden`}>
+              } overflow-hidden cursor-pointer`}>
               <div
                 className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
                   index === active && color.active

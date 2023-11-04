@@ -6,6 +6,7 @@ import Password from "../global/form/Password";
 import Button from "../global/theme/button/Button";
 
 import { loginAdmin } from "../../redux/actions/authAction";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const LoginPass = () => {
   const [infoUser, setInfoUser] = useState({
@@ -13,7 +14,7 @@ const LoginPass = () => {
     password: "",
   });
   const color = useSelector((state) => state.themeReducer.themeColor);
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const handleChangeInput = (e) => {
@@ -30,6 +31,7 @@ const LoginPass = () => {
     });
 
     await dispatch(loginAdmin(infoUser));
+    history.push("/dashboard");
   };
 
   return (

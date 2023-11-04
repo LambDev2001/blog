@@ -21,7 +21,7 @@ const Blog = ({ blog, setBlog = () => {}, readOnly = false }) => {
   if (readOnly) modules = { toolbar: [] };
 
   return (
-    <div className="text-white">
+    <div className="text-black">
       <ReactQuill
         value={blog.content}
         readOnly={readOnly}

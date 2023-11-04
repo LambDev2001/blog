@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -19,12 +19,14 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
   const [openComments, setOpenComments] = useState(-1);
   const [isReport, setIsReport] = useState(null);
   const [modalDeleteBlog, setModalDeleteBlog] = useState(-1);
+  const [isCopyLink, setIsCopyLink] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const blogs = useSelector((state) => state.blogReducer);
   const comments = useSelector((state) => state.commentReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
   const history = useHistory();
+
   if (!handleLink) {
     handleLink = (link) => {
       history.push(link);
@@ -44,11 +46,6 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
   const handleFollow = (idUser) => {
     if (!token) handleLink("");
     else dispatch(followUser(idUser, token));
-  };
-
-  const handleShare = (idBlog) => {
-    if (!token) handleLink("");
-    else dispatch(increaseShare(idBlog, token));
   };
 
   const handleComment = (index, idBlog) => {
@@ -75,6 +72,25 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
   const handleDeleteBlog = (idBlog) => {
     idBlog === modalDeleteBlog ? setModalDeleteBlog(-1) : setModalDeleteBlog(idBlog);
   };
+
+  const handleShareBlog = (idBlog) => {
+    navigator.clipboard.writeText(`http://localhost:3000/blog/${idBlog}`);
+    dispatch(increaseShare(idBlog));
+    setIsCopyLink(idBlog);
+  };
+
+  useEffect(() => {
+    let timeout;
+    if (isCopyLink !== -1) {
+      timeout = setTimeout(() => {
+        setIsCopyLink(-1);
+      }, 2000);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isCopyLink]);
 
   return (
     <div>
@@ -189,9 +205,14 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
                     <div className="ml-1">{blog.comments}</div>
                   </div>
                   <div
-                    className={`${themeColor.input} flex cursor-pointer py-2 px-3 m-2 rounded-full`}>
-                    <GoShare size={24} onClick={() => handleShare(blog._id)} />
+                    className={`${themeColor.input} flex cursor-pointer py-2 px-3 m-2 rounded-full relative`}>
+                    <GoShare size={24} onClick={() => handleShareBlog(blog._id)} />
                     <div className="ml-1">{blog.share}</div>
+                    {isCopyLink === blog._id && (
+                      <div className="absolute top-[20px] p-2 w-[100px] mt-1 rounded-md text-sm bg-white text-black">
+                        Copied Link
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

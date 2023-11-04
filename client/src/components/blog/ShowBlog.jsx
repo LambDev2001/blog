@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { LuMoreHorizontal } from "react-icons/lu";
@@ -7,13 +7,17 @@ import { LuMoreHorizontal } from "react-icons/lu";
 import Blog from "./BlogCard";
 import Comment from "../comment/Comment";
 import ModalReportBlog from "../modal/ModalReportBlog";
+import { increaseShare } from "../../redux/actions/blogAction";
 
 const ShowBlog = ({ blog, comments }) => {
   const [isMore, setIsMore] = useState(false);
   const [isReport, setIsReport] = useState(false);
+  const [isCopyLink, setIsCopyLink] = useState(false);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const user = useSelector((state) => state.authReducer.user);
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const isOwner = user._id === blog.author._id;
 
   const handleIsMore = () => {
@@ -24,6 +28,26 @@ const ShowBlog = ({ blog, comments }) => {
     setIsReport(!isReport);
     setIsMore(false);
   };
+
+  const handleShareBlog = () => {
+    navigator.clipboard.writeText(`http://localhost:3000/blog/${blog._id}`);
+    dispatch(increaseShare(blog._id));
+    setIsMore(false);
+    setIsCopyLink(true);
+  };
+
+  useEffect(() => {
+    let timeout;
+    if (isCopyLink) {
+      timeout = setTimeout(() => {
+        setIsCopyLink(false);
+      }, 2000);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isCopyLink]);
 
   return (
     <div className="mt-2">
@@ -66,6 +90,18 @@ const ShowBlog = ({ blog, comments }) => {
                 onClick={handleIsReport}>
                 Report
               </div>
+
+              <div
+                className={themeColor.hoverBold + " p-2 rounded-md cursor-pointer"}
+                onClick={handleShareBlog}>
+                Share
+              </div>
+            </div>
+          )}
+
+          {isCopyLink && (
+            <div className="absolute right-0 p-2 w-[100px] mt-1 rounded-md text-sm bg-white text-black">
+              Copied Link
             </div>
           )}
 

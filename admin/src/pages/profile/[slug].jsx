@@ -38,12 +38,16 @@ const Profile = () => {
                 <div className="grid grid-cols-2 shadow-lg rounded-lg">
                   <span className="text-lg font-bold m-2 mx-3">Username:</span> {user.username}
                   <span className="text-lg font-bold m-2 mx-3">Account:</span> {user.account}
-                  <span className="text-lg font-bold m-2 mx-3">Role:</span> {user.role}
-                  <span
-                    className="text-md font-bold m-2 mx-3 cursor-pointer text-blue-500 underline"
-                    onClick={() => setModal(true)}>
-                    Change password
-                  </span>
+                  {!!user.role && (
+                    <div>
+                      <span className="text-lg font-bold m-2 mx-3">Role:</span> {user.role}
+                      <span
+                        className="text-md font-bold m-2 mx-3 cursor-pointer text-blue-500 underline"
+                        onClick={() => setModal(true)}>
+                        Change password
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

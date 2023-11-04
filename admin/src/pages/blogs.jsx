@@ -14,7 +14,7 @@ const Blogs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [statusBlogs, setStatusBlogs] = useState("all");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("title");
+  const [sortField, setSortField] = useState("date");
   const token = useSelector((state) => state.authReducer.accessToken);
   const color = useSelector((state) => state.themeReducer.themeColor);
   const blogs = useSelector((state) => state.blogReducer);
