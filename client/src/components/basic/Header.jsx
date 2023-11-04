@@ -15,11 +15,17 @@ const Header = () => {
   const [selectedOption, setSelectedOption] = useState("blog");
   const [typeModal, setTypeModal] = useState("login");
   const [data, setData] = useState([]);
+  const [isDarkMode, setIsDarkMode] = useState("white");
   const user = useSelector((state) => state.authReducer.user);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const toggleTheme = (type) => {
+    dispatch({ type: "CHANGE_THEME_USER", payload: type });
+    setIsDarkMode(type);
+  };
 
   const handleModalLogin = (state) => {
     setTypeModal(state);
@@ -50,28 +56,28 @@ const Header = () => {
 
   return (
     <div
-      className={`${themeColor.sub} ${themeColor.border} flex justify-between h-[60px] border-b relative`}>
+      className={`${themeColor.sub} ${themeColor.text} ${themeColor.border} flex justify-between h-[60px] border-b relative shadow-md`}>
       {/* logo */}
       <div className="flex mx-2 my-auto cursor-pointer">
         <img
-          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          src="https://res.cloudinary.com/dfuaq9ggj/image/upload/v1697772495/blog/ckov65p4msb127rlsnd0_sjbmvx.png"
           alt="logo"
-          className="w-[32px] h-[32px] m-1"
+          className="w-[32px] h-[32px] m-1 rounded-full"
         />
-        <div className="text-lg font-semibold m-1">Blog</div>
+        <div className="text-lg font-semibold m-1">BlogD</div>
       </div>
 
       {/* search */}
       <div className={`${themeColor.sub} my-auto w-50 relative`}>
         <input
           type="text"
-          className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-full shadow appearance-none leading-tight focus:outline-none`}
+          className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-full shadow-md appearance-none leading-tight focus:outline-none`}
           placeholder="Search Blogs ..."
           name="search"
           onChange={(e) => handleSearch(e)}
         />
         <div
-          className={`${themeColor.input} absolute top-1 right-3 flex text-white text-right focus:border-none`}>
+          className={`${themeColor.input} absolute top-1 right-3 flex text-right focus:border-none`}>
           <select
             className={themeColor.input + " focus:border-none"}
             name="type"
@@ -81,12 +87,29 @@ const Header = () => {
             <option value="user">User</option>
             <option value="category">Category</option>
           </select>
-          <GoSearch color="white" size={28} />
+          <GoSearch color={isDarkMode === "black" ? "white" : "black"} size={28} />
         </div>
       </div>
 
-      {/* login */}
-      <div className="my-auto mx-2">
+      {/* End */}
+      <div className="my-auto mx-3 flex">
+        {/* Change Theme */}
+        <div className={"mx-3 my-au`to"}>
+          <button
+            className={`${
+              themeColor.border
+            } border-1 w-14 h-8 flex items-center justify-between rounded-full p-1 relative overflow-hidden ${
+              isDarkMode === "black" ? "bg-gray-800" : "bg-gray-300"
+            }`}
+            onClick={() => toggleTheme(isDarkMode === "black" ? "white" : "black")}>
+            <span
+              className={`w-6 h-6 rounded-full ${
+                isDarkMode === "black" ? "translate-x-full bg-gray-300" : "bg-gray-800"
+              } absolute transform transition-transform duration-300 ease-in-out`}></span>
+          </button>
+        </div>
+
+        {/* Auth */}
         {user ? (
           <div>
             <img

@@ -9,20 +9,25 @@ const Group = () => {
   const rooms = useSelector((state) => state.roomReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
   const history = useHistory();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(getRooms(token))
-  }, [dispatch, token])
+  useEffect(() => {
+    dispatch(getRooms(token));
+  }, [dispatch, token]);
 
   return (
-    <div className={`${themeColor.sub} m-2 p-1 rounded-lg`}>
-      <div className="text-xl font-semibold my-2 mx-3 cursor-pointer" onClick={() => history.push("/group-chat")}>Groups Chat</div>
+    <div
+      className={`${themeColor.sub} ${themeColor.text} ${themeColor.border} border-1 shadow-lg m-2 p-1 rounded-lg`}>
+      <div
+        className="text-xl font-semibold my-2 mx-3 cursor-pointer"
+        onClick={() => history.push("/group-chat")}>
+        Groups Chat
+      </div>
       {rooms.length > 0 &&
         rooms.map((room, index) => (
           <div
             key={index}
-            className={`${themeColor.main} ${themeColor.hover} p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
+            className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md p-2 my-1 flex justify-between rounded-lg cursor-pointer`}
             onClick={() => history.push(`/room/${room._id}`)}>
             <div className="flex">
               <img

@@ -27,6 +27,13 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const colorStatus = [
+    "rgba(240, 240, 240, 0.8)",
+    "rgba(85, 230, 86, 0.8)",
+    "rgba(255, 235, 59, 0.8)",
+    "rgba(255, 99, 71, 0.8)",
+  ];
+
   if (!handleLink) {
     handleLink = (link) => {
       history.push(link);
@@ -99,9 +106,10 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
           if (blog.isRemove === true) return <div></div>;
 
           return (
-            <div key={index}>
+            <div key={index} className={themeColor.text}>
               {/* Blog */}
-              <div className={`${themeColor.sub} mx-4 my-3 p-3`}>
+              <div
+                className={`${themeColor.sub} ${themeColor.border} border-1 rounded-md mx-4 my-2 px-3 pt-3 shadow-md`}>
                 {/* header */}
                 <div className="flex justify-between">
                   {/* start */}
@@ -123,6 +131,18 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
                     <div className={`${themeColor.input} mx-2 px-3 py-2 rounded-full `}>
                       {blog.category}
                     </div>
+                    {isOwner && (
+                      <div
+                        className={`px-3 py-2 rounded-full`}
+                        style={{
+                          color: blog.status === "normal" ? colorStatus[1] : colorStatus[2],
+                          border: `1px solid ${
+                            blog.status === "normal" ? colorStatus[1] : colorStatus[2]
+                          }`,
+                        }}>
+                        {blog.status}
+                      </div>
+                    )}
                   </div>
 
                   {/* end */}

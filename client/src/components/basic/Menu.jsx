@@ -26,30 +26,32 @@ const Menu = () => {
   };
 
   return (
-    <div style={{ height: `${height}px` }}>
+    <div className={`${themeColor.text}`} style={{ height: `${height}px` }}>
       <div className="ml-2 mt-2">
+        <div className="text-lg">Pages</div>
+
         <div
-          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
           onClick={() => history.push("/")}>
           <BiHomeAlt2 size={26} className="ml-2 mr-4" />
           <div className="my-auto">Home</div>
         </div>
         <div
-          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
           onClick={() => history.push("/popular")}>
           <BsArrowUpRightCircle size={26} className="ml-2 mr-4" />
           <div className="my-auto">Popular</div>
         </div>
 
         <div
-          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
           onClick={() => history.push(`/friend`)}>
           <SlPeople size={26} className="ml-2 mr-4" />
           <div className="my-auto">Friend</div>
         </div>
 
         <div
-          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
           onClick={() => history.push(`/following`)}>
           <SlUserFollowing size={26} className="ml-2 mr-4" />
           <div className="my-auto">Following</div>
@@ -63,7 +65,7 @@ const Menu = () => {
               return (
                 <div
                   key={index}
-                  className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+                  className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
                   onClick={() => history.push(`/category/${category._id}`)}>
                   <div className="my-auto">{category.name}</div>
                 </div>
@@ -75,7 +77,7 @@ const Menu = () => {
         {isMore ? (
           <div className="flex justify-content-center mt-3">
             <div
-              className={`${themeColor.sub} mx-auto p-2 rounded-full cursor-pointer`}
+              className={`${themeColor.sub} ${themeColor.border} border-1 shadow-md mx-auto p-2 rounded-full cursor-pointer`}
               onClick={handleShowCategory}>
               Show Less
             </div>
@@ -83,7 +85,7 @@ const Menu = () => {
         ) : (
           <div className="flex justify-content-center mt-3">
             <div
-              className={`${themeColor.sub} mx-auto p-2 rounded-full cursor-pointer`}
+              className={`${themeColor.sub} ${themeColor.border} border-1 shadow-md mx-auto p-2 rounded-full cursor-pointer`}
               onClick={handleShowCategory}>
               Show More
             </div>
@@ -93,13 +95,13 @@ const Menu = () => {
         {/* resource */}
         <div className="text-lg">Resources</div>
         <div
-          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
           onClick={() => history.push("/about")}>
           <LiaExclamationCircleSolid size={26} className="ml-2 mr-4" />
           <div className="my-auto">About</div>
         </div>
         <div
-          className={`${themeColor.hover} flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
           onClick={() => history.push("/help")}>
           <LiaQuestionCircleSolid size={26} className="ml-2 mr-4" />
           <div className="my-auto">Help</div>

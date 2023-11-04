@@ -61,7 +61,7 @@ const Profile = () => {
   const height = window.innerHeight - 234;
 
   return (
-    <div>
+    <div className={themeColor.text}>
       {Object.keys(otherUser).length > 0 && (
         <div>
           {/* Header */}
@@ -93,7 +93,7 @@ const Profile = () => {
               {/* Basic info */}
               <div className="mt-auto mx-3">
                 <div className="text-2xl font-semibold">{otherUser.username}</div>
-                <div className="cursor-pointer text-gray-200 hover:underline">
+                <div className="cursor-pointer hover:underline">
                   {otherUser.account}{" "}
                 </div>
               </div>

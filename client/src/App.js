@@ -43,7 +43,7 @@ function App() {
           <Header />
 
           {/* body */}
-          <div className={`${themeColor.main} flex justify-between h-100`}>
+          <div className={`${themeColor.main} ${themeColor.text} flex justify-between h-100`}>
             {/* menu */}
             <div
               className={`w-1/5 custom-scroll-container ${themeColor.border} border-r`}

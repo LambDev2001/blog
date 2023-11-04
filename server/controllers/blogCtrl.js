@@ -448,7 +448,7 @@ const blogCtrl = {
     try {
       const { idUser } = req.params;
       const countBlogs = await Blogs.count();
-      const allBlogs = await Blogs.find({ idUser }).select("-report -status -content");
+      const allBlogs = await Blogs.find({ idUser }).select("-report -content");
 
       let blogs = await Promise.all(
         allBlogs.map(async (blog) => {

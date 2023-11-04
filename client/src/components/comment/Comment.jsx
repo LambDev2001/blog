@@ -85,7 +85,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
   };
 
   return (
-    <div className={`${themeColor.sub} rounded-lg pt-2 pb-3 pl-4 `}>
+    <div className={`${themeColor.sub} ${themeColor.text} ${themeColor.border} border-1 rounded-md shadow-md pt-2 pb-3 pl-4 `}>
       {comments.length > 0 &&
         comments.map((comment, index) => (
           <div key={index}>

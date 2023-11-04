@@ -98,9 +98,9 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
         blogs.map((blog, index) => {
           if (blog.isRemove === true) return <div></div>;
           return (
-            <div key={index}>
+            <div key={index} className={themeColor.text}>
               {/* Blog */}
-              <div className={`${themeColor.sub} mx-4 my-2 px-3 pt-3`}>
+              <div className={`${themeColor.sub} ${themeColor.border} border-1 rounded-md mx-4 my-2 px-3 pt-3 shadow-md`}>
                 {/* header */}
                 <div className="flex justify-between">
                   {/* start */}
