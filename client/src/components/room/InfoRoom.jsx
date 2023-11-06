@@ -50,9 +50,41 @@ const InfoRoom = ({ room, themeColor, token }) => {
     setOpenDissolution(!openDissolution);
   };
 
+  const getFileIcon = (fileType) => {
+    switch (fileType) {
+      case "rar":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764038/blog/rar-icon_trdqon.jpg";
+      case "js":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764067/blog/js-icon_w5hshg.png";
+      case "tsx":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764067/blog/js-icon_w5hshg.png";
+      case "ps":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764383/blog/Photoshop_CC_icon_hiubej.webp";
+      case "css":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764617/blog/css-icon_pw3acs.png";
+      case "html":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764688/blog/html-icon_pyi4rj.png";
+      case "exe":
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764738/blog/exe-icon_uvj470.png";
+      default:
+        return "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1698764738/blog/exe-icon_uvj470.png";
+    }
+  };
+
+  const getFileType = (filename) => {
+    const extension = filename.split(".").pop().toLowerCase();
+    return extension;
+  };
+
+  const isImage = (fileType) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+    return imageExtensions.includes(fileType);
+  };
+
   return (
-    <div className="">
-      <div className=" my-1">
+    <div
+      className={`${themeColor.border} ${themeColor.sub} border-1 shadow-lg rounded-md overflow-hidden`}>
+      <div className={`${themeColor.border} border-1 shadow-md rounded-md my-1 mx-2`}>
         <div className="relative">
           <img
             src={selectedImage}
@@ -106,8 +138,9 @@ const InfoRoom = ({ room, themeColor, token }) => {
         </div>
       </div>
       {informationRoom.author && (
-        <div className="flex flex-wrap">
-          <div className="w-1/2 my-2">
+        <div
+          className={`${themeColor.border} border-1 flex flex-wrap mx-2 mb-2 p-2 rounded-md shadow-lg`}>
+          <div className="w-1/2">
             <div className="text-2xl">Author</div>
             <div className="flex">
               <div>
@@ -131,29 +164,53 @@ const InfoRoom = ({ room, themeColor, token }) => {
             <div>{informationRoom.member.length}</div>
           </div>
 
-          {/* Image */}
+          {/* File */}
           <div className="w-100">
-            <div className="text-2xl">Image ({informationRoom.images.length})</div>
+            <div className="text-2xl">File ({informationRoom.images.length})</div>
             <div className="flex my-1">
               {informationRoom.images.length > 0 &&
-                informationRoom.images.map((image, index) => {
-                  if (index < 3)
+                informationRoom.images.map((file, index) => {
+                  if (index > 5) return <div></div>;
+
+                  const fileType = getFileType(file);
+                  if (isImage(fileType)) {
                     return (
-                      <div key={index}>
-                        <img
-                          src={image}
-                          alt=""
-                          className="h-auto w-auto max-h-[120px] max-w-[150px] mx-2"
-                        />
+                      <div
+                        key={index}
+                        className="relative h-auto w-auto max-h-[100px] max-w-[100px] mx-1 my-auto">
+                        <a href={file} rel="noreferrer" target="_blank">
+                          <img key={file} src={file} alt="" />
+
+                          <div
+                            className={`bg-[rgba(59,58,60,0.5)] text-[#ffff] backdrop-opacity-10 backdrop-invert absolute top-0 right-2 cursor-pointer p-1 text-xs rounded-full`}>
+                            Image
+                          </div>
+                        </a>
                       </div>
                     );
-                  else return <div key={index}></div>;
+                  } else {
+                    return (
+                      <div key={index} className="my-auto">
+                        <a href={file} rel="noreferrer" target="_blank" className="relative">
+                          <img
+                            src={getFileIcon(fileType)}
+                            alt=""
+                            className={`h-auto w-auto max-h-[100px] max-w-[100px] mx-1`}
+                          />
+                          <div
+                            className={` bg-[rgba(59,58,60,0.5)] text-[#ffff] backdrop-opacity-10 backdrop-invert absolute top-0 right-2 cursor-pointer p-1 text-xs rounded-full`}>
+                            {fileType}
+                          </div>
+                        </a>
+                      </div>
+                    );
+                  }
                 })}
-              {informationRoom.images.length > 3 && (
+              {informationRoom.images.length > 5 && (
                 <div
-                  className={`${themeColor.sub} w-[100px] h-[120px] flex justify-center items-center text-lg text-gray-500 font-medium cursor-pointer`}
+                  className={`${themeColor.input} w-[100px] h-[120px] flex justify-center items-center text-lg text-gray-500 font-medium cursor-pointer`}
                   onClick={handleLibrary}>
-                  (+{informationRoom.images.length - 3})
+                  (+{informationRoom.images.length - 5})
                 </div>
               )}
             </div>

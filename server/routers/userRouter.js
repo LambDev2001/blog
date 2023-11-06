@@ -18,7 +18,7 @@ router.get("/friends", user, userCtrl.listFriends);
 router.get("/following", user, userCtrl.listFollowing);
 
 router.post("/change-password", user, userCtrl.changePassword);
-router.post("/remove-friend/:idUser", user, userCtrl.removeFriend);
+router.post("/un-friend/:idUser", user, userCtrl.removeFriend);
 
 router.patch("/user/:idUser", user, userCtrl.updateUser);
 router.patch("/follow", user, userCtrl.follow);

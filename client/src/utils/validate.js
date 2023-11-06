@@ -22,6 +22,16 @@ const checkMatchPassword = (name, value, sub) => {
   return value !== sub ? `${splitLabel(name)} does not match` : "";
 };
 
+const validPhoneNumber = (name, value) => {
+  const re = /^0\d{9,11}$/;
+
+  if (value.length === 0) return "";
+
+  return !re.test(String(value))
+    ? `${splitLabel(name)} must be a valid phone number starting with 0 and 10-12 digits`
+    : "";
+};
+
 const validate = (name, value, sub = "") => {
   switch (name) {
     // Blog
@@ -47,13 +57,14 @@ const validate = (name, value, sub = "") => {
       return required(name, value) || checkEmail(name, value);
     case "username":
       return required(name, value) || minLength(name, value, 5);
+    case "numberPhone":
+      return validPhoneNumber(name, value);
     case "password":
       return required(name, value) || minLength(name, value, 4) || maxLength(name, value, 12);
     case "currentPassword":
       return required(name, value) || minLength(name, value, 4) || maxLength(name, value, 12);
     case "newPassword":
       return required(name, value) || minLength(name, value, 4) || maxLength(name, value, 12);
-
     case "confirmPassword":
       return (
         required(name, value) ||

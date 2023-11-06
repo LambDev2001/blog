@@ -5,9 +5,14 @@ const friendReducer = (state = { req: [], friend: [] }, action) => {
     case "GET_FRIEND":
       return { req: state.req, friend: action.payload };
 
+    case "UN_FRIEND":
+      return { req: state.req, friend: state.friend.filter((item) => item._id !== action.payload) };
+
     case "ACCEPT":
       const newFriend = state.req.filter((item) => item._id === action.payload);
-      const friend = [...state.friend, newFriend[0]].sort((a, b)=> a.username.localeCompare(b.username));
+      const friend = [...state.friend, newFriend[0]].sort((a, b) =>
+        a.username.localeCompare(b.username)
+      );
 
       return {
         req: state.req.filter((item) => item._id !== action.payload),

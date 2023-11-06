@@ -14,7 +14,9 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date("1980-01-01"));
+
+  const originalDate = new Date(user.birthday);
 
   const handleDateChange = (date) => {
     setStartDate(date);
@@ -47,17 +49,18 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
       <form
-        className={`${themeColor.main} p-4 rounded-lg shadow-lg w-[500px]`}
+        className={`${themeColor.main} ${themeColor.text} p-4 rounded-lg shadow-lg w-[500px]`}
         onSubmit={(e) => handleSubmit(e)}>
         <div className="text-2xl font-semibold">Edit Information</div>
 
-        <div className="flex flex-col justify-center my-2 p-2 rounded-lg shadow-md overflow-hidden">
+        <div
+          className={`${themeColor.sub} flex flex-col justify-center my-2 p-2 rounded-lg shadow-md overflow-hidden`}>
           <div className="flex flex-col my-2 w-100">
-            <label htmlFor="username" className="font-semibold text-white text-xl mb-1">
+            <label htmlFor="username" className="font-semibold  text-xl mb-1">
               Username
             </label>
             <input
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
+              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
               type="text"
               value={infoUser.username}
               name="username"
@@ -67,26 +70,27 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
           </div>
 
           <div className="flex flex-col my-2 w-100">
-            <label htmlFor="numberPhone" className="font-semibold text-white text-xl mb-1">
+            <label htmlFor="numberPhone" className="font-semibold text-xl mb-1">
               Phone number
             </label>
             <input
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
+              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
               type="text"
               value={infoUser.numberPhone}
               name="numberPhone"
               onChange={(e) => handleInfoUser(e)}
             />
+            <div className="text-red-500 text-md">{errors.numberPhone}</div>
           </div>
 
           <div className="flex flex-col my-2 w-100">
-            <label htmlFor="username" className="font-semibold text-white text-xl mb-1">
+            <label htmlFor="username" className="font-semibold text-xl mb-1">
               Date of Birth
             </label>
 
             <DatePicker
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
-              selected={startDate}
+              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
+              selected={!originalDate ? startDate : originalDate}
               onChange={handleDateChange}
             />
           </div>

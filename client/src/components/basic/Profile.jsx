@@ -8,14 +8,15 @@ import ModalEditUser from "../modal/ModalEditUser";
 import Blog2 from "../blog/Blog2";
 import ProfileFriend from "../ProfileFriend";
 import ProfileFollowing from "../ProfileFollowing";
+import ModalChangePassword from "../modal/ModalChangePassword";
+import ProfileInfo from "../ProfileInfo";
 
 import { getOtherUserBlogs } from "../../redux/actions/blogAction";
 import { sendRequest } from "../../redux/actions/friendAction";
 import { updateUser } from "../../redux/actions/userAction";
-import ModalChangePassword from "../modal/ModalChangePassoword";
 
 const Profile = () => {
-  const [currentTab, setCurrentTab] = useState("posts");
+  const [currentTab, setCurrentTab] = useState("info");
   const [isModal, setIsModal] = useState(false);
   const [isModalPassword, setIsModalPassword] = useState(false);
   const [currentAvatar, setCurrentAvatar] = useState("");
@@ -93,9 +94,7 @@ const Profile = () => {
               {/* Basic info */}
               <div className="mt-auto mx-3">
                 <div className="text-2xl font-semibold">{otherUser.username}</div>
-                <div className="cursor-pointer hover:underline">
-                  {otherUser.account}{" "}
-                </div>
+                <div className="cursor-pointer hover:underline">{otherUser.account} </div>
               </div>
 
               {/* Action */}
@@ -140,6 +139,13 @@ const Profile = () => {
             <div className="flex mb-1">
               <div
                 className={`${themeColor.sub} ${themeColor.border} ${
+                  currentTab === "info" && themeColor.input
+                } ${themeColor.hover} border-1 mx-1 px-3 py-2 rounded-sm cursor-pointer`}
+                onClick={() => handleTab("info")}>
+                Info
+              </div>
+              <div
+                className={`${themeColor.sub} ${themeColor.border} ${
                   currentTab === "posts" && themeColor.input
                 } ${themeColor.hover} border-1 mx-1 px-3 py-2 rounded-sm cursor-pointer`}
                 onClick={() => handleTab("posts")}>
@@ -163,6 +169,9 @@ const Profile = () => {
 
             <div className={`custom-scroll-container`} style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto">
+                {currentTab === "info" && (
+                  <ProfileInfo otherUser={otherUser} themeColor={themeColor} />
+                )}
                 {currentTab === "posts" && <Blog2 isOwner={isOwner} />}
                 {currentTab === "friends" && <ProfileFriend friends={otherUser.friends} />}
                 {currentTab === "following" && otherUser.following.length > 0 && (

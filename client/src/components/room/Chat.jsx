@@ -54,15 +54,13 @@ const Chat = ({ themeColor, data }) => {
             <img key={file} src={file} alt="" />
 
             <div
-              className={`bg-[rgba(59,58,60,0.5)] backdrop-opacity-10 backdrop-invert absolute top-0 right-2 cursor-pointer p-1 text-xs rounded-full`}>
+              className={`bg-[rgba(59,58,60,0.5)] text-[#ffff] backdrop-opacity-10 backdrop-invert absolute top-0 right-2 cursor-pointer p-1 text-xs rounded-full`}>
               Image
             </div>
           </a>
         </div>
       );
     } else {
-      console.log(file);
-      
       return (
         <div key={file} onMouseEnter={() => handleSetHover(file)} onMouseLeave={handleMouseLeave}>
           <a href={file} rel="noreferrer" target="_blank" className="relative">
@@ -76,7 +74,7 @@ const Chat = ({ themeColor, data }) => {
             <div
               className={` ${
                 hoverItem === file && "opacity-0"
-              }  bg-[rgba(59,58,60,0.5)] backdrop-opacity-10 backdrop-invert absolute top-0 right-2 cursor-pointer p-1 text-xs rounded-full`}>
+              }  bg-[rgba(59,58,60,0.5)] text-[#ffff] backdrop-opacity-10 backdrop-invert absolute top-0 right-2 cursor-pointer p-1 text-xs rounded-full`}>
               {fileType}
             </div>
             {hoverItem === file && (
@@ -101,7 +99,7 @@ const Chat = ({ themeColor, data }) => {
         themeColor.sub +
         " " +
         themeColor.border +
-        " my-1 py-auto rounded-lg border-1 custom-scroll-container"
+        " my-1 py-auto border-1 custom-scroll-container shadow-md  rounded-md overflow-hidden"
       }
       style={{ height: `${height}px` }}>
       <div className="custom-scroll-content h-100 overflow-auto flex flex-col-reverse">
@@ -109,7 +107,10 @@ const Chat = ({ themeColor, data }) => {
           data.map((item, index) => (
             <div key={index} className="m-2">
               {item.type === "text" && (
-                <div className={`flex ${item.owner === true ? "flex-row-reverse" : "flex-row"} `}>
+                <div
+                  className={`flex ${
+                    item.owner === true ? "flex-row-reverse w-[70%] ml-auto" : "flex-row w-[70%]"
+                  } `}>
                   <img
                     src={item.author.avatar}
                     alt="avatar room"
@@ -127,7 +128,10 @@ const Chat = ({ themeColor, data }) => {
               )}
 
               {item.type === "image" && (
-                <div className={`flex ${item.owner === true ? "flex-row-reverse" : "flex-row"} `}>
+                <div
+                  className={`flex ${
+                    item.owner === true ? "flex-row-reverse  w-[70%] ml-auto" : "flex-row  w-[70%]"
+                  } `}>
                   <img
                     src={item.author.avatar}
                     alt="avatar room"

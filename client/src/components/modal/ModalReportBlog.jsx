@@ -56,7 +56,7 @@ const ModalReportBlog = ({ blog, handleShowReport }) => {
         <div className={` my-2`}>
           <div className="text-md font-bold my-1">Reason for report</div>
           <textarea
-            className={`${themeColor.sub} w-full rounded-lg active:border-none`}
+            className={`${themeColor.sub} w-full rounded-lg active:border-none px-2 py-1`}
             name="content"
             rows="5"
             placeholder=" Write your reason for report here"

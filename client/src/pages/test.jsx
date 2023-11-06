@@ -1,24 +1,71 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const Test = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [listAlert, setListAlert] = useState([
+    {
+      type: "success",
+      msg: "Success",
+    },
+    {
+      type: "error",
+      msg: "Error",
+    },
+  ]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  useEffect(() => {
+    listAlert.map((alert, index) => {
+      if (alert.type === "success") {
+        toast.success(alert.msg, {
+          style: {
+            fontSize: "16px",
+            padding: "10px",
+            borderRadius: "10px",
+            background: "rgba(85, 245, 68, 1)",
+            color: "#fff",
+          },
+        });
+      } else if (alert.type === "error") {
+        toast.error(alert.msg, {
+          style: {
+            fontSize: "16px",
+            padding: "10px",
+            borderRadius: "10px",
+            background: "rgba(207, 52, 52, 1)",
+            color: "#fff",
+          },
+        });
+      }
+
+      // Remove the alert from the list after displaying it
+      setListAlert((prevAlerts) => prevAlerts.filter((item, itemIndex) => itemIndex !== index));
+      return alert;
+    });
+  }, [listAlert]);
 
   return (
-    <div className={isDarkMode ? "dark" : ""}>
+    <div className="flex flex-col">
       <button
-        className={`w-14 h-8 flex items-center justify-between rounded-full p-1 relative overflow-hidden ${
-          isDarkMode ? "bg-gray-800" : "bg-gray-300"
-        }`}
-        onClick={toggleTheme}>
-        <span
-          className={`w-6 h-6 rounded-full ${
-            isDarkMode ? "translate-x-full bg-gray-300" : "bg-gray-800"
-          } absolute transform transition-transform duration-300 ease-in-out`}></span>
+        className="btn "
+        onClick={() => setListAlert([...listAlert, { type: "success", msg: "Success" }])}>
+        Add data
       </button>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={4}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
     </div>
   );
 };

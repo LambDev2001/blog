@@ -184,10 +184,10 @@ const userCtrl = {
       // check id in the requestFriends
       const requestFriends = user.friends;
       if (requestFriends.indexOf(req.params.idUser) !== -1) {
-        await Users.findByIdAndUpdate({ _id: req.user.id }, { $pull: { friends: req.body.id } });
-        return res.status(200).json({ msg: "you declined the request successfully" });
+        await Users.findByIdAndUpdate({ _id: req.user.id }, { $pull: { friends: req.params.idUser } });
+        return res.status(200).json({ msg: "you remove friend successfully" });
       } else {
-        return res.json({ msg: "Not found your friend" });
+        return res.json({ err: "Not found your friend" });
       }
     } catch (err) {
       return res.status(500).json({ msg: err.message });

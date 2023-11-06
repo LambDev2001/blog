@@ -25,8 +25,8 @@ const themeUserReducer = (
       sub: "bg-[rgb(254,254,255)]",
       input: "bg-[rgb(241,243,245)]",
       border: "border-gray-300",
-      hover: "hover:bg-gray-500",
-      hoverBold: "hover:bg-gray-700",
+      hover: "hover:bg-gray-400",
+      hoverBold: "hover:bg-gray-500",
       text: "text-black",
     },
   };

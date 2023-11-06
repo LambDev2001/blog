@@ -100,7 +100,8 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
           return (
             <div key={index} className={themeColor.text}>
               {/* Blog */}
-              <div className={`${themeColor.sub} ${themeColor.border} border-1 rounded-md mx-4 my-2 px-3 pt-3 shadow-md`}>
+              <div
+                className={`${themeColor.sub} ${themeColor.border} border-1 rounded-md mx-4 my-2 px-3 pt-3 shadow-md`}>
                 {/* header */}
                 <div className="flex justify-between">
                   {/* start */}
@@ -137,20 +138,18 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
                     <div className="flex">
                       {isOwner && (
                         <div
-                          className="mx-1 mb-auto rounded-md bg-red-500 text-white py-1 px-2 cursor-pointer"
+                          className="mx-1 mb-auto rounded-md bg-red-500 py-1 px-2 cursor-pointer text-white"
                           onClick={() => handleDeleteBlog(blog._id)}>
                           Delete
                         </div>
                       )}
 
                       <MdOutlineBugReport
-                        color="white"
                         size={24}
                         className="mx-1 my-auto cursor-pointer"
                         onClick={() => handleShowReport(blog._id)}
                       />
                       <IoMdClose
-                        color="white"
                         size={24}
                         className="mx-1 my-auto cursor-pointer"
                         onClick={() => handleRemoveBlog(blog._id)}

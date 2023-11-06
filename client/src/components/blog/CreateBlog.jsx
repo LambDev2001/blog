@@ -78,9 +78,9 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className={`${themeColor.text} mx-auto`}>
       {/* input info */}
-      <div className={`${themeColor.sub} w-100 my-2 p-4 rounded-lg text-white shadow-md`}>
+      <div className={`${themeColor.sub} ${themeColor.border} border-1 w-100 my-2 p-4 rounded-lg  shadow-lg`}>
         <h1 className="text-2xl font-semibold mb-4">Create Blog</h1>
 
         <div className="mb-4">
@@ -91,7 +91,7 @@ const CreateBlog = () => {
             name="title"
             value={blog.title}
             onChange={(e) => handleChangeInput(e)}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+            className={`${themeColor.input}   w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
           <div className="text-red-500 text-md">{errors.title}</div>
         </div>
@@ -104,7 +104,7 @@ const CreateBlog = () => {
             name="description"
             value={blog.description}
             onChange={(e) => handleChangeInput(e)}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+            className={`${themeColor.input}   w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
           <div className="text-red-500 text-md">{errors.description}</div>
         </div>
@@ -117,7 +117,7 @@ const CreateBlog = () => {
             onChange={(e) => {
               handleChangeInput(e);
             }}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
+            className={`${themeColor.input} w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
             <option value="">Select a category</option>
             {categories.length > 0 &&
               categories.map((item, index) => {
@@ -154,7 +154,7 @@ const CreateBlog = () => {
         </div>
 
         <div className=" flex justify-end">
-          <div className={`${themeColor.input} rounded-lg`} onClick={handleShowReview}>
+          <div className={`${themeColor.input} ${themeColor.border} border-1 rounded-lg`} onClick={handleShowReview}>
             {isReview ? <div></div> : <div className="py-2 px-3 cursor-pointer">See review</div>}
           </div>
         </div>
@@ -162,15 +162,10 @@ const CreateBlog = () => {
 
       {/* Review */}
       {isReview && (
-        <div className={`${themeColor.sub} my-3 p-4 rounded-lg`}>
+        <div className={`${themeColor.sub} ${themeColor.border} border-1 my-3 p-4 rounded-md shadow-md`}>
           <div className="flex justify-between">
             <h1 className="text-2xl font-semibold my-4">Review</h1>
-            <IoMdClose
-              color="white"
-              size={24}
-              className="my-4 cursor-pointer"
-              onClick={handleShowReview}
-            />
+            <IoMdClose size={24} className="my-4 cursor-pointer" onClick={handleShowReview} />
           </div>
 
           {/* description, interact and thumbnail */}
@@ -201,7 +196,7 @@ const CreateBlog = () => {
       )}
 
       {/* Content */}
-      <div className={`${themeColor.sub} pt-3 rounded-lg`}>
+      <div className={`${themeColor.sub} pt-3 rounded-md shadow-lg`}>
         <h1 className="text-2xl font-semibold mb-3 mx-4">Content</h1>
         <Blog blog={blog} setBlog={setBlog} />
         <div className="mx-4 py-2 text-red-500 text-md">{errors.content}</div>
@@ -210,7 +205,7 @@ const CreateBlog = () => {
       {/* Send button */}
       <div className="flex justify-end">
         <button className="btn btn-primary my-4 px-4 py-2" onClick={handleSubmit}>
-          Send
+          Save
         </button>
       </div>
     </div>

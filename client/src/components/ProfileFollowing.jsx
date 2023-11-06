@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 import { LuMoreHorizontal } from "react-icons/lu";
 
@@ -9,7 +10,10 @@ const ProfileFollowing = ({ follows }) => {
   const [isMore, setIsMore] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
+  const user = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
+  const { slug } = useParams();
+  const isOwner = slug === user._id ? true : false;
 
   const handleMore = (index) => {
     if (isMore === index) {
@@ -25,12 +29,15 @@ const ProfileFollowing = ({ follows }) => {
   };
 
   return (
-    <div className={`${themeColor.sub} text-white mt-1 mx-1 p-2 rounded-lg`}>
+    <div className={`${themeColor.sub} mt-1 mx-1 p-2 rounded-lg shadow-lg`}>
       <div className="flex flex-wrap w-100">
         {follows.length > 0 &&
           follows.map((follow, index) => (
             <div key={index} className="p-1 w-1/2">
-              <div className={themeColor.border + " border-1 m-1 flex justify-between rounded-xl"}>
+              <div
+                className={
+                  themeColor.border + " border-1 m-1 flex justify-between rounded-xl shadow-md"
+                }>
                 {/* start */}
                 <div className="flex">
                   <img
@@ -38,18 +45,23 @@ const ProfileFollowing = ({ follows }) => {
                     alt="avatar"
                     className="rounded-full w-[60px] h-[60px] m-2"
                   />
-                  <div className="text-2xl mx-4 my-auto">{follow.username}</div>
+                  <div className=" mx-4 my-auto">
+                    <div className="text-xl">{follow.username}</div>
+                    <div className="text-md">{follow.account}</div>
+                  </div>
                 </div>
 
                 {/* end */}
                 <div className="relative my-auto mx-3">
-                  <div
-                    className={`${isMore === index && themeColor.input} ${
-                      themeColor.hover
-                    } my-auto rounded-full p-2 cursor-pointer`}
-                    onClick={() => handleMore(index)}>
-                    <LuMoreHorizontal size={20} />
-                  </div>
+                  {isOwner && (
+                    <div
+                      className={`${isMore === index && themeColor.input} ${
+                        themeColor.hover
+                      } my-auto rounded-full p-2 cursor-pointer`}
+                      onClick={() => handleMore(index)}>
+                      <LuMoreHorizontal size={20} />
+                    </div>
+                  )}
 
                   {isMore === index && (
                     <div

@@ -71,7 +71,7 @@ const Member = ({ themeColor, slug, token }) => {
       <div className="custom-scroll-content h-100 overflow-auto relative">
         {/* Search */}
         <div
-          className={`${themeColor.input} ${themeColor.border} border-1 rounded-lg overflow-hidden px-3`}>
+          className={`${themeColor.input} ${themeColor.border} border-1 rounded-lg overflow-hidden px-3 mx-2 mt-2 shadow-md`}>
           <input
             type="text"
             className={`${themeColor.input} w-100 py-3 focus:outline-none`}
@@ -83,11 +83,11 @@ const Member = ({ themeColor, slug, token }) => {
 
         {memberSearch.length > 0 && (
           <div
-            className={`${themeColor.main} ${themeColor.border} w-[30%] border-1 px-2 py-1 flex flex-col absolute left-1/2 translate-x-[-50%] rounded-md z-50`}>
+            className={`${themeColor.main} ${themeColor.border} w-[30%] border-1 shadow-md px-2 py-1 flex flex-col absolute left-1/2 translate-x-[-50%] rounded-md z-50`}>
             {memberSearch.map((member, index) => (
               <div
                 key={index}
-                className={`${themeColor.border} ${themeColor.hoverBold} border-1 flex my-1 px-3 py-2 rounded-md`}
+                className={`${themeColor.border} ${themeColor.hover} border-1 shadow-md flex my-1 px-3 py-2 rounded-md`}
                 onClick={() => history.push(`/profile/${member._id}`)}>
                 <img
                   src={member.avatar}
@@ -103,7 +103,7 @@ const Member = ({ themeColor, slug, token }) => {
         {/* Member */}
         <div className="grid grid-cols-2">
           <div
-            className={`${themeColor.sub} ${themeColor.border} ${themeColor.hoverBold} border-1 m-auto rounded-full cursor-pointer`}
+            className={`${themeColor.sub} ${themeColor.border} ${themeColor.hover} border-1 shadow-md m-auto rounded-full cursor-pointer`}
             onClick={handleOpenModalMember}>
             <BsPlusCircle size={30} />
           </div>
@@ -112,7 +112,7 @@ const Member = ({ themeColor, slug, token }) => {
             members.map((member) => (
               <div
                 key={member._id}
-                className={`${themeColor.sub} ${themeColor.border} ${themeColor.hoverBold} relative border-1 flex w-[95%] my-2 mx-auto py-2 rounded-md`}
+                className={`${themeColor.sub} ${themeColor.border} ${themeColor.hover} relative border-1 shadow-md flex w-[95%] my-2 mx-auto py-2 rounded-md`}
                 onClick={() => history.push(`/profile/${member._id}`)}>
                 <img
                   src={member.avatar}
@@ -121,7 +121,7 @@ const Member = ({ themeColor, slug, token }) => {
                 />
                 <div className="my-auto mx-2">{member.username}</div>
                 <div
-                  className={`${themeColor.input} ${themeColor.hoverBold} ml-auto my-auto mr-3 rounded-full p-2`}
+                  className={`${themeColor.input} ${themeColor.hoverBold} ml-auto my-auto mr-3 rounded-full p-2 cursor-pointer`}
                   onClick={(e) => handleAction(member._id, e)}>
                   <LuMoreHorizontal size={20} />
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { GoSearch } from "react-icons/go";
 
@@ -32,6 +32,11 @@ const Header = () => {
     setModalLogin(!modalLogin);
   };
 
+  const handleLinkProfile = () => {
+    history.push(`/profile/${user._id}`);
+    setModalUser(false);
+  };
+
   const handleLogout = () => {
     dispatch(logout(token));
     setModalUser(false);
@@ -58,7 +63,7 @@ const Header = () => {
     <div
       className={`${themeColor.sub} ${themeColor.text} ${themeColor.border} flex justify-between h-[60px] border-b relative shadow-md`}>
       {/* logo */}
-      <div className="flex mx-2 my-auto cursor-pointer">
+      <div className="flex mx-2 my-auto cursor-pointer" onClick={() => history.push("/")}>
         <img
           src="https://res.cloudinary.com/dfuaq9ggj/image/upload/v1697772495/blog/ckov65p4msb127rlsnd0_sjbmvx.png"
           alt="logo"
@@ -71,7 +76,7 @@ const Header = () => {
       <div className={`${themeColor.sub} my-auto w-50 relative`}>
         <input
           type="text"
-          className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-full shadow-md appearance-none leading-tight focus:outline-none`}
+          className={`${themeColor.input} w-100 py-2 px-3 rounded-full shadow-md appearance-none leading-tight focus:outline-none`}
           placeholder="Search Blogs ..."
           name="search"
           onChange={(e) => handleSearch(e)}
@@ -115,17 +120,15 @@ const Header = () => {
             <img
               src={user.avatar}
               alt="avatar"
-              className="rounded-full w-[40px] h-[40px] object-cover"
+              className="rounded-full w-[40px] h-[40px] object-cover cursor-pointer"
               onClick={() => setModalUser(!modalUser)}
             />
             {modalUser && (
               <div
-                className={`${themeColor.input} absolute top-[60px] right-4 py-1 px-1 rounded-lg`}>
+                className={`${themeColor.input} ${themeColor.border} border-1 absolute top-[60px] right-4 py-1 px-1 rounded-lg`}>
                 <div
                   className={`${themeColor.hoverBold} py-2 px-4 mx-2 my-1 rounded-lg cursor-pointer`}>
-                  <Link to={`/profile/${user._id}`} onClick={() => setModalUser(false)}>
-                    Profile
-                  </Link>
+                  <div onClick={handleLinkProfile}>Profile</div>
                 </div>
                 <hr />
                 <div
@@ -162,10 +165,7 @@ const Header = () => {
 
       {data.length > 0 && selectedOption === "blog" && (
         <div
-          className={
-            themeColor.main +
-            " absolute top-[60px] right-1/2 translate-x-1/2 w-[600px] px-1 pt-1 rounded-md z-[100]"
-          }>
+          className={`${themeColor.main} ${themeColor.border} border-1 absolute top-[60px] right-1/2 translate-x-1/2 w-[600px] px-1 pt-1 rounded-md z-[100] shadow-lg`}>
           {data.map((blog, index) => (
             <div
               key={index}
@@ -183,7 +183,7 @@ const Header = () => {
               <img
                 src={blog.thumbnail}
                 alt="thumbnail"
-                className="w-1/3 max-h-[120px] p-1 rounded-md"
+                className="max-w-[33%] max-h-[120px] w-auto h-auto p-1 rounded-md object-cover m-auto"
               />
             </div>
           ))}
@@ -192,10 +192,7 @@ const Header = () => {
 
       {data.length > 0 && selectedOption === "user" && (
         <div
-          className={
-            themeColor.main +
-            " absolute top-[60px] right-1/2 translate-x-1/2 w-[400px] px-1 pt-1 rounded-md z-[100]"
-          }>
+          className={`${themeColor.main} ${themeColor.border} border-1 absolute top-[60px] right-1/2 translate-x-1/2 w-[600px] px-1 pt-1 rounded-md z-[100] shadow-lg`}>
           {data.map((user, index) => (
             <div
               key={index}
@@ -209,7 +206,7 @@ const Header = () => {
               <img
                 src={user.avatar}
                 alt="thumbnail"
-                className="w-[60px] h-[60px] p-1 rounded-full"
+                className="w-[60px] h-[60px] p-1 rounded-full object-cover"
               />
               <div className="mx-2">
                 <div className="mb-2 font-bold text-md">{user.username}</div>
@@ -222,10 +219,8 @@ const Header = () => {
 
       {data.length > 0 && selectedOption === "category" && (
         <div
-          className={
-            themeColor.main +
-            " absolute top-[60px] right-1/2 translate-x-1/2 w-[400px] px-1 pt-1 rounded-md z-[100]"
-          }>
+          className={`${themeColor.main} ${themeColor.border} border-1 absolute top-[60px] right-1/2 translate-x-1/2 w-[600px] px-1 pt-1 rounded-md z-[100] shadow-lg`}>
+          {" "}
           {data.map((category, index) => (
             <div
               key={index}

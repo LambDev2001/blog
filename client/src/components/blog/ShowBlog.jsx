@@ -52,20 +52,24 @@ const ShowBlog = ({ blog, comments }) => {
   return (
     <div className="mt-2">
       {/* Header */}
-      <div className="flex justify-between">
+      <div className={`${themeColor.sub} flex justify-between shadow-md my-2 p-1 rounded-md`}>
         {/* Start */}
         <div className="flex">
           {/* Avatar */}
-          <div className="mx-2">
-            <img src={blog.author.avatar} alt="avatar" className="w-[50px] h-[50px] rounded-full" />
+          <div>
+            <img
+              src={blog.author.avatar}
+              alt="avatar"
+              className="w-[44px] h-[44px] rounded-full mr-2"
+            />
           </div>
 
           {/* Author */}
           <div>
-            {/* Time */}
-            <div className="text-gray-400 font-medium text-sm">{blog.timeAgo}</div>
             {/* Author */}
             <div className="font-semibold">{blog.author.username}</div>
+            {/* Time */}
+            <div className="text-gray-400 font-medium text-sm">{blog.timeAgo}</div>
           </div>
         </div>
 
@@ -77,10 +81,11 @@ const ShowBlog = ({ blog, comments }) => {
             onClick={handleIsMore}
           />
           {isMore && (
-            <div className={themeColor.input + " absolute right-0 p-2 w-[100px] mt-1 rounded-md"}>
+            <div
+              className={`${themeColor.input} ${themeColor.border} border-1 absolute right-0 p-2 w-[100px] mt-1 rounded-md shadow-md`}>
               {isOwner && (
                 <div
-                  className={themeColor.hoverBold + " p-2 rounded-md cursor-pointer"}
+                  className={`${themeColor.hover} ${themeColor.border} border-1 p-2 rounded-md cursor-pointer shadow-lg`}
                   onClick={() => history.push(`/edit-blog/${blog._id}`)}>
                   Edit Blog
                 </div>
@@ -110,8 +115,8 @@ const ShowBlog = ({ blog, comments }) => {
       </div>
 
       {/* Info */}
-      <div className="my-2">
-        <div className="font-semibold text-2xl">{blog.title}</div>
+      <div className={`${themeColor.sub} rounded-md shadow-md my-2 p-1`}>
+        <div className="font-semibold text-2xl text-center">{blog.title}</div>
         <div className="mt-3">{blog.description}</div>
       </div>
 

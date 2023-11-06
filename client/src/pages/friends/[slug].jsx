@@ -12,7 +12,7 @@ const FriendPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(getFriendPage({idUser: user._id, token}));
+    dispatch(getFriendPage({ idUser: user._id, token }));
   }, [dispatch, token, user]);
 
   const handleAddFriend = (_id) => {
@@ -38,12 +38,12 @@ const FriendPage = () => {
             allFriends.req.map((req, index) => (
               <div
                 key={index}
-                className="p-1 w-full rounded-md sm:w-1/2 md:w-1/3 lg:w-1/4 overflow-hidden transform transition-transform hover:scale-105">
+                className={`${themeColor.border} border-1 shadow-md p-1 w-full rounded-md sm:w-1/2 md:w-1/3 lg:w-1/4 overflow-hidden transform transition-transform hover:scale-105`}>
                 <div className={themeColor.sub + "  p-2 rounded-md"}>
                   <img
                     src={req.avatar}
                     alt=""
-                    className="h-30 object-cover rounded-md cursor-pointer"
+                    className="rounded-full w-[150px] h-[150px] object-cover cursor-pointer m-auto"
                     onClick={() => history.push(`/profile/${req._id}`)}
                   />
                   <div className="text-lg font-semibold my-1">{req.username}</div>
@@ -78,17 +78,17 @@ const FriendPage = () => {
             allFriends.friend.map((req, index) => (
               <div
                 key={index}
-                className="p-1 w-full rounded-md sm:w-1/2 md:w-1/3 lg:w-1/4 overflow-hidden transform transition-transform hover:scale-105">
+                className={`${themeColor.border} border-1 shadow-md p-1 w-full rounded-md sm:w-1/2 md:w-1/3 lg:w-1/4 overflow-hidden transform transition-transform hover:scale-105`}>
                 <div className={themeColor.sub + "  p-2 rounded-md"}>
                   <img
                     src={req.avatar}
                     alt=""
-                    className="h-30 object-cover rounded-md cursor-pointer"
+                    className="rounded-full w-[150px] h-[150px] object-cover cursor-pointer m-auto"
                     onClick={() => history.push(`/profile/${req._id}`)}
                   />
+
                   <div className="text-lg font-semibold my-1">{req.username}</div>
                   <div className="text-md my-1">{req.account}</div>
-                  
                 </div>
               </div>
             ))}

@@ -10,7 +10,10 @@ const userReducer = (state = {}, action) => {
       return {
         ...state,
         following: state.following.filter((item) => item._id !== action.payload),
-      }
+      };
+
+    case "REMOVE_FRIEND":
+      return { ...state, friends: state.friends.filter((item) => item._id !== action.payload) };
 
     default:
       return state;

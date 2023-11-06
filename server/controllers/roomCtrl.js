@@ -8,7 +8,7 @@ const groupCtrl = {
     try {
       const idUser = req.user.id;
 
-      let rooms = await Rooms.find({ member: idUser, nameRoom: { $ne: "Friend Chat"} }).select(
+      let rooms = await Rooms.find({ member: idUser, nameRoom: { $ne: "Friend Chat" } }).select(
         "-idUser -report -__v -createdAt -updatedAt"
       );
 
@@ -47,7 +47,7 @@ const groupCtrl = {
       if (images.length > 0) {
         images = images
           .map((image) => {
-            const linkImage = image.message.split(" ");
+            const linkImage = image.message.trim().split(" ");
             return linkImage;
           })
           .flat();

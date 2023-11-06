@@ -96,6 +96,20 @@ export const unFollowUser = (idUser, token) => async (dispatch) => {
   }
 };
 
+
+export const unFriend = (idUser, token) => async (dispatch) => {
+  try {
+    console.log(idUser);
+    
+    const res = await postAPI(`un-friend/${idUser}`, "", token);
+    await ResErrorData(res.data, dispatch);
+    dispatch({ type: "UN_FRIEND", payload: idUser });
+    dispatch({ type: "REMOVE_FRIEND", payload: idUser });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const updateUser = (user, token) => async (dispatch) => {
   try {
     if (typeof user.avatar === "object") {
@@ -105,6 +119,8 @@ export const updateUser = (user, token) => async (dispatch) => {
 
     const res = await patchAPI(`user/${user._id}`, user, token);
     await ResErrorData(res.data, dispatch);
+
+    dispatch({ type: "UPDATE_USER", payload: user });
   } catch (err) {
     console.error(err);
   }
@@ -127,8 +143,8 @@ export const resetNewPassword = (newPassword, slug) => async (dispatch) => {
   try {
     const res = await postAPI("reset-password", { newPassword, token: slug }, "");
     await ResErrorData(res.data, dispatch);
-    if(res.data) {
-      window.close()
+    if (res.data) {
+      window.close();
     }
   } catch (err) {
     console.log(err);

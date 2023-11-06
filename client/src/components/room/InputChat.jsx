@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { BsImage, BsSend } from "react-icons/bs";
-import { IoMdClose } from "react-icons/io";
+import { BsSend } from "react-icons/bs";
+import { IoMdClose, IoMdAddCircleOutline } from "react-icons/io";
 
 import { sendTextChat, sendImageChat } from "../../redux/actions/chatAction";
 
@@ -56,7 +56,6 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
       }
     }
   };
-  console.log(selectedImages);
 
   const handleRemoveImage = (index) => {
     const updatedImages = [...selectedImages];
@@ -87,7 +86,7 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
         themeColor.sub +
         " " +
         themeColor.border +
-        " relative flex mt-1 p-[12px] h-[60px] rounded-lg border-b"
+        " relative flex mt-1 p-2 h-[60px] rounded-lg border-1 shadow-lg"
       }>
       <input
         type="file"
@@ -96,16 +95,17 @@ const InputChat = ({ themeColor, dispatch, idRoom, token }) => {
         id="imageUpload"
         multiple
       />
-      <label htmlFor="imageUpload" className="my-auto mx-2 cursor-pointer rounded-md">
-        <BsImage size={24} />
+      <label htmlFor="imageUpload" className="my-auto cursor-pointer rounded-md">
+        <IoMdAddCircleOutline size={40} />
       </label>
       <input
         type="text"
         value={inputText}
         onChange={handleInputChange}
-        className={themeColor.input + " w-full rounded-full mx-2 focus:outline-none"}
+        className={`${themeColor.input} ${themeColor.border} border-1 w-full mx-2 py-2 px-3 rounded-full shadow-md appearance-none leading-tight focus:outline-none`}
+        placeholder="Type a message..."
       />
-      <button onClick={handleSendClick} className="bg-blue-400 rounded-full py-2 px-3">
+      <button onClick={handleSendClick} className="bg-blue-400 rounded-full py-2 px-3 text-[#fff]">
         <BsSend size={24} />
       </button>
 

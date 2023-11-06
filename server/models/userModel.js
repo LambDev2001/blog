@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
     numberPhone: {
-      type: Number,
+      type: String,
       maxLength: 12,
       minLength: 10,
     },

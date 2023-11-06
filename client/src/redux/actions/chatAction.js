@@ -10,6 +10,7 @@ export const getChat = (idRoom, token) => async (dispatch) => {
 
     await ResErrorData(res.data, dispatch);
     res.data.map((item) => {
+      item.message = item.message.trim();
       if (item.type === "image") {
         item.message = item.message.split(" ");
       }
