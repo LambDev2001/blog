@@ -5,7 +5,7 @@ import { BsFillVolumeUpFill } from "react-icons/bs";
 import { FaCopy } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
-const Test = () => {
+const Translate = () => {
   const [textFrom, setTextFrom] = useState("en-US");
   const [textTo, setTextTo] = useState("vi-VN");
   const [text, setText] = useState("");
@@ -155,7 +155,7 @@ const Test = () => {
             />
           </div>
 
-          <hr className={`${themeColor.border} border-1 mx-2 my-1`} />
+          <hr className={`${themeColor.border} border-1 mx-2 my-2`} />
 
           {/* Translated */}
           <div
@@ -219,4 +219,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Translate;

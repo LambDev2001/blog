@@ -29,8 +29,6 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
 
   useEffect(() => {
     socket.on("create-comment", (data) => {
-      console.log(data);
-      
       dispatch({ type: "SEND_COMMENT", payload: data });
     });
 

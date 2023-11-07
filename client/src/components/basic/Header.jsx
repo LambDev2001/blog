@@ -15,7 +15,8 @@ const Header = () => {
   const [selectedOption, setSelectedOption] = useState("blog");
   const [typeModal, setTypeModal] = useState("login");
   const [data, setData] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState("white");
+  const theme = useSelector((state) => state.mainTheme);
+  const [isDarkMode, setIsDarkMode] = useState(theme);
   const user = useSelector((state) => state.authReducer.user);
   const themeColor = useSelector((state) => state.themeUserReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
@@ -24,6 +25,7 @@ const Header = () => {
 
   const toggleTheme = (type) => {
     dispatch({ type: "CHANGE_THEME_USER", payload: type });
+    dispatch({ type: "UPDATE_MAIN_THEME", payload: type });
     setIsDarkMode(type);
   };
 
@@ -99,7 +101,7 @@ const Header = () => {
       {/* End */}
       <div className="my-auto mx-3 flex">
         {/* Change Theme */}
-        <div className={"mx-3 my-au`to"}>
+        <div className={"mx-3 my-auto"}>
           <button
             className={`${
               themeColor.border

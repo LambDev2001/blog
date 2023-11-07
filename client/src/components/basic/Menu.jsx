@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { BiHomeAlt2 } from "react-icons/bi";
-import { LiaExclamationCircleSolid, LiaQuestionCircleSolid } from "react-icons/lia";
-import { BsArrowUpRightCircle } from "react-icons/bs";
+import { LiaExclamationCircleSolid } from "react-icons/lia";
+import { BsArrowUpRightCircle, BsTranslate } from "react-icons/bs";
 import { SlPeople, SlUserFollowing } from "react-icons/sl";
+import { IoShareSocial } from "react-icons/io5";
+
 import { getCategories } from "../../redux/actions/categoryAction";
 
 const Menu = () => {
@@ -23,6 +25,10 @@ const Menu = () => {
 
   const handleShowCategory = () => {
     setIsMore(!isMore);
+  };
+
+  const handleFeature = (value) => {
+    dispatch({ type: "UPDATE_FEATURE", payload: value });
   };
 
   return (
@@ -92,6 +98,21 @@ const Menu = () => {
           </div>
         )}
 
+        {/* Feature */}
+        <div className="text-lg">Feature</div>
+        <div
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          onClick={() => handleFeature("social")}>
+          <IoShareSocial size={26} className="ml-2 mr-4" />
+          <div className="my-auto">Social</div>
+        </div>
+        <div
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          onClick={() => handleFeature("translate")}>
+          <BsTranslate size={26} className="ml-2 mr-4" />
+          <div className="my-auto">Translate</div>
+        </div>
+
         {/* resource */}
         <div className="text-lg">Resources</div>
         <div
@@ -99,12 +120,6 @@ const Menu = () => {
           onClick={() => history.push("/about")}>
           <LiaExclamationCircleSolid size={26} className="ml-2 mr-4" />
           <div className="my-auto">About</div>
-        </div>
-        <div
-          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
-          onClick={() => history.push("/help")}>
-          <LiaQuestionCircleSolid size={26} className="ml-2 mr-4" />
-          <div className="my-auto">Help</div>
         </div>
       </div>
     </div>

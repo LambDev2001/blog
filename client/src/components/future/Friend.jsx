@@ -27,11 +27,6 @@ const Friend = () => {
     setHoveredItem(null);
   };
 
-  if (!!reqFriends) {
-    console.log(reqFriends.length);
-  } else {
-    console.log(0);
-  }
 
   return (
     <div

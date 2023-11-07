@@ -20,7 +20,6 @@ const ChatPage = () => {
   const dispatch = useDispatch();
 
   const otherUser = members.filter((member) => member._id !== user._id)[0];
-  console.log(otherUser);
 
   const socket = useContext(SocketContext);
 

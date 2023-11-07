@@ -7,11 +7,10 @@ import Alert from "./components/global/Alert";
 import PageRender from "./PageRender";
 import Menu from "../src/components/basic/Menu";
 import Header from "../src/components/basic/Header";
-import Friend from "../src/components/basic/Friend";
-import Group from "../src/components/basic/Group";
 
 import SocketContext from "./utils/SocketContext";
 import Loading from "./components/basic/Loading";
+import Feature from "./components/basic/Feature";
 
 function App() {
   const themeColor = useSelector((state) => state.themeUserReducer);
@@ -64,17 +63,12 @@ function App() {
             </div>
             {/* <Footer /> */}
 
-            {/* social */}
+            {/* Feature */}
             <div
               className={`${themeColor.border} w-1/5 border-l custom-scroll-container`}
               style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto">
-                {token && (
-                  <div>
-                    <Friend />
-                    <Group />
-                  </div>
-                )}
+                <Feature />
               </div>
             </div>
           </div>
