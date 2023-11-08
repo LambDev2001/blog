@@ -27,7 +27,7 @@ const Report = () => {
   }, [dispatch, slug, token]);
 
   const handleViolate = async () => {
-    await dispatch(acceptReport(report._id, token));
+    await dispatch(acceptReport(report._id, report.author._id, token));
     history.goBack();
   };
 

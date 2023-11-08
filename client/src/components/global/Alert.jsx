@@ -19,6 +19,7 @@ const Alert = () => {
       if (alert.type === "success") {
         toast.success(alert.msg, {
           style: {
+            textJustify: "center",
             fontSize: "16px",
             padding: "10px",
             borderRadius: "10px",
@@ -26,9 +27,10 @@ const Alert = () => {
             color: "#fff",
           },
         });
-      } else if (alert.type === "error") {
+      } else if (alert.type === "danger") {
         toast.error(alert.msg, {
           style: {
+            textJustify: "center",
             fontSize: "16px",
             padding: "10px",
             borderRadius: "10px",
@@ -53,8 +55,8 @@ const Alert = () => {
       containerStyle={{}}
       toastOptions={{
         // Define default options
-        className: "",
-        duration: 3000,
+        className: "text-justify whitespace-nowrap",
+        duration: 8000,
         style: {
           background: "#363636",
           color: "#fff",

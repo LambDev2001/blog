@@ -10,7 +10,13 @@ const userReducer = (state = {}, action) => {
       return {
         ...state,
         following: state.following.filter((item) => item._id !== action.payload),
-      }
+      };
+
+    case "BAN":
+      return { ...state, ban: action.payload };
+
+    case "UN_BAN":
+      return { ...state, ban: "" };
 
     default:
       return state;

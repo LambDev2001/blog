@@ -35,18 +35,19 @@ const Profile = () => {
             {user && (
               <div className={`${color.inside} rounded-lg shadow-slate-300 p-3 h-100`}>
                 <h2 className="text-2xl font-semibold mb-2">Information User</h2>
-                <div className="grid grid-cols-2 shadow-lg rounded-lg">
-                  <span className="text-lg font-bold m-2 mx-3">Username:</span> {user.username}
-                  <span className="text-lg font-bold m-2 mx-3">Account:</span> {user.account}
+                <div className="grid grid-cols-2">
+                  <span className="text-lg font-bold m-2 mx-3">Username: </span> {user.username}
+                  <span className="text-lg font-bold m-2 mx-3">Account: </span> {user.account}
                   {!!user.role && (
-                    <div>
-                      <span className="text-lg font-bold m-2 mx-3">Role:</span> {user.role}
-                      <span
+                    <>
+                      <span className="text-lg font-bold m-2 mx-3">Role: </span>
+                      {user.role}
+                      <div
                         className="text-md font-bold m-2 mx-3 cursor-pointer text-blue-500 underline"
                         onClick={() => setModal(true)}>
                         Change password
-                      </span>
-                    </div>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>

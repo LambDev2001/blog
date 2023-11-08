@@ -81,11 +81,11 @@ const authCtrl = {
       }
 
       const user = await Users.findOne({ account }).select("-__v -status -report -updatedAt");
-      if (!user) return res.json({ msg: "Account not found" });
+      if (!user) return res.json({ err: "Account not found" });
 
       loginUser(user, password, res);
     } catch (error) {
-      return res.status(500).json({ msg: error.message });
+      return res.status(500).json({ err: error.message });
     }
   },
 
@@ -177,6 +177,15 @@ const loginUser = async (user, password, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.json({ err: "The account or password is incorrect" });
+    }
+
+    if (!!user.ban) {
+      return res.json({
+        err:
+          "Your account has been banned.\n" +
+          user.ban +
+          "\nPlease contact with admin to remove ban by admin@gmail.com",
+      });
     }
 
     const accessToken = generateAccessToken({ id: user._id });

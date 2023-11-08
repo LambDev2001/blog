@@ -7,16 +7,29 @@ import Header from "../../components/global/Header";
 import Card from "../../components/global/Card";
 import TableReport from "../../components/TableReport";
 import Button from "../../components/global/theme/button/Button";
-import { getUser, changeStatus } from "../../redux/actions/userAction";
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
+import { ban, unBan } from "../../redux/actions/userAction";
+import { getUser, changeStatus } from "../../redux/actions/userAction";
 
 const User = () => {
   const [openAction, setOpenAction] = useState(false);
+  const [showReasons, setShowReasons] = useState(false);
   const token = useSelector((state) => state.authReducer.accessToken);
   const user = useSelector((state) => state.userReducer);
   const color = useSelector((state) => state.themeReducer.themeColor);
   const { slug } = useParams();
   const dispatch = useDispatch();
+
+  const reasons = [
+    "Spamming",
+    "Harassment/Bullying",
+    "Hate Speech/Discrimination",
+    "Violent Content",
+    "Impersonation",
+    "Inappropriate Content",
+    "Copyright Violation",
+    "Repeated Violation of Community Guidelines",
+  ];
 
   useEffect(() => {
     dispatch(getUser(slug, token));
@@ -30,6 +43,15 @@ const User = () => {
   const downStatus = () => {
     setOpenAction(false);
     dispatch(changeStatus(user._id, user.status - 1, token));
+  };
+
+  const handleUnBan = () => {
+    dispatch(unBan(slug, token));
+  };
+
+  const handleReasonSelect = (selectedReason) => {
+    dispatch(ban(slug, selectedReason, token));
+    setShowReasons(false);
   };
 
   return (
@@ -58,13 +80,45 @@ const User = () => {
             {user && (
               <div className={`${color.inside} rounded-lg shadow-slate-300 p-3`}>
                 <h2 className="text-2xl font-semibold mb-2">Information User</h2>
-                <div className="grid grid-cols-2 shadow-lg rounded-lg">
-                  <span className="text-lg font-bold m-2 mx-3">Username:</span> {user.username}
-                  <span className="text-lg font-bold m-2 mx-3">Account:</span> {user.account}
-                  <span className="text-lg font-bold m-2 mx-3">Status:</span> {user.status}
-                  <span className="text-lg font-bold m-2 mx-3">Day create:</span> {user.createdAt}
-                  <span className="text-lg font-bold m-2 mx-3">Violation:</span> {user.report}
+                <div className="grid grid-cols-2">
+                  <span className="text-lg font-bold my-2">Username:</span> {user.username}
+                  <span className="text-lg font-bold my-2">Account:</span> {user.account}
+                  <span className="text-lg font-bold my-2">Status:</span> {user.status}
+                  <span className="text-lg font-bold my-2">Day create:</span> {user.createdAt}
+                  <span className="text-lg font-bold my-2">Violation:</span> {user.report}
                 </div>
+                {!user.ban && (
+                  <div>
+                    <div
+                      onClick={() => setShowReasons(!showReasons)}
+                      className="px-3 py-2 mr-2 rounded-md shadow-md bg-red-500 inline-block cursor-pointer relative">
+                      Ban
+                      {showReasons && (
+                        <div>
+                          {showReasons && (
+                            <div className="absolute left-0 top-11 bg-white border rounded shadow-md z-10 max-h-60 overflow-y-auto">
+                              {reasons.map((reason, index) => (
+                                <div
+                                  key={index}
+                                  onClick={() => handleReasonSelect(reason)}
+                                  className="px-3 py-2 cursor-pointer hover:bg-gray-200 whitespace-nowrap">
+                                  {reason}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {!!user.ban && (
+                  <div
+                    className="px-3 py-2 rounded-md shadow-md bg-green-500 inline-block cursor-pointer"
+                    onClick={handleUnBan}>
+                    remove ban
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -76,10 +130,9 @@ const User = () => {
                 <div className={`${color.inside} p-3 h-100 rounded-lg shadow-md`}>
                   <h2 className="text-lg font-semibold mb-2">Avatar</h2>
                   <img
-                    className="rounded-full mx-auto"
+                    className="rounded-full mx-auto max-w-[300px] h-[300px] w-auto object-cover overflow-hidden"
                     src={user.avatar}
                     alt="User Avatar"
-                    style={{ maxWidth: "100%", height: "auto" }}
                   />
                 </div>
               )}
@@ -106,7 +159,7 @@ const User = () => {
             <div className="content p-2">Blogs ({user.blogs.length})</div>
             <div className="d-flex flex-wrap justify-around mx-auto">
               {user.blogs.map((blog) => (
-                <div className="sm:w-1 md:w-1/2 lg:w-1/3">
+                <div key={blog._id} className="sm:w-1 md:w-1/2 lg:w-1/3">
                   <Card blog={blog} key={blog._id} />
                 </div>
               ))}

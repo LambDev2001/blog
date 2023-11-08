@@ -105,3 +105,22 @@ export const updateUser = (user, token) => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const ban = (idUser, reason, token) => async (dispatch) => {
+  const res = await patchAPI(`ban/${idUser}`, { reason }, token);
+  await ResErrorData(res.data, dispatch);
+  dispatch({ type: "BAN", payload: reason });
+  dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+};
+
+export const unBan = (idUser, token) => async (dispatch) => {
+  try {
+    const res = await patchAPI(`un-ban/${idUser}`, {}, token);
+    await ResErrorData(res.data, dispatch);
+
+    dispatch({ type: "UN_BAN", payload: idUser });
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+  } catch (err) {
+    console.error(err);
+  }
+};

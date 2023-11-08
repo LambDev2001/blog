@@ -28,4 +28,6 @@ router.patch("/un-follow", user, userCtrl.unFollow);
 router.get("/user/:idUser", admin, userCtrl.getUser);
 router.get("/users", admin, userCtrl.getUsers);
 router.patch("/change-status/:idUser", admin, userCtrl.changeStatus);
+router.patch("/ban/:idUser", admin, userCtrl.ban);
+router.patch("/un-ban/:idUser", admin, userCtrl.unBan);
 export default router;

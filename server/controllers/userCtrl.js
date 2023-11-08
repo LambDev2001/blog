@@ -184,7 +184,10 @@ const userCtrl = {
       // check id in the requestFriends
       const requestFriends = user.friends;
       if (requestFriends.indexOf(req.params.idUser) !== -1) {
-        await Users.findByIdAndUpdate({ _id: req.user.id }, { $pull: { friends: req.params.idUser } });
+        await Users.findByIdAndUpdate(
+          { _id: req.user.id },
+          { $pull: { friends: req.params.idUser } }
+        );
         return res.status(200).json({ msg: "you remove friend successfully" });
       } else {
         return res.json({ err: "Not found your friend" });
@@ -300,6 +303,39 @@ const userCtrl = {
       await user.save();
 
       return res.status(200).json({ msg: "Change status successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  ban: async (req, res) => {
+    try {
+      const { idUser } = req.params;
+      const { reason } = req.body;
+
+      const user = await Users.findById({ _id: idUser });
+      user.ban = reason;
+      user.status = 3;
+      user.save();
+      console.log("Send mail");
+
+      return res.status(200).json({ msg: "Ban user success" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  unBan: async (req, res) => {
+    try {
+      const { idUser } = req.params;
+
+      const user = await Users.findById({ _id: idUser });
+      user.ban = "";
+      user.status = 2;
+      user.save();
+      console.log("Send mail");
+
+      return res.status(200).json({ msg: "Remove ban user success" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

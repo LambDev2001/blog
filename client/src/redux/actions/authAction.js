@@ -8,6 +8,7 @@ export const login = (infoUser) => async (dispatch) => {
     const res = await postAPI("login", infoUser);
     await ResErrorData(res.data, dispatch);
     dispatch({ type: "AUTH", payload: res.data });
+
     dispatch({ type: "LOADING", payload: { loading: false } });
   } catch (err) {
     console.error(err);

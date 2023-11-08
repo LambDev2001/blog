@@ -58,9 +58,9 @@ export const declineReport = (idReport, token) => async (dispatch) => {
   }
 };
 
-export const acceptReport = (idReport, token) => async (dispatch) => {
+export const acceptReport = (idReport, idAuthor, token) => async (dispatch) => {
   try {
-    const res = await postAPI(`accept-report/${idReport}`, "", token);
+    const res = await postAPI(`accept-report/${idReport}`, { idAuthor }, token);
     await ResErrorData(res.data, dispatch);
   } catch (err) {
     console.error(err);

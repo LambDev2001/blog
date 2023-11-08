@@ -8,7 +8,6 @@ import Categories from "../models/categoryModel.js";
 import Likes from "../models/likeModel.js";
 import Views from "../models/viewModel.js";
 
-
 const reportCtrl = {
   // auth
   deleteReport: async (req, res) => {
@@ -168,19 +167,34 @@ const reportCtrl = {
   acceptReport: async (req, res) => {
     try {
       const { idReport } = req.params;
+      const { idAuthor } = req.body;
+
       const report = await Reports.findOne({ _id: idReport });
       if (!report) return res.json({ msg: "Report not found" });
 
-      switch (report.type) {
-        case "blog":
-          await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
-          break;
-        case "comment":
-          break;
-        case "group":
-          break;
+      // switch (report.type) {
+      //   case "blog":
+      //     await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
+      //     break;
+      //   case "comment":
+      //     break;
+      //   case "group":
+      //     break;
+      // }
+      const author = await Users.findById({ _id: idAuthor });
+      ++author.report;
+      if (author.report > 3 && author.report < 10 && author.status !== 1) author.status = 1;
+      if (author.report > 10 && author.report < 20 && author.status !== 1) author.status = 2;
+      if (author.report > 20) author.status = 3;
+      author.status = 3;
+      if (author.status === 3) {
+        console.log("send mail");
+        author.ban = "Because you have reported so many times.";
       }
-      await Reports.findOneAndDelete({ _id: idReport });
+
+      author.save();
+
+      // await Reports.findOneAndDelete({ _id: idReport });
 
       return res.status(200).json({ msg: "Accept report success" });
     } catch (err) {
