@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 import { BiHomeAlt2 } from "react-icons/bi";
 import { LiaExclamationCircleSolid } from "react-icons/lia";
-import { BsArrowUpRightCircle, BsTranslate } from "react-icons/bs";
+import { BsArrowUpRightCircle, BsTranslate, BsNewspaper } from "react-icons/bs";
 import { SlPeople, SlUserFollowing } from "react-icons/sl";
 import { IoShareSocial } from "react-icons/io5";
 
@@ -61,6 +61,13 @@ const Menu = () => {
           onClick={() => history.push(`/following`)}>
           <SlUserFollowing size={26} className="ml-2 mr-4" />
           <div className="my-auto">Following</div>
+        </div>
+
+        <div
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          onClick={() => history.push(`/news`)}>
+          <BsNewspaper size={26} className="ml-2 mr-4" />
+          <div className="my-auto">News</div>
         </div>
 
         {/* Category */}
