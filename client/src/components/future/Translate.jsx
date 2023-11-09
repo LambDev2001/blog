@@ -100,7 +100,7 @@ const Translate = () => {
         <div className="h-100">
           {/* Input to trans */}
           <div
-            className={`${themeColor.border} border-1 h-[40%] w-100 flex flex-col justify-between rounded-md overflow-hidden relative`}>
+            className={`${themeColor.border} border-1 h-[40%] w-100 shadow-md flex flex-col justify-between rounded-md overflow-hidden relative`}>
             <textarea
               className={`${themeColor.input} h-100 w-100 border-none outline-none text-md rounded-sm bg-none p-2`}
               placeholder="Enter text"
@@ -159,7 +159,7 @@ const Translate = () => {
 
           {/* Translated */}
           <div
-            className={`${themeColor.border} border-1 h-[40%] w-100 flex flex-col justify-between rounded-md overflow-hidden`}>
+            className={`${themeColor.border} border-1 h-[40%] w-100 shadow-md flex flex-col justify-between rounded-md overflow-hidden`}>
             <textarea
               className={`${themeColor.input} h-100 w-100 border-none outline-none text-md rounded-sm bg-none p-2`}
               placeholder={isTranslate ? "Translating..." : "Translated"}

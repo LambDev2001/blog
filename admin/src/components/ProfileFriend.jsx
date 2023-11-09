@@ -19,7 +19,6 @@ const ProfileFriend = ({ friends }) => {
 
   const handleUnfriend = (idFriend) => {
     setIsMore(-1);
-    console.log(idFriend);
   };
 
   return (

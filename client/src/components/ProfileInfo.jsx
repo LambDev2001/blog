@@ -1,6 +1,8 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 
+import { BsCalendar3 } from "react-icons/bs";
+
 const ProfileInfo = ({ otherUser, themeColor }) => {
   let originalDate;
   if (otherUser.birthday) {
@@ -20,17 +22,20 @@ const ProfileInfo = ({ otherUser, themeColor }) => {
           type="text"
           defaultValue={otherUser.numberPhone}
           name="numberPhone"
+          disabled
         />
       </div>
 
-      <div className="flex flex-col my-2 w-100">
-        <label htmlFor="username" className="font-semibold text-xl mb-1">
+      <div className="my-2 w-100 ">
+        <div className="font-semibold text-xl mb-1 relative">
           Date of Birth
-        </label>
+          <BsCalendar3 className="absolute top-[150%] right-[75%] z-50" size={20} />
+        </div>
 
         <DatePicker
           className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md disabled`}
           selected={!originalDate ? new Date("1990-01-01") : originalDate}
+          disabled
         />
       </div>
     </div>

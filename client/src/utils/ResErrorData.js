@@ -1,6 +1,4 @@
 const ResErrorData = async (data, dispatch) => {
-  console.log(data);
-  
   if (data.err) {
     await dispatch({ type: "ALERT", payload: { type: "danger", msg: data.err } });
     return;

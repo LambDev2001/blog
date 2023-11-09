@@ -73,3 +73,10 @@ body::-webkit-scrollbar-track {
     transform: rotate(-360deg);
   }
 }
+
+.hideDescription {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Số dòng tối đa bạn muốn hiển thị */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -88,7 +88,6 @@ const commentCtrl = {
     try {
       const { idComment } = req.params;
       const { message } = req.body;
-      console.log(message);
 
       const comment = await Comments.findOne({ _id: idComment });
       if (!comment) return res.json({ msg: "Comment not found" });

@@ -62,8 +62,6 @@ export const getInfoUser = (idUser, token) => async (dispatch) => {
 
 export const changeStatus = (idUser, status, token) => async (dispatch) => {
   try {
-    console.log({ idUser, status, token });
-
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`change-status/${idUser}`, { status }, token);
     await ResErrorData(res.data, dispatch);
@@ -99,8 +97,6 @@ export const updateUser = (user, token) => async (dispatch) => {
   try {
     const res = await patchAPI(`user/${user._id}`, user, token);
     await ResErrorData(res.data, dispatch);
-
-    console.log(res.data);
   } catch (err) {
     console.error(err);
   }

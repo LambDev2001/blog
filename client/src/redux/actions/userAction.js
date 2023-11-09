@@ -63,8 +63,6 @@ export const getInfoUser = (idUser, token) => async (dispatch) => {
 
 export const changeStatus = (idUser, status, token) => async (dispatch) => {
   try {
-    console.log({ idUser, status, token });
-
     dispatch({ type: "LOADING", payload: { loading: true } });
     const res = await patchAPI(`change-status/${idUser}`, { status }, token);
     await ResErrorData(res.data, dispatch);
@@ -99,8 +97,6 @@ export const unFollowUser = (idUser, token) => async (dispatch) => {
 
 export const unFriend = (idUser, token) => async (dispatch) => {
   try {
-    console.log(idUser);
-    
     const res = await postAPI(`un-friend/${idUser}`, "", token);
     await ResErrorData(res.data, dispatch);
     dispatch({ type: "UN_FRIEND", payload: idUser });

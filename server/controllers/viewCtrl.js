@@ -11,7 +11,6 @@ const viewCtrl = {
       const listIdBlogs = await Views.find().sort({ view: -1 }).select("idBlog view").limit(5);
       const listBlogs = await Promise.all(
         listIdBlogs.map(async (idBlog) => {
-          console.log(idBlog);
           const blog = await Blogs.findById(idBlog.idBlog);
           const category = await Categories.findById(blog.category);
           const { _id, idUser, title, thumbnail, description, share } = blog._doc;

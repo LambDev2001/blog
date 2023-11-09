@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { BsCalendar3 } from "react-icons/bs";
 
 import { updateUser } from "../../redux/actions/userAction";
 import validate from "../../utils/validate";
@@ -16,7 +17,13 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
 
   const [startDate, setStartDate] = useState(new Date("1980-01-01"));
 
-  const originalDate = new Date(user.birthday);
+  useEffect(() => {
+    const originalDate = new Date(user.birthday);
+    if (!isNaN(originalDate)) {
+      console.log(originalDate);
+      setStartDate(originalDate);
+    }
+  }, [user]);
 
   const handleDateChange = (date) => {
     setStartDate(date);
@@ -43,6 +50,7 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
 
     if (Object.values(temptErr).every((error) => error === "")) {
       dispatch(updateUser({ ...infoUser, birthday: startDate }, token));
+      handleShowModal();
     }
   };
 
@@ -83,15 +91,21 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
             <div className="text-red-500 text-md">{errors.numberPhone}</div>
           </div>
 
-          <div className="flex flex-col my-2 w-100">
-            <label htmlFor="username" className="font-semibold text-xl mb-1">
+          <div className="flex flex-col my-2 w-100 ">
+            <label htmlFor="date" className="font-semibold text-xl mb-1 relative">
               Date of Birth
+              <BsCalendar3 className="absolute top-[150%] right-[55%] z-50" size={20} />
             </label>
-
             <DatePicker
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
-              selected={!originalDate ? startDate : originalDate}
+              className={`${themeColor.input} px-3 py-2 rounded-md shadow-md focus:outline-none`}
+              name="date"
+              selected={startDate}
               onChange={handleDateChange}
+              showYearDropdown
+              showMonthDropdown
+              minDate={new Date("1980-01-01")}
+              maxDate={new Date()}
+              dateFormat="dd/MM/yyyy"
             />
           </div>
         </div>

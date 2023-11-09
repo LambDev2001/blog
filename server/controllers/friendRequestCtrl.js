@@ -89,8 +89,6 @@ const friendRequestCtl = {
         report: [],
       });
 
-      console.log(room);
-
       room.save();
 
       return res.status(200).json({ msg: "Accept the request" });
