@@ -47,19 +47,21 @@ export const data = {
   datasets: [
     {
       label: "View",
-      data: labels.map(() => Math.floor(Math.random() * 100 + 100)),
+      data: [20, 30, 21, 24, 23, 18, 25],
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
       label: "Comment",
-      data: labels.map(() => Math.floor(Math.random() * 100 +20)),
+      data: [2, 2, 5, 10, 7, 11, 5],
+
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
     {
       label: "Share",
-      data: labels.map(() => Math.floor(Math.random() * 100)),
+      data: [11, 15, 14, 13, 15, 12, 19],
+
       borderColor: "rgba(26, 192, 42, 1)",
       backgroundColor: "rgba(26, 192, 42, 0.5)",
     },

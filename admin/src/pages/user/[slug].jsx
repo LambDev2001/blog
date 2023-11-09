@@ -157,11 +157,9 @@ const User = () => {
         <div className={`${color.outside} rounded-lg shadow-md p-1`}>
           <div className={`${color.inside} rounded-lg shadow-md m-2`}>
             <div className="content p-2">Blogs ({user.blogs.length})</div>
-            <div className="d-flex flex-wrap justify-around mx-auto">
+            <div className="d-flex flex-wrap ">
               {user.blogs.map((blog) => (
-                <div key={blog._id} className="sm:w-1 md:w-1/2 lg:w-1/3">
-                  <Card blog={blog} key={blog._id} />
-                </div>
+                <Card blog={blog} key={blog._id} />
               ))}
             </div>
           </div>

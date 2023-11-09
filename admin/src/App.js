@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import PageRender from "./PageRender";
 import Alert from "./components/global/Alert";
 import Menu from "./components/Menu";
-import Loading from "./components/basic/Loading";
+import Loading from "./components/Loading";
 
 function App() {
   const loading = useSelector((state) => state.loadingReducer.loading);

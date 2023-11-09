@@ -114,6 +114,7 @@ export const getBlog = (idBlog, token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: true } });
 
     let blog = await getAPI(`blog/${idBlog}`, token);
+    const categories = await getAPI("categories", token);
     ResErrorData(blog.data, dispatch);
 
     const date = new Date(blog.data.createdAt);
@@ -122,6 +123,16 @@ export const getBlog = (idBlog, token) => async (dispatch) => {
       month: "long",
       day: "numeric",
     });
+    console.log(categories.data);
+
+    categories.data.map((category) => {
+      if (category._id === blog.data.category) {
+        blog.data.category = category.name;
+      }
+      return category;
+    });
+
+    
 
     let timeAgo = formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
     if (timeAgo.startsWith("about ")) {

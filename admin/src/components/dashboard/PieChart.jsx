@@ -1,37 +1,38 @@
-import React from "react";
-import {useSelector} from "react-redux"
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { getAPI } from "../../utils/FetchData";
 
 Chart.register(ArcElement, ChartDataLabels);
 
 const PieChart = () => {
+  const [data, setData] = useState([]);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const token = useSelector((state) => state.authReducer.accessToken);
 
-  const data = [
-    { category: "java", blogCount: 10 },
-    { category: "javascript", blogCount: 15 },
-    { category: "information", blogCount: 20 },
-    { category: "social", blogCount: 5 },
-    { category: "travel", blogCount: 3 },
-    { category: "mobile", blogCount: 2 },
-    { category: "money", blogCount: 15 },
-    { category: "car", blogCount: 30 },
-    { category: "cars", blogCount: 0 },
-  ];
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getAPI("count-category", token);
+      if (!!res.data) {
+        setData(res.data);
+      }
+    };
 
-  data.sort((a, b) => b.blogCount - a.blogCount);
+    getData();
+  }, [token]);
 
   const top5 = data.slice(0, 5);
-  const otherBlogCount = data.slice(5).reduce((sum, item) => sum + item.blogCount, 0);
-  const pieData = [...top5, { category: "other", blogCount: otherBlogCount }];
+  const otherCountBlogs = data.slice(5).reduce((sum, item) => sum + item.countBlogs, 0);
+  const pieData = [...top5, { category: "other", countBlogs: otherCountBlogs }];
+  console.log(pieData);
 
   const chartData = {
     labels: pieData.map((item) => item.category),
     datasets: [
       {
-        data: pieData.map((item) => item.blogCount),
+        data: pieData.map((item) => item.countBlogs),
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -76,7 +77,7 @@ const PieChart = () => {
 
   return (
     <div className={`${color.inside} rounded-lg shadow-md p-2 h-[400px]`}>
-        <Pie data={chartData} options={options} />
+      <Pie data={chartData} options={options} />
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import Categories from "../models/categoryModel.js";
 import Admins from "../models/adminModel.js";
+import Blogs from "../models/blogModel.js";
 
 const categoryCtrl = {
   // none
   searchCategory: async (req, res) => {
-    
     try {
       const categories = await Categories.aggregate([
         {
@@ -21,7 +21,7 @@ const categoryCtrl = {
         {
           $project: {
             _id: 1,
-            name: 1
+            name: 1,
           },
         },
       ]);
@@ -51,6 +51,28 @@ const categoryCtrl = {
       const listCategories = await Categories.findById(idCategory).select("name");
 
       return res.status(200).json(listCategories);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  countCategory: async (req, res) => {
+    try {
+      const categories = await Categories.find();
+      let result = await Promise.all(
+        categories.map(async (category) => {
+          const countBlogs = await Blogs.count({ category: category._id });
+          if (!!countBlogs && countBlogs > 0) {
+            return { category: category.name, countBlogs };
+          }
+        })
+      );
+
+      result = result.filter((item) => item !== undefined);
+
+      console.log(result);
+
+      return res.status(200).json(result);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

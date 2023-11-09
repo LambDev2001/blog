@@ -1,47 +1,26 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Card = ({ blog }) => {
-  const [showFullDescription, setShowFullDescription] = useState(false);
-
-  const toggleDescription = () => {
-    setShowFullDescription(!showFullDescription);
-  };
+  const history = useHistory();
 
   return (
-    <div className="w-80 bg-white shadow-md rounded-lg overflow-hidden my-3 mx-4 transform transition-transform hover:scale-105">
-      {/* thumbnail */}
-      <Link to={`/blog/${blog._id}`}>
-        <img className="w-full h-44 object-cover" src={blog.thumbnail} alt="Blog" />
-      </Link>
-
-      {/* body */}
-      <div className="p-3">
-        <Link to={`/blog/${blog._id}`}>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2 hover:text-blue-500 transition duration-300">
+    <div className="lg:w-1/3 md:w-1/2 sm:w-1 p-2 hover:scale-105">
+      <div className="bg-white flex flex-col rounded-xl shadow-md overflow-hidden">
+        <img className="w-full h-[180px] object-cover" src={blog.thumbnail} alt="blog Logo" />
+        <div className="p-2">
+          <h2 className="text-ellipsis overflow-hidden text-xl font-bold mb-2 text-black h-[55px] ">
             {blog.title}
           </h2>
-        </Link>
-
-        <p
-          className={`text-gray-700 text-base ${
-            showFullDescription ? "block" : "overflow-hidden h-20"
-          }`}>
-          {blog.description}
-        </p>
-
-        {blog.description.length > 100 && (
-          <button
-            className="text-blue-500 hover:underline mt-2 cursor-pointer"
-            onClick={toggleDescription}>
-            {showFullDescription ? "Show Less" : "Show More"}
-          </button>
-        )}
-        <div>
-          <FontAwesomeIcon icon={faEye} />
-          <span className="text-gray-700 ml-2">{blog.views}</span>
+          <p className="text-ellipsis overflow-hidden text-gray-700 text-justify text-md h-[100px]">
+            {blog.description}
+          </p>
+          <div className="mt-4">
+            <div
+              onClick={() => history.push(`/blog/${blog._id}`)}
+              className="text-blue-500 hover:underline cursor-pointer">
+              Read more
+            </div>
+          </div>
         </div>
       </div>
     </div>

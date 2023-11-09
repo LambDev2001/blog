@@ -13,6 +13,7 @@ router.get("/categories", auth, categoryCtrl.getAllCategories);
 
 // admin
 router.get("/category/:idCategory", admin, categoryCtrl.getCategory);
+router.get("/count-category", admin, categoryCtrl.countCategory);
 
 router.post("/category", admin, categoryCtrl.createCategory);
 

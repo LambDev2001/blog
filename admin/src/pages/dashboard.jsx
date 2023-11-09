@@ -38,14 +38,7 @@ const Dashboard = () => {
       <div className={`${color.outside} rounded-lg shadow-md p-4`}>
         <h2 className="text-2xl font-semibold mb-4">Top Blogs Mosts Views</h2>
         <div className={`${color.inside} rounded-lg shadow-md flex flex-wrap`}>
-          {data.topBlogs &&
-            data.topBlogs.map((blog) => {
-              return (
-                <div key={blog._id} className="sm:w-1 md:w-1/2 lg:w-1/3">
-                  <Card blog={blog} />
-                </div>
-              );
-            })}
+          {data.topBlogs && data.topBlogs.map((blog) => <Card blog={blog} key={blog._id} />)}
         </div>
       </div>
     </div>
