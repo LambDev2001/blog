@@ -127,7 +127,7 @@ const Header = () => {
             />
             {modalUser && (
               <div
-                className={`${themeColor.input} ${themeColor.border} border-1 absolute top-[60px] right-4 py-1 px-1 rounded-lg`}>
+                className={`${themeColor.input} ${themeColor.border} border-1 absolute top-[60px] right-4 py-1 px-1 rounded-lg z-50`}>
                 <div
                   className={`${themeColor.hoverBold} py-2 px-4 mx-2 my-1 rounded-lg cursor-pointer`}>
                   <div onClick={handleLinkProfile}>Profile</div>

@@ -7,6 +7,7 @@ import { LiaExclamationCircleSolid } from "react-icons/lia";
 import { BsArrowUpRightCircle, BsTranslate, BsNewspaper } from "react-icons/bs";
 import { SlPeople, SlUserFollowing } from "react-icons/sl";
 import { IoShareSocial } from "react-icons/io5";
+import { TiWeatherCloudy } from "react-icons/ti";
 
 import { getCategories } from "../../redux/actions/categoryAction";
 
@@ -118,6 +119,12 @@ const Menu = () => {
           onClick={() => handleFeature("translate")}>
           <BsTranslate size={26} className="ml-2 mr-4" />
           <div className="my-auto">Translate</div>
+        </div>
+        <div
+          className={`${themeColor.sub} ${themeColor.hover} ${themeColor.border} border-1 shadow-md flex p-2 my-1 mx-2 rounded-md cursor-pointer`}
+          onClick={() => handleFeature("weather")}>
+          <TiWeatherCloudy size={26} className="ml-2 mr-4" />
+          <div className="my-auto">Weather</div>
         </div>
 
         {/* resource */}
