@@ -38,6 +38,19 @@ export const getUser = (idUser, token) => async (dispatch) => {
   }
 };
 
+export const getPermits = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await getAPI(`permits`, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "LOADING", payload: { loading: false } });
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getInfoUser = (idUser, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });

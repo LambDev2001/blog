@@ -123,11 +123,12 @@ const Header = () => {
               src={user.avatar}
               alt="avatar"
               className="rounded-full w-[40px] h-[40px] object-cover cursor-pointer"
-              onClick={() => setModalUser(!modalUser)}
+              onMouseEnter={() => setModalUser(true)}
             />
             {modalUser && (
               <div
-                className={`${themeColor.input} ${themeColor.border} border-1 absolute top-[60px] right-4 py-1 px-1 rounded-lg z-50`}>
+                className={`${themeColor.input} ${themeColor.border} border-1 absolute top-[60px] right-4 py-1 px-1 rounded-lg z-50`}
+                onMouseLeave={() => setModalUser(false)}>
                 <div
                   className={`${themeColor.hoverBold} py-2 px-4 mx-2 my-1 rounded-lg cursor-pointer`}>
                   <div onClick={handleLinkProfile}>Profile</div>

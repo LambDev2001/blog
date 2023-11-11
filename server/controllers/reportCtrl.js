@@ -133,6 +133,25 @@ const reportCtrl = {
           report.comment.author = await Users.findById(report.comment.idUser).select(
             "-__v -password -createdAt -updatedAt -status -friends -report"
           );
+          
+          let allComments = await Comments.find({ idBlog: report.comment.idBlog, status: "normal", replyCM: "" })
+          .select("idUser message createdAt updatedAt")
+          .sort({ createdAt: -1 });
+
+          allComments = await Promise.all(
+            allComments.map(async (comment) => {
+              const author = await Users.findById(comment.idUser).select(
+                "-password -__v -report -status"
+              );
+              const countReply = await Comments.count({ replyCM: comment._id });
+              const replies = [];
+              return { ...comment._doc, author, replies, countReply };
+            })
+          );
+
+          report.comments = allComments;
+          
+
           break;
       }
 

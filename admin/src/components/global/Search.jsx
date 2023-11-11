@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCircleUser, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { GrShare } from "react-icons/gr";
+import { GrShare, GrAdd, GrSearch } from "react-icons/gr";
+import { FaXmark, FaCircleUser } from "react-icons/fa6";
 
-const Search = ({ data, type }) => {
+const Search = ({ data, type, add = false, handleAdd = () => {} }) => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const history = useHistory();
@@ -54,9 +53,9 @@ const Search = ({ data, type }) => {
           }}
         />
 
-        <FontAwesomeIcon
-          icon={faXmark}
-          className="ml-[-3rem] mr-3 p-2"
+        <FaXmark
+          className="ml-[-2.5rem] mr-3"
+          size={20}
           onClick={() => {
             setSearchText("");
             setSearchResults([]);
@@ -64,8 +63,14 @@ const Search = ({ data, type }) => {
         />
 
         <button className={`${color.active} text-white rounded p-2 mx-3`} onClick={handleSearch}>
-          <FontAwesomeIcon icon={faSearch} className="h-[40px w-[40px]" />
+          <GrSearch size={20} />
         </button>
+
+        {add && (
+          <button className={`${color.active} text-white rounded p-2 mr-3`} onClick={handleAdd}>
+            <GrAdd size={20} />
+          </button>
+        )}
       </div>
 
       {/* Display search results */}
@@ -101,9 +106,9 @@ const Search = ({ data, type }) => {
                 }}>
                 {result.status}
               </div>
-              <FontAwesomeIcon
-                icon={faCircleUser}
-                className="h-[30px] mx-3 cursor-pointer"
+              <FaCircleUser
+                size={30}
+                className="mx-3 cursor-pointer"
                 style={{ marginLeft: "auto" }}
                 onClick={() => history.push(`/profile/${result._id}`)}
               />

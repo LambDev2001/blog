@@ -26,7 +26,6 @@ const PieChart = () => {
   const top5 = data.slice(0, 5);
   const otherCountBlogs = data.slice(5).reduce((sum, item) => sum + item.countBlogs, 0);
   const pieData = [...top5, { category: "other", countBlogs: otherCountBlogs }];
-  console.log(pieData);
 
   const chartData = {
     labels: pieData.map((item) => item.category),

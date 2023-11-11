@@ -125,8 +125,6 @@ export const updateUser = (user, token) => async (dispatch) => {
 export const changePassword =
   ({ currentPassword, newPassword }, token) =>
   async (dispatch) => {
-    console.log({ currentPassword, newPassword });
-
     try {
       const res = await postAPI(`change-password`, { currentPassword, newPassword }, token);
       await ResErrorData(res.data, dispatch);

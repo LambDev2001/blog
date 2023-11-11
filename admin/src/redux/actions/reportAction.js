@@ -5,6 +5,7 @@ export const getReport = (idReport, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
     const report = await getAPI(`report/${idReport}`, token);
+
     ResErrorData(report.data, dispatch);
 
     const date = new Date(report.data.createdAt);
@@ -14,10 +15,11 @@ export const getReport = (idReport, token) => async (dispatch) => {
       day: "numeric",
     });
 
-    const comment = await getAPI(`comments/${report.data.comment.idBlog}`, token);
+    // if (report.data.type === "comment") {
+    //   dispatch({ type: "GET_COMMENTS", payload: report.data.comments });
+    // }
 
     dispatch({ type: "GET_REPORT", payload: report.data });
-    dispatch({ type: "GET_COMMENTS", payload: comment.data });
 
     dispatch({ type: "LOADING", payload: { loading: false } });
 

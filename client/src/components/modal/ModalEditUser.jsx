@@ -20,7 +20,6 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
   useEffect(() => {
     const originalDate = new Date(user.birthday);
     if (!isNaN(originalDate)) {
-      console.log(originalDate);
       setStartDate(originalDate);
     }
   }, [user]);

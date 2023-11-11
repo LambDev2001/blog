@@ -24,7 +24,7 @@ const AdminDashboard = ({ data }) => {
             <FaTags className="text-3xl mb-2" />
             <p className="text-2xl font-bold mb-2 ml-3">{data.categories}</p>
           </div>
-          <h3 className="text-lg font-semibold mb-2">Total Categories</h3>
+          <h3 className="text-lg font-semibold mb-2 text">Total Categories</h3>
         </div>
         <div
           className={`flex flex-col items-center justify-center ${color.inside} rounded-lg shadow-md p-4`}>

@@ -33,8 +33,6 @@ const Weather = () => {
     return () => clearInterval(interval);
   }, []);
 
-  console.log(data);
-
   return (
     <div className={`${themeColor.main} p-2 w-100`} style={{ height }}>
       <div className={`${themeColor.sub} rounded-md p-2 h-100`}>

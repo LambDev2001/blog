@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useSelector, useDispatch } from "react-redux";
 
 import { LuMoreHorizontal } from "react-icons/lu";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-import { unFollowUser } from "../redux/actions/userAction";
+import {unFriend} from "../../redux/actions/userAction";
 
-const ProfileFollowing = ({ follows }) => {
+const ProfileFriend = ({ friends }) => {
   const [isMore, setIsMore] = useState(-1);
   const themeColor = useSelector((state) => state.themeUserReducer);
-  const token = useSelector((state) => state.authReducer.accessToken);
   const user = useSelector((state) => state.authReducer.user);
+  const token = useSelector((state) => state.authReducer.accessToken);
   const dispatch = useDispatch();
+
   const { slug } = useParams();
   const isOwner = slug === user._id ? true : false;
 
@@ -23,17 +24,17 @@ const ProfileFollowing = ({ follows }) => {
     }
   };
 
-  const handleUnFollow = (idFollow) => {
+  const handleUnfriend = (idFriend) => {
+    dispatch(unFriend(idFriend, token))
     setIsMore(-1);
-    dispatch(unFollowUser(idFollow, token));
   };
 
   return (
     <div className={`${themeColor.sub} mt-1 mx-1 p-2 rounded-lg shadow-lg`}>
-      <div className="flex flex-wrap w-100">
-        {follows.length > 0 &&
-          follows.map((follow, index) => (
-            <div key={index} className="p-1 w-1/2">
+      <div className="flex flex-wrap">
+        {friends.length > 0 &&
+          friends.map((friend, index) => (
+            <div key={index} className="p-1 w-1/2 ">
               <div
                 className={
                   themeColor.border + " border-1 m-1 flex justify-between rounded-xl shadow-md"
@@ -41,13 +42,13 @@ const ProfileFollowing = ({ follows }) => {
                 {/* start */}
                 <div className="flex">
                   <img
-                    src={follow.avatar}
+                    src={friend.avatar}
                     alt="avatar"
                     className="rounded-full w-[60px] h-[60px] m-2"
                   />
                   <div className=" mx-4 my-auto">
-                    <div className="text-xl">{follow.username}</div>
-                    <div className="text-md">{follow.account}</div>
+                    <div className="text-xl">{friend.username}</div>
+                    <div className="text-md">{friend.account}</div>
                   </div>
                 </div>
 
@@ -75,8 +76,8 @@ const ProfileFollowing = ({ follows }) => {
                         (index % 2 !== 0 && "right-0 ") +
                         " border-1 absolute px-3 py-2 rounded-lg cursor-pointer my-1"
                       }
-                      onClick={() => handleUnFollow(follow._id)}>
-                      UnFollow
+                      onClick={() => handleUnfriend(friend._id)}>
+                      Unfriend
                     </div>
                   )}
                 </div>
@@ -88,4 +89,4 @@ const ProfileFollowing = ({ follows }) => {
   );
 };
 
-export default ProfileFollowing;
+export default ProfileFriend;

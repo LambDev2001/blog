@@ -12,5 +12,6 @@ router.post("/login-admin", adminCtrl.login);
 // admin
 router.get("/logout-admin", admin, adminCtrl.logout);
 router.get("/dashboard", admin, adminCtrl.dashboard)
+router.get("/permits", admin, adminCtrl.permits)
 
 export default router;

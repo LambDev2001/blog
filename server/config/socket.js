@@ -17,7 +17,6 @@ const socketServer = async (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected");
   });
 };
 

@@ -70,8 +70,6 @@ const categoryCtrl = {
 
       result = result.filter((item) => item !== undefined);
 
-      console.log(result);
-
       return res.status(200).json(result);
     } catch (err) {
       return res.status(500).json({ msg: err.message });

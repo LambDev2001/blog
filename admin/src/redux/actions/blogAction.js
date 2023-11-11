@@ -123,7 +123,6 @@ export const getBlog = (idBlog, token) => async (dispatch) => {
       month: "long",
       day: "numeric",
     });
-    console.log(categories.data);
 
     categories.data.map((category) => {
       if (category._id === blog.data.category) {

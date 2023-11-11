@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom";
 
 import { BsCamera } from "react-icons/bs";
 
-import ModalEditUser from "../modal/ModalEditUser";
 import Blog2 from "../blog/Blog2";
-import ProfileFriend from "../ProfileFriend";
-import ProfileFollowing from "../ProfileFollowing";
+import ProfileInfo from "../profile/ProfileInfo";
+import ProfileFriend from "../profile/ProfileFriend";
+import ProfileFollowing from "../profile/ProfileFollowing";
+import ModalEditUser from "../modal/ModalEditUser";
 import ModalChangePassword from "../modal/ModalChangePassword";
-import ProfileInfo from "../ProfileInfo";
 
 import { getOtherUserBlogs } from "../../redux/actions/blogAction";
 import { sendRequest } from "../../redux/actions/friendAction";

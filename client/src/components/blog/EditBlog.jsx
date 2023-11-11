@@ -74,9 +74,9 @@ const EditBlog = ({ blog }) => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className={`${themeColor.text} mx-auto`}>
       {/* input info */}
-      <div className={`${themeColor.sub} w-100 my-2 p-4 rounded-lg text-white shadow-md`}>
+      <div className={`${themeColor.sub} w-100 my-2 p-4 rounded-lg shadow-md`}>
         <h1 className="text-2xl font-semibold mb-4">Edit Blog</h1>
 
         <div className="mb-4">
@@ -87,7 +87,7 @@ const EditBlog = ({ blog }) => {
             name="title"
             value={dataBlog.title}
             onChange={(e) => handleChangeInput(e)}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+            className={`${themeColor.input} w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
           <div className="text-red-500 text-md">{errors.title}</div>
         </div>
@@ -100,7 +100,7 @@ const EditBlog = ({ blog }) => {
             name="description"
             value={dataBlog.description}
             onChange={(e) => handleChangeInput(e)}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+            className={`${themeColor.input}  w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
           />
           <div className="text-red-500 text-md">{errors.description}</div>
         </div>
@@ -113,7 +113,7 @@ const EditBlog = ({ blog }) => {
             onChange={(e) => {
               handleChangeInput(e);
             }}
-            className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
+            className={`${themeColor.input}  w-100 py-2 px-3 rounded-md shadow focus:outline-none`}>
             <option value={dataBlog.category}>
               {nameCategory.length > 0 ? nameCategory : dataBlog.nameCategory}
             </option>
@@ -207,7 +207,7 @@ const EditBlog = ({ blog }) => {
 
       {/* Send button */}
       <div className="flex justify-end">
-        <button className="btn btn-primary my-4 px-4 py-2" onClick={handleSubmit}>
+        <button className="btn btn-primary text-white my-4 px-4 py-2" onClick={handleSubmit}>
           Update
         </button>
       </div>

@@ -11,6 +11,8 @@ import {
 } from "react-icons/lia";
 import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
 import { BsLayersHalf } from "react-icons/bs";
+import { GrUserAdmin } from "react-icons/gr";
+
 import { logoutAdmin } from "../redux/actions/authAction";
 
 const Menu = () => {
@@ -28,8 +30,9 @@ const Menu = () => {
     name: "BLOG NEW",
   };
   const listFunctions = [
-    [LuGauge, "Dashboard", [["/dashboard"]]],
+    [LuGauge, "Dashboard", [["/"]]],
     [LuUser, "Manager User", [["/all-users"]]],
+    [GrUserAdmin, "Manager Permit", [["/all-permits"]]],
     [LiaFileAltSolid, "Manager Blog", [["/blogs"]]],
     [LuTags, "Manager Categories", [["/categories"]]],
     [LiaHandshakeSolid, "Manager Policies", [["/policies"]]],

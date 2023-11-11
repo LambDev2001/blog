@@ -99,11 +99,21 @@ const authCtrl = {
       const topBlogs = await Blogs.find({
         _id: { $in: topIdBlogs.map((view) => view.idBlog) },
       });
-      
 
       info = { blogs, categories, views: views[0].totalViews, reports, users, topBlogs };
 
       return res.status(200).json(info);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  permits: async (req, res) => {
+    try {
+      const permits = await Admins.find({ role: "permit" });
+      if (!permits) return res.json({ err: "No permits" });
+
+      return res.status(200).json(permits);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
