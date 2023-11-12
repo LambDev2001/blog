@@ -68,7 +68,7 @@ const TableInfo = ({ data }) => {
             <tr className="border-b hover:bg-gray-200 transition-all duration-300" key={index}>
               <td className="py-2">{result.author}</td>
               <td className="py-2 font-semibold">{result.type}</td>
-              <td className="py-2">{result.content}</td>
+              <td className="py-2 text-left">{result.content}</td>
               <td className="py-2">
                 <FontAwesomeIcon
                   icon={faCircleUser}

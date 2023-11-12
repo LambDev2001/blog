@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
       default:
-        "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
+        "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1699798246/blog/user-avatar_zvprbh.png",
     },
 
     refreshToken: { type: String, select: false },
@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema(
     },
     ban: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   { timestamps: true }
 );

@@ -1,4 +1,4 @@
-import { getAPI, patchAPI } from "../../utils/FetchData";
+import { getAPI, postAPI, patchAPI, deleteAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
 
 export const allUsers = (token) => async (dispatch) => {
@@ -46,6 +46,38 @@ export const getPermits = (token) => async (dispatch) => {
     dispatch({ type: "LOADING", payload: { loading: false } });
 
     return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const createPermit = (userInfo, token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await postAPI(
+      "permit",
+      { account: userInfo.account, username: userInfo.username, password: userInfo.password },
+      token
+    );
+
+    ResErrorData(res.data, dispatch);
+    if (!res.data.err) dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+
+    return res.data.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deletePermit = (id, token) => async (dispatch) => {
+  try {
+    dispatch({ type: "LOADING", payload: { loading: true } });
+    const res = await deleteAPI(`permit/${id}`, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    dispatch({ type: "LOADING", payload: { loading: false } });
+    return res.data.msg;
   } catch (err) {
     console.error(err);
   }

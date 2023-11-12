@@ -6,11 +6,13 @@ import TablePermit from "../components/TablePermit";
 import Search from "../components/global/Search";
 import AdminRouteWrapper from "../utils/AdminRouteWrapper";
 
-import { getPermits } from "../redux/actions/userAction";
+import ModalAddPermit from "../components/modal/ModalAddPermit";
+import { deletePermit, getPermits } from "../redux/actions/userAction";
 
 const AllUser = () => {
   const dispatch = useDispatch();
   const [listUsers, setListUsers] = useState([]);
+  const [isModalAdd, setIsModalAdd] = useState(false);
   const token = useSelector((state) => state.authReducer.accessToken);
 
   useEffect(() => {
@@ -21,7 +23,21 @@ const AllUser = () => {
     getUsers();
   }, [dispatch, token]);
 
-  const handleAdd = () => {};
+  const handleAddModal = () => {
+    setIsModalAdd(!isModalAdd);
+  };
+
+  const handleAddNewPermit = (newPermit) => {
+    setListUsers([...listUsers, newPermit]);
+  };
+
+  const handleDeletePermit = async (id) => {
+    const idPermit = await dispatch(deletePermit(id, token));
+    if (!!idPermit) {
+      const newListUsers = listUsers.filter((user) => user._id !== id);
+      setListUsers(newListUsers);
+    }
+  };
 
   return (
     <div>
@@ -29,9 +45,23 @@ const AllUser = () => {
       <Header content="Manager Permits" />
       {listUsers.length > 0 && (
         <div>
-          <Search data={listUsers} type={"user"} add={true} handleAdd={handleAdd} />
-          <TablePermit data={listUsers} />
+          <Search data={listUsers} type={"user"} add={true} handleAdd={handleAddModal} />
+          <TablePermit
+            data={listUsers}
+            handleAddModal={handleAddModal}
+            isModalAdd={isModalAdd}
+            handleDeletePermit={handleDeletePermit}
+          />
         </div>
+      )}
+
+      {isModalAdd && (
+        <ModalAddPermit
+          token={token}
+          handleAddModal={handleAddModal}
+          handleAddNewPermit={handleAddNewPermit}
+          handleDeletePermit={handleDeletePermit}
+        />
       )}
     </div>
   );

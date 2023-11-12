@@ -16,11 +16,15 @@ const adminSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "",
+      default: "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1699798246/blog/user-avatar_zvprbh.png",
     },
     role: {
       type: String,
       default: "permit",
+    },
+    status: {
+      type: String,
+      default: "waiting",
     },
     refreshToken: { type: String, select: false },
   },

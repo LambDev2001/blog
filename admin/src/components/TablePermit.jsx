@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { FaCircleUser } from "react-icons/fa6";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 import Pagination from "./global/Pagination";
 
-const TablePermit = ({ data }) => {
+const TablePermit = ({ data, handleDeletePermit }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("account");
+  const [sortField, setSortField] = useState("day");
   const color = useSelector((state) => state.themeReducer.themeColor);
-  const history = useHistory();
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -61,16 +59,20 @@ const TablePermit = ({ data }) => {
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("day")}>
               Day create
             </th>
-            {/* <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("report.length")}>
-              Report
-            </th> */}
+
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("status")}>
+              status
+            </th>
+
             <th className="w-1/6 py-3">Action</th>
           </tr>
         </thead>
         <tbody className="text-center">
           {currentItems.map((result, index) => {
             const date = new Date(result.createdAt);
-            const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+            const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
             return (
               <tr className="border-b hover:bg-gray-200 transition-all duration-300" key={index}>
                 <td className="py-2">
@@ -79,12 +81,13 @@ const TablePermit = ({ data }) => {
                 <td className="py-2">{result.account}</td>
                 <td className="py-2 font-semibold">{result.username}</td>
                 <td className="py-2">{formattedDate}</td>
+                <td className="py-2">{result.status}</td>
                 <td className="py-2">
-                  <FaCircleUser
+                  <FaRegTrashCan
                     size={30}
                     className="mx-auto cursor-pointer"
                     style={{ marginLeft: "auto" }}
-                    onClick={() => history.push(`/user/${result._id}`)}
+                    onClick={() => handleDeletePermit(result._id)}
                   />
                 </td>
               </tr>
