@@ -30,13 +30,13 @@ const Menu = () => {
     name: "BLOG NEW",
   };
   const listFunctions = [
-    [LuGauge, "Dashboard", [["/"]]],
-    [LuUser, "Manager User", [["/all-users"]]],
-    [GrUserAdmin, "Manager Permit", [["/all-permits"]]],
-    [LiaFileAltSolid, "Manager Blog", [["/blogs"]]],
-    [LuTags, "Manager Categories", [["/categories"]]],
-    [LiaHandshakeSolid, "Manager Policies", [["/policies"]]],
-    [LuFileWarning, "Manager Reports", [["/reports"]]],
+    [LuGauge, "Dashboard", [["/"]], "admin"],
+    [LuUser, "Manager User", [["/all-users"]], "admin"],
+    [GrUserAdmin, "Manager Permit", [["/all-permits"]], "admin"],
+    [LuTags, "Manager Categories", [["/categories"]], "admin"],
+    [LiaHandshakeSolid, "Manager Policies", [["/policies"]], "admin"],
+    [LiaFileAltSolid, "Manager Blog", [["/blogs"]], "permit"],
+    [LuFileWarning, "Manager Reports", [["/reports"]], "permit"],
     [
       BsLayersHalf,
       "Theme",
@@ -44,6 +44,7 @@ const Menu = () => {
         ["Button", "/buttons"],
         ["color", "/colors"],
       ],
+      "permit",
     ],
   ];
 
@@ -124,53 +125,57 @@ const Menu = () => {
 
         {/* menu */}
         <div className={`${color.outside} p-1 my-2`}>
-          {listFunctions.map(([Icon, future, listUrl], index) => (
-            <div
-              key={index}
-              data-index={index}
-              className={`my-1 shadow-md rounded-lg ${
-                index === active ? color.active : color.inside
-              } overflow-hidden cursor-pointer`}>
-              <div
-                className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
-                  index === active && color.active
-                } rounded-lg overflow-hidden`}
-                onClick={() => handleActive(index)}>
-                {/* main icon */}
-                <Icon className="w-[40px] h-[40px]" />
-
-                {/* name function or link */}
-                {menu && listUrl.length === 1 && (
+          {listFunctions.map(([Icon, future, listUrl, role], index) => (
+            <>
+              {!!user && (user.role === "admin" || user.role === role) && (
+                <div
+                  key={index}
+                  data-index={index}
+                  className={`my-1 shadow-md rounded-lg ${
+                    index === active ? color.active : color.inside
+                  } overflow-hidden cursor-pointer`}>
                   <div
-                    className="d-flex align-items-center justify-content-between w-100"
-                    onClick={() => history.push(listUrl[0][0])}>
-                    <p className="mx-3">{future}</p>
-                  </div>
-                )}
+                    className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
+                      index === active && color.active
+                    } rounded-lg overflow-hidden`}
+                    onClick={() => handleActive(index)}>
+                    {/* main icon */}
+                    <Icon className="w-[40px] h-[40px]" />
 
-                {menu && listUrl.length > 1 && (
-                  <div className="d-flex align-items-center justify-content-between w-100">
-                    <p className="mx-3">{future}</p>
-                    {index !== active ? <LiaAngleLeftSolid /> : <LiaAngleDownSolid />}
-                  </div>
-                )}
-              </div>
-
-              {/* list child function */}
-              <div className={`${color.active} `}>
-                {index === active &&
-                  listUrl.length > 1 &&
-                  listUrl.map((list, index) => (
-                    <div key={index} className="py-2 pr-1">
+                    {/* name function or link */}
+                    {menu && listUrl.length === 1 && (
                       <div
-                        className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg overflow-hidden cursor-pointer`}
-                        onClick={() => history.push(list[1])}>
-                        <p className="mx-3">{list[0]}</p>
+                        className="d-flex align-items-center justify-content-between w-100"
+                        onClick={() => history.push(listUrl[0][0])}>
+                        <p className="mx-3">{future}</p>
                       </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
+                    )}
+
+                    {menu && listUrl.length > 1 && (
+                      <div className="d-flex align-items-center justify-content-between w-100">
+                        <p className="mx-3">{future}</p>
+                        {index !== active ? <LiaAngleLeftSolid /> : <LiaAngleDownSolid />}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* list child function */}
+                  <div className={`${color.active} `}>
+                    {index === active &&
+                      listUrl.length > 1 &&
+                      listUrl.map((list, index) => (
+                        <div key={index} className="py-2 pr-1">
+                          <div
+                            className={`d-flex align-items-center ml-[40px] py-2 ${color.inside} shadow-sm rounded-lg overflow-hidden cursor-pointer`}
+                            onClick={() => history.push(list[1])}>
+                            <p className="mx-3">{list[0]}</p>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </>
           ))}
         </div>
 

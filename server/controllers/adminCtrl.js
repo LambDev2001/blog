@@ -135,17 +135,15 @@ const authCtrl = {
       const permit = await Admins.findOne({ account });
       if (!!permit) return res.json({ err: "Account already exists" });
       password = await bcrypt.hash(password, 12);
-      const newPermit = {
+      const newPermit = new Admins({
         account,
         username,
         password,
         role: "permit",
         status: "waiting",
-        createdAt: new Date(),
-        avatar:
-          "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1699798246/blog/user-avatar_zvprbh.png",
-      };
-
+        createdAt: new Date()
+      });
+      newPermit.save();
       const encodeNewPermit = generateActiveToken({ newPermit });
 
       const url = `${BASE_URL}:${PORT}/api/active-permit/${encodeNewPermit}`;
@@ -171,7 +169,8 @@ const authCtrl = {
       }
 
       const { newPermit } = decoded;
-      const user = await Admins.findOne({ account: newPermit.account });
+
+      const user = await Admins.findOne({ account: newPermit.account, status: "active" });
 
       if (!!user) {
         return res.json({ msg: "Token has been active" });
@@ -185,7 +184,6 @@ const authCtrl = {
 
   deletePermit: async (req, res) => {
     try {
-      console.log(req.params.idPermit);
       const user = await Admins.findById(req.params.idPermit);
 
       if (!user) return res.json({ err: "User not found" });
@@ -218,12 +216,13 @@ const loginUser = async (user, password, res) => {
 };
 
 const registerUser = async (permit, res) => {
-  const newPermit = new Admins({ ...permit, status: "active" });
+  const newPermit = await Admins.findOne({ account: permit.account });
 
   const access_token = generateAccessToken({ id: newPermit._id });
   const refresh_token = generateRefreshToken({ id: newPermit._id }, res);
 
   newPermit.refreshToken = refresh_token;
+  newPermit.status = "active";
 
   await newPermit.save();
 

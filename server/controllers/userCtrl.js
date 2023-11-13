@@ -270,13 +270,9 @@ const userCtrl = {
 
   getUsers: async (req, res) => {
     try {
-      let users = await Users.find({}).select([
-        "account",
-        "username",
-        "avatar",
-        "status",
-        "report",
-      ]);
+      let users = await Users.find({})
+        .select(["account", "username", "avatar", "status", "report"])
+        .sort({ createdAt: -1 });
 
       users = await Promise.all(
         users.map(async (user) => {

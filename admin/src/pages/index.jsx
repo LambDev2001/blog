@@ -8,12 +8,21 @@ import LineChart from "../components/dashboard/LineChart";
 import Card from "../components/global/Card";
 import { getDashboard } from "../redux/actions/dashboardAction";
 import AdminRouteWrapper from "../utils/AdminRouteWrapper";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Dashboard = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const data = useSelector((state) => state.dashboardReducer);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const user = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!!user && user.role === "permit") {
+      history.push("/index-permit");
+    }
+  }, [user, history]);
 
   useEffect(() => {
     dispatch(getDashboard(token));
@@ -37,7 +46,7 @@ const Dashboard = () => {
 
       <div className={`${color.outside} rounded-lg shadow-md p-4`}>
         <h2 className="text-2xl font-semibold mb-4">Top Blogs Mosts Views</h2>
-        <div className={`${color.inside} rounded-lg shadow-md flex flex-wrap`}>
+        <div className={` rounded-lg shadow-md flex flex-wrap`}>
           {data.topBlogs && data.topBlogs.map((blog) => <Card blog={blog} key={blog._id} />)}
         </div>
       </div>

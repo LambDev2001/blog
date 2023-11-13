@@ -721,7 +721,7 @@ const blogCtrl = {
   listBlogsAdmin: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
-      const listBlogs = await Blogs.find({});
+      const listBlogs = await Blogs.find({}).sort({ createdAt: -1});
 
       if (countBlogs === 0) {
         return res.status(200).json({ msg: "Not have any blog" });

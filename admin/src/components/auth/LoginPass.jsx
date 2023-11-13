@@ -31,7 +31,7 @@ const LoginPass = () => {
     });
 
     await dispatch(loginAdmin(infoUser));
-    history.push("/dashboard");
+    history.push("/");
   };
 
   return (

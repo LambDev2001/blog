@@ -95,7 +95,7 @@ const TableInfo = ({ data }) => {
               <td className="py-2">
                 <FaCircleUser
                   size={30}
-                  className="mx-3 cursor-pointer"
+                  className="mx-auto cursor-pointer"
                   style={{ marginLeft: "auto" }}
                   onClick={() => history.push(`/user/${result._id}`)}
                 />
