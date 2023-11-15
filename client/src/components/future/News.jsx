@@ -9,7 +9,7 @@ const News = ({ news }) => {
           <h2 className="text-ellipsis overflow-hidden text-xl font-bold mb-2 text-black h-[80px] ">
             {news.title}
           </h2>
-          <p className="text-ellipsis overflow-hidden text-gray-700 text-justify text-md h-[220px]">
+          <p className="text-ellipsis overflow-hidden text-gray-700 text-justify text-md h-[200px]">
             {news.description}
           </p>
           <div className="mt-4">

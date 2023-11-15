@@ -10,6 +10,7 @@ import Button from "../../components/global/theme/button/Button";
 import AdminRouteWrapper from "../../utils/AdminRouteWrapper";
 import { ban, unBan } from "../../redux/actions/userAction";
 import { getUser, changeStatus } from "../../redux/actions/userAction";
+import { splitLabel } from "../../utils/SplitLabel";
 
 const User = () => {
   const [openAction, setOpenAction] = useState(false);
@@ -54,6 +55,16 @@ const User = () => {
     setShowReasons(false);
   };
 
+  let birthday, formattedBirthday;
+  if (!!user.birthday) {
+    birthday = new Date(user.birthday);
+    formattedBirthday = `${birthday.getDate().toString().padStart(2, "0")}/${(
+      birthday.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${birthday.getFullYear()}`;
+  }
+
   return (
     <div>
       <AdminRouteWrapper />
@@ -83,6 +94,12 @@ const User = () => {
                 <div className="grid grid-cols-2">
                   <span className="text-lg font-bold my-2">Username:</span> {user.username}
                   <span className="text-lg font-bold my-2">Account:</span> {user.account}
+                  <span className="text-lg font-bold my-2">Sex:</span>{" "}
+                  {!!user.sex ? splitLabel(user.sex) : "None"}
+                  <span className="text-lg font-bold my-2">Number phone:</span>
+                  {!!user.numberPhone ? user.numberPhone : "None"}
+                  <span className="text-lg font-bold my-2">Birth day:</span>{" "}
+                  {!!user.birthday ? formattedBirthday : "None"}
                   <span className="text-lg font-bold my-2">Status:</span> {user.status}
                   <span className="text-lg font-bold my-2">Day create:</span> {user.createdAt}
                   <span className="text-lg font-bold my-2">Violation:</span> {user.report}
@@ -139,7 +156,7 @@ const User = () => {
             </div>
 
             {/* friend */}
-            <div className="flex-2 my-2">
+            <div className="flex-2">
               {user && (
                 <div className={`${color.inside} rounded-lg shadow-md p-4`}>
                   <h2 className="text-lg font-semibold mb-2">Friend</h2>

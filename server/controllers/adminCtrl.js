@@ -15,7 +15,6 @@ import {
   generateRefreshToken,
 } from "../config/generateToken.js";
 import sendMail from "../config/sendMail.js";
-import { now } from "mongoose";
 
 const { ACTIVE_TOKEN_SECRET, REFRESH_TOKEN_SECRET, BASE_URL, PORT } = process.env;
 
@@ -141,7 +140,7 @@ const authCtrl = {
         password,
         role: "permit",
         status: "waiting",
-        createdAt: new Date()
+        createdAt: new Date(),
       });
       newPermit.save();
       const encodeNewPermit = generateActiveToken({ newPermit });
@@ -153,6 +152,20 @@ const authCtrl = {
       return res.json({ msg: "Click button on the email to active this account", data: newPermit });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
+    }
+  },
+
+  updateAdmin: async (req, res) => {
+    try {
+      const { username, avatar } = req.body;
+      const { idAdmin } = req.params;
+
+      await Admins.findOneAndUpdate({ _id: idAdmin }, { username, avatar });
+
+      return res.status(200).json({ msg: "Update information success" });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: err.message });
     }
   },
 

@@ -57,10 +57,10 @@ const NewsPage = () => {
 
   return (
     <div>
-      <div className={`my-3 w-100 flex`}>
+      <div className={`${themeColor.text} my-3 w-100 flex`}>
         <input
           type="text"
-          className={`${themeColor.border} border-1 w-100 mx-2 py-2 px-3 rounded-md shadow-md appearance-none leading-tight focus:outline-none bg-white`}
+          className={`${themeColor.border} ${themeColor.input} border-1 w-100 mx-2 py-2 px-3 rounded-md shadow-md appearance-none leading-tight focus:outline-none`}
           placeholder="Search News ..."
           name="search"
           onChange={(e) => handleChangeSearch(e)}

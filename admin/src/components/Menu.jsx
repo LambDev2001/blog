@@ -26,8 +26,8 @@ const Menu = () => {
   const dispatch = useDispatch();
 
   const logo = {
-    img: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-    name: "BLOG NEW",
+    img: "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1697772495/blog/ckov65p4msb127rlsnd0_sjbmvx.png",
+    name: "AniRealm",
   };
   const listFunctions = [
     [LuGauge, "Dashboard", [["/"]], "admin"],
@@ -126,7 +126,7 @@ const Menu = () => {
         {/* menu */}
         <div className={`${color.outside} p-1 my-2`}>
           {listFunctions.map(([Icon, future, listUrl, role], index) => (
-            <>
+            <div key={index}>
               {!!user && (user.role === "admin" || user.role === role) && (
                 <div
                   key={index}
@@ -175,7 +175,7 @@ const Menu = () => {
                   </div>
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
 

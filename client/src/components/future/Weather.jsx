@@ -37,7 +37,7 @@ const Weather = () => {
     <div className={`${themeColor.main} p-2 w-100`} style={{ height }}>
       <div className={`${themeColor.sub} rounded-md p-2 h-100`}>
         {/* Search Bar */}
-        <div className={`${themeColor.input} mb-3 p-1`}>
+        <div className={`${themeColor.input} mb-3 p-1 rounded-md`}>
           <input
             type="text"
             placeholder="Enter city"

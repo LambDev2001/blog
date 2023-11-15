@@ -169,7 +169,10 @@ const Profile = () => {
 
             <div className={`custom-scroll-container`} style={{ height: `${height}px` }}>
               <div className="custom-scroll-content h-100 overflow-auto">
-                {currentTab === "info" && (
+                {currentTab === "info" && otherUser._id === user._id && (
+                  <ProfileInfo otherUser={user} themeColor={themeColor} />
+                )}
+                {currentTab === "info" && otherUser._id !== user._id && (
                   <ProfileInfo otherUser={otherUser} themeColor={themeColor} />
                 )}
                 {currentTab === "posts" && <Blog2 isOwner={isOwner} />}
@@ -186,7 +189,7 @@ const Profile = () => {
       )}
 
       {/* Modal */}
-      {isModal && <ModalEditUser user={otherUser} handleShowModal={handleModalProfile} />}
+      {isModal && <ModalEditUser user={user} handleShowModal={handleModalProfile} />}
       {isModalPassword && (
         <ModalChangePassword token={token} handleShowModal={handleChangePassword} />
       )}

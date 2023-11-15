@@ -71,7 +71,7 @@ const Header = () => {
           alt="logo"
           className="w-[32px] h-[32px] m-1 rounded-full"
         />
-        <div className="text-lg font-semibold m-1">BlogD</div>
+        <div className="text-lg font-semibold m-1">AniRealm</div>
       </div>
 
       {/* search */}

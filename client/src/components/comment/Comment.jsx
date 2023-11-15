@@ -69,7 +69,7 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
     e.preventDefault();
     if (contentComment === "") return;
     if (idComment === "") {
-      (sendComment({ comment: contentComment, idBlog, token }));
+      sendComment({ comment: contentComment, idBlog, token });
     } else {
       await dispatch(sendReply({ comment: contentComment, idBlog, idComment, token }));
       dispatch(getReply(idComment, token));
@@ -83,7 +83,8 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
   };
 
   return (
-    <div className={`${themeColor.sub} ${themeColor.text} ${themeColor.border} border-1 rounded-md shadow-md pt-2 pb-3 pl-4 `}>
+    <div
+      className={`${themeColor.sub} ${themeColor.text} ${themeColor.border} border-1 rounded-md shadow-md pt-2 pb-3 pl-4 `}>
       {comments.length > 0 &&
         comments.map((comment, index) => (
           <div key={index}>
@@ -144,11 +145,13 @@ const Comment = ({ idBlog, comments, idComment = "" }) => {
                           onClick={() => handleOpenReport(index)}>
                           Report
                         </div>
-                        <div
-                          className={`${themeColor.main} ${themeColor.hoverBold} rounded-lg py-2 px-3 cursor-pointer my-1`}
-                          onClick={() => handleDeleteComment(comment._id)}>
-                          Delete
-                        </div>
+                        {user._id === comment.author._id && (
+                          <div
+                            className={`${themeColor.main} ${themeColor.hoverBold} rounded-lg py-2 px-3 cursor-pointer my-1`}
+                            onClick={() => handleDeleteComment(comment._id)}>
+                            Delete
+                          </div>
+                        )}
                       </div>
                     )}
 

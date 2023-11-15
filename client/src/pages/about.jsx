@@ -6,7 +6,7 @@ const About = () => {
       {/* Logo and name */}
       <div className="mx-1 w-100">
         <div className="flex flex-col mb-2">
-          <div className="text-3xl font-semibold mx-auto my-1">Welcome to BlogD</div>
+          <div className="text-3xl font-semibold mx-auto my-1">Welcome to AniRealm</div>
           <div>
             <img
               src="https://res.cloudinary.com/dfuaq9ggj/image/upload/v1697772495/blog/ckov65p4msb127rlsnd0_sjbmvx.png"
@@ -17,30 +17,30 @@ const About = () => {
         </div>
 
         <div className="text-justify mt-10">
-          <div className="text-2xl font-semibold">About BlogD</div>
+          <div className="text-2xl font-semibold">About AniRealm</div>
           <div className="indent-6 my-4">
-            At BlogD, we're passionate about all things blogging. Our mission is to provide
+            At AniRealm, we're passionate about all things blogging. Our mission is to provide
             bloggers, both seasoned and novice, with a platform to discover valuable insights, tips,
             and inspiration to elevate their blogging journey.
           </div>
 
           <div className="indent-6 my-4">
             <p>
-              Who We Are: BlogD is a community of writers, creators, and enthusiasts dedicated to
+              Who We Are: AniRealm is a community of writers, creators, and enthusiasts dedicated to
               the world of blogging. We understand that blogging is more than just words on a page;
               it's about sharing ideas, experiences, and knowledge with the world. Whether you're a
               blogger looking for advice on improving your craft or someone considering starting
-              their own blog, BlogD is here to guide you every step of the way.
+              their own blog, AniRealm is here to guide you every step of the way.
             </p>
           </div>
 
           <div className="indent-6 my-4">
             <p>
-              BlogD is your one-stop destination for all things blogging. We are committed to
+              AniRealm is your one-stop destination for all things blogging. We are committed to
               helping you grow as a blogger and providing the tools you need to succeed. Whether
-              you're a hobbyist blogger or aspiring to turn your blog into a business, BlogD is here
-              to empower you. Join us on this blogging adventure and discover the endless
-              possibilities that await. Start your blogging journey with BlogD today!
+              you're a hobbyist blogger or aspiring to turn your blog into a business, AniRealm is
+              here to empower you. Join us on this blogging adventure and discover the endless
+              possibilities that await. Start your blogging journey with AniRealm today!
             </p>
           </div>
         </div>

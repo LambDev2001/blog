@@ -105,7 +105,7 @@ const ShowBlog = ({ blog, comments }) => {
           )}
 
           {isCopyLink && (
-            <div className="absolute right-0 p-2 w-[100px] mt-1 rounded-md text-sm bg-white text-black">
+            <div className={`${themeColor.border} border-1 absolute right-0 p-2 w-[100px] mt-1 rounded-md text-sm bg-white text-black`}>
               Copied Link
             </div>
           )}
@@ -121,9 +121,9 @@ const ShowBlog = ({ blog, comments }) => {
       </div>
 
       {/* thumbnail */}
-      {/* <div>
-      <img src={blog.thumbnail} alt="thumbnail" className="mx-auto max-h-[400px] rounded-md" />
-    </div> */}
+      <div>
+      <img src={blog.thumbnail} alt="thumbnail" className="bg-gray-300 my-1 mx-auto max-h-[400px] h-auto w-auto rounded-md" />
+    </div>
 
       {/* Content */}
 

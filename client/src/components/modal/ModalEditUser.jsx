@@ -7,6 +7,7 @@ import { BsCalendar3 } from "react-icons/bs";
 
 import { updateUser } from "../../redux/actions/userAction";
 import validate from "../../utils/validate";
+import { splitLabel } from "../../utils/SplitLabel";
 
 const ModalEditProfile = ({ user, handleShowModal }) => {
   const [infoUser, setInfoUser] = useState(user);
@@ -66,13 +67,46 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
             <label htmlFor="username" className="font-semibold  text-xl mb-1">
               Username
             </label>
-            <input
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
-              type="text"
-              value={infoUser.username}
-              name="username"
-              onChange={(e) => handleInfoUser(e)}
-            />
+            <div>
+              <input
+                className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
+                type="text"
+                value={infoUser.username}
+                name="username"
+                onChange={(e) => handleInfoUser(e)}
+              />
+            </div>
+            <div className="text-red-500 text-md">{errors.username}</div>
+          </div>
+
+          <div className="flex flex-col my-2 w-100">
+            <label htmlFor="sex" className="font-semibold  text-xl mb-1">
+              Sex
+            </label>
+            <div>
+              <select
+                name="sex"
+                id=""
+                className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
+                onChange={(e) => handleInfoUser(e)}>
+                {!!user.sex ? (
+                  <option value={user.sex}>{splitLabel(user.sex)}</option>
+                ) : (
+                  <option value={""}>Choose sex</option>
+                )}
+                <option value="male" style={{ display: user.sex === "male" ? "none" : "block" }}>
+                  Male
+                </option>
+                <option
+                  value="female"
+                  style={{ display: user.sex === "female" ? "none" : "block" }}>
+                  Female
+                </option>
+                <option value="other" style={{ display: user.sex === "other" ? "none" : "block" }}>
+                  Other
+                </option>
+              </select>
+            </div>
             <div className="text-red-500 text-md">{errors.username}</div>
           </div>
 
@@ -80,13 +114,15 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
             <label htmlFor="numberPhone" className="font-semibold text-xl mb-1">
               Phone number
             </label>
-            <input
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
-              type="text"
-              value={infoUser.numberPhone}
-              name="numberPhone"
-              onChange={(e) => handleInfoUser(e)}
-            />
+            <div>
+              <input
+                className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none shadow-md`}
+                type="text"
+                value={infoUser.numberPhone}
+                name="numberPhone"
+                onChange={(e) => handleInfoUser(e)}
+              />
+            </div>
             <div className="text-red-500 text-md">{errors.numberPhone}</div>
           </div>
 

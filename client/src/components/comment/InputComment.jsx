@@ -1,7 +1,14 @@
 import React from "react";
 import { BsSend } from "react-icons/bs";
 
-const InputComment = ({themeColor, comment, handleSubmit, handleComment, user, idComment=""}) => {
+const InputComment = ({
+  themeColor,
+  comment,
+  handleSubmit,
+  handleComment,
+  user,
+  idComment = "",
+}) => {
   return (
     <form
       onSubmit={(e) => handleSubmit(e, idComment)}
@@ -13,7 +20,7 @@ const InputComment = ({themeColor, comment, handleSubmit, handleComment, user, i
         name="comment"
         value={comment}
         onChange={(e) => handleComment(e)}
-        className={`${themeColor.input}  text-white py-2 px-3 ml-2 w-100 rounded-lg shadow appearance-none leading-tight focus:outline-none`}
+        className={`${themeColor.input} py-2 px-3 ml-2 w-100 rounded-lg shadow appearance-none leading-tight focus:outline-none`}
         placeholder="Write a comment..."
       />
       <button

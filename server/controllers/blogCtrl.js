@@ -156,8 +156,6 @@ const blogCtrl = {
 
       blog.share += 1;
       await blog.save();
-
-      return res.status(200).json({ msg: "Increased share" });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: err.message });
@@ -721,7 +719,7 @@ const blogCtrl = {
   listBlogsAdmin: async (req, res) => {
     try {
       const countBlogs = await Blogs.count();
-      const listBlogs = await Blogs.find({}).sort({ createdAt: -1});
+      const listBlogs = await Blogs.find({}).sort({ createdAt: -1 });
 
       if (countBlogs === 0) {
         return res.status(200).json({ msg: "Not have any blog" });
