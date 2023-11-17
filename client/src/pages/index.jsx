@@ -57,10 +57,14 @@ const Home = () => {
     <div className={themeColor.text}>
       {/* create blog */}
       <div className={`flex justify-between m-4`}>
-        <div
-          onClick={() => handleLink("/create-blog")}
-          className={`${themeColor.sub} ${themeColor.border} border-1 shadow-sm py-2 px-3 border rounded-full cursor-pointer`}>
-          Create a post
+        <div>
+          {!!token && (
+            <div
+              onClick={() => handleLink("/create-blog")}
+              className={`${themeColor.sub} ${themeColor.border} border-1 shadow-sm py-2 px-3 border rounded-full cursor-pointer`}>
+              Create a post
+            </div>
+          )}
         </div>
 
         {/* type blog show */}

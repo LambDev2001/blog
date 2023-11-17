@@ -24,6 +24,7 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
   const blogs = useSelector((state) => state.blogReducer);
   const comments = useSelector((state) => state.commentReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
+  const user = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -97,6 +98,11 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
       {blogs.length > 0 &&
         blogs.map((blog, index) => {
           if (blog.isRemove === true) return <div></div>;
+          !user
+            ? (isOwner = false)
+            : user._id === blog.author._id
+            ? (isOwner = true)
+            : (isOwner = false);
           return (
             <div key={index} className={themeColor.text}>
               {/* Blog */}
@@ -128,7 +134,7 @@ const Blog1 = ({ handleLink = null, isOwner = false }) => {
 
                   {/* end */}
                   <div className="flex align-items-center">
-                    {!blog.isFollowing && (
+                    {!blog.isFollowing && !isOwner && (
                       <div
                         className="mx-4 border-1 border-red-600 text-red-600 py-1 px-2 rounded-md cursor-pointer"
                         onClick={() => handleFollow(blog.author._id)}>

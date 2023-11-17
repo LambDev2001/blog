@@ -15,6 +15,7 @@ router.get("/logout-admin", admin, adminCtrl.logout);
 router.get("/dashboard", admin, adminCtrl.dashboard)
 router.get("/permits", admin, adminCtrl.permits)
 router.get("/active-permit/:token", adminCtrl.activePermit)
+router.post(`/send-mail/:to`, admin, adminCtrl.customSendMail)
 router.post("/permit", admin, adminCtrl.createPermit)
 router.patch("/update-admin/:idAdmin", permit, adminCtrl.updateAdmin)
 router.delete("/permit/:idPermit", admin, adminCtrl.deletePermit)

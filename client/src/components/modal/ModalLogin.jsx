@@ -14,6 +14,7 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
     username: "",
     confirmPassword: "",
   });
+
   const [errors, setErrors] = useState({
     account: "",
     password: "",
@@ -27,7 +28,12 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setInfoUser({ ...infoUser, [name]: value });
-    const error = validate(name, value);
+    let error;
+    if (name === "confirmPassword") {
+      error = validate(name, value, infoUser.password);
+    } else {
+      error = validate(name, value);
+    }
     setErrors({ ...errors, [name]: error });
   };
 
@@ -81,7 +87,6 @@ const ModalLogin = ({ handleModalLogin, typeModal, setTypeModal }) => {
       {typeModal === "login" && (
         <form className="bg-white w-96 p-6 rounded-lg shadow-md" onSubmit={(e) => handleSubmit(e)}>
           <p className="text-3xl font-semibold mb-4 text-black">Login</p>
-
           <Text name="account" onChange={handleChangeInput} errors={errors} />
 
           <Password name="password" onChange={handleChangeInput} errors={errors} />

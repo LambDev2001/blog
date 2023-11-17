@@ -47,6 +47,8 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
         [name]: error,
       }));
     }
+    delete temptErr.password
+    console.log(temptErr);
 
     if (Object.values(temptErr).every((error) => error === "")) {
       dispatch(updateUser({ ...infoUser, birthday: startDate }, token));
@@ -107,7 +109,6 @@ const ModalEditProfile = ({ user, handleShowModal }) => {
                 </option>
               </select>
             </div>
-            <div className="text-red-500 text-md">{errors.username}</div>
           </div>
 
           <div className="flex flex-col my-2 w-100">

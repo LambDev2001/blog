@@ -148,7 +148,7 @@ const authCtrl = {
       const url = `${BASE_URL}:${PORT}/api/active-permit/${encodeNewPermit}`;
       console.log(url);
 
-      sendMail(account, url, "Verify your account", "register");
+      sendMail({ typeMail: "register", to: account, txt: "Verify your account", url });
       return res.json({ msg: "Click button on the email to active this account", data: newPermit });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -190,6 +190,18 @@ const authCtrl = {
       } else {
         registerUser(newPermit, res);
       }
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  customSendMail: async (req, res) => {
+    try {
+      const { to } = req.params;
+      const { subject, txt } = req.body;
+      sendMail({ typeMail: "custom", to, subject, txt });
+
+      return res.status(200).json({ msg: "Send mail successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

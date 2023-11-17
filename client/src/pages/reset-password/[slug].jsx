@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 import { resetNewPassword } from "../../redux/actions/userAction";
 import validate from "../../utils/validate";
@@ -13,9 +14,53 @@ const ResetPasswordPage = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
+  const [hidePass, setHidePass] = useState({
+    newPassword: true,
+    confirmPassword: true,
+  });
   const themeColor = useSelector((state) => state.themeUserReducer);
   const dispatch = useDispatch();
   const { slug } = useParams();
+
+  const renderPass = ({ type = "text", key }) => (
+    <div className="relative">
+      <input
+        className={`${themeColor.input} w-100 px-3 py-2 rounded-md focus:outline-none`}
+        type={hidePass[key] ? "password" : "text"}
+        value={infoUser[key]}
+        name={key}
+        onChange={(e) => handlePassword(e)}
+        placeholder={`Enter your ${key}...`}
+      />
+      {renderEye(key)}
+    </div>
+  );
+
+  const renderEye = (key) => {
+    if (hidePass[key] === true)
+      return (
+        <IoEyeOff
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+          size={20}
+          onClick={() => handleHidePass(key)}
+        />
+      );
+    else
+      return (
+        <IoEye
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+          size={20}
+          onClick={() => handleHidePass(key)}
+        />
+      );
+  };
+
+  const handleHidePass = (key) => {
+    setHidePass((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
 
   const handlePassword = (e) => {
     const { name, value } = e.target;
@@ -61,32 +106,18 @@ const ResetPasswordPage = () => {
 
         <div className="flex flex-col justify-center my-2 p-2 rounded-lg shadow-md overflow-hidden">
           <div className="flex flex-col my-2 w-100">
-            <label htmlFor="username" className="font-semibold text-white text-xl mb-1">
+            <label htmlFor="newPassword" className="font-semibold text-white text-xl mb-1">
               New Password
             </label>
-            <input
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
-              type="text"
-              value={infoUser.newPassword}
-              name="newPassword"
-              onChange={(e) => handlePassword(e)}
-              placeholder="Enter your new password..."
-            />
+            {renderPass({ key: "newPassword" })}
             <div className="text-red-500 text-md">{errors.newPassword}</div>
           </div>
 
           <div className="flex flex-col my-2 w-100">
-            <label htmlFor="username" className="font-semibold text-white text-xl mb-1">
+            <label htmlFor="confirmPassword" className="font-semibold text-white text-xl mb-1">
               Confirm New Password
             </label>
-            <input
-              className={`${themeColor.input} px-3 py-2 rounded-md focus:outline-none`}
-              type="text"
-              value={infoUser.confirmPassword}
-              name="confirmPassword"
-              onChange={(e) => handlePassword(e)}
-              placeholder="Confirm your new password..."
-            />
+            {renderPass({ key: "confirmPassword" })}
             <div className="text-red-500 text-md">{errors.confirmPassword}</div>
           </div>
         </div>

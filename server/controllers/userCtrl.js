@@ -38,6 +38,7 @@ const userCtrl = {
       let user = await Users.findById({ _id: idUser }).select(
         "-password -__v -createdAt -updatedAt -report -status"
       );
+
       if (!user) {
         const admin = await Admins.findById(req.user.id);
         if (admin)

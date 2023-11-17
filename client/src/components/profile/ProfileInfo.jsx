@@ -6,7 +6,6 @@ import { BsCalendar3 } from "react-icons/bs";
 import { splitLabel } from "../../utils/SplitLabel";
 
 const ProfileInfo = ({ otherUser, themeColor }) => {
-  console.table(otherUser);
   let originalDate;
   if (otherUser.birthday) {
     originalDate = new Date(otherUser.birthday);

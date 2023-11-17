@@ -105,7 +105,8 @@ const authCtrl = {
       const url = `${BASE_URL}:${PORT}/api/active/${encodeNewUser}`; // have frond-end delete api
       console.log(url);
       if (validateEmail(account)) {
-        sendMail(account, url, "Verify your account", "register");
+        sendMail({ typeMail: "register", to: account, txt: "Verify your account", url });
+
         return res.status(200).json({ msg: "Click button on the email to active this account" });
       } else {
         return res.json({ msg: "Your mail address is not valid" });
@@ -128,7 +129,7 @@ const authCtrl = {
       const url = `http://localhost:3000/reset-password/${token}`; // have frond-end delete api
       console.log(url);
 
-      sendMail(account, url, "Reset your password", "forgotPassword");
+      sendMail({ typeMail: "forgotPassword", to: account, txt: "Reset your password", url });
 
       return res.status(200).json({ msg: "Check your email and follow link" });
     } catch (err) {

@@ -75,28 +75,30 @@ const Header = () => {
       </div>
 
       {/* search */}
-      <div className={`${themeColor.sub} my-auto w-50 relative`}>
-        <input
-          type="text"
-          className={`${themeColor.input} w-100 py-2 px-3 rounded-full shadow-md appearance-none leading-tight focus:outline-none`}
-          placeholder="Search Blogs ..."
-          name="search"
-          onChange={(e) => handleSearch(e)}
-        />
-        <div
-          className={`${themeColor.input} absolute top-1 right-3 flex text-right focus:border-none`}>
-          <select
-            className={themeColor.input + " focus:border-none"}
-            name="type"
-            value={selectedOption}
-            onChange={handleChange}>
-            <option value="blog">Blog</option>
-            <option value="user">User</option>
-            <option value="category">Category</option>
-          </select>
-          <GoSearch color={isDarkMode === "black" ? "white" : "black"} size={28} />
+      { !!token &&
+        <div className={`${themeColor.sub} my-auto w-50 relative`}>
+          <input
+            type="text"
+            className={`${themeColor.input} w-100 py-2 px-3 rounded-full shadow-md appearance-none leading-tight focus:outline-none`}
+            placeholder="Search Blogs ..."
+            name="search"
+            onChange={(e) => handleSearch(e)}
+          />
+          <div
+            className={`${themeColor.input} absolute top-1 right-3 flex text-right focus:border-none`}>
+            <select
+              className={themeColor.input + " focus:border-none"}
+              name="type"
+              value={selectedOption}
+              onChange={handleChange}>
+              <option value="blog">Blog</option>
+              <option value="user">User</option>
+              <option value="category">Category</option>
+            </select>
+            <GoSearch color={isDarkMode === "black" ? "white" : "black"} size={28} />
+          </div>
         </div>
-      </div>
+      }
 
       {/* End */}
       <div className="my-auto mx-3 flex">

@@ -14,6 +14,7 @@ import ModalDeleteBlog from "../modal/ModalDeleteBlog";
 import { dislikeBlog, likeBlog, increaseShare, removeBlog } from "../../redux/actions/blogAction";
 import { followUser } from "../../redux/actions/userAction";
 import { getComments } from "../../redux/actions/commentAction";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const Blog2 = ({ handleLink = null, isOwner = false }) => {
   const [openComments, setOpenComments] = useState(-1);
@@ -24,8 +25,10 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
   const blogs = useSelector((state) => state.blogReducer);
   const comments = useSelector((state) => state.commentReducer);
   const token = useSelector((state) => state.authReducer.accessToken);
+  const user = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
   const history = useHistory();
+  const { slug } = useParams();
 
   const colorStatus = [
     "rgba(240, 240, 240, 0.8)",
@@ -104,6 +107,11 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
       {blogs.length > 0 &&
         blogs.map((blog, index) => {
           if (blog.isRemove === true) return <div></div>;
+          !user
+            ? (isOwner = false)
+            : user._id === blog.author._id
+            ? (isOwner = true)
+            : (isOwner = false);
 
           return (
             <div key={index} className={themeColor.text}>
@@ -131,7 +139,7 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
                     <div className={`${themeColor.input} mx-2 px-3 py-2 rounded-full `}>
                       {blog.category}
                     </div>
-                    {isOwner && (
+                    {isOwner && !!slug && (
                       <div
                         className={`px-3 py-2 rounded-full`}
                         style={{
@@ -147,7 +155,7 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
 
                   {/* end */}
                   <div className="flex align-items-center">
-                    {!blog.isFollowing && (
+                    {!blog.isFollowing && !isOwner && (
                       <div
                         className="mx-4 border-1 border-red-600 text-red-600 py-1 px-2 rounded-md cursor-pointer"
                         onClick={() => handleFollow(blog.author._id)}>
@@ -232,7 +240,9 @@ const Blog2 = ({ handleLink = null, isOwner = false }) => {
                   </div>
 
                   {/* thumbnail */}
-                  <div onClick={() => handleLink(`/blog/${blog._id}`)} className="w-1/4 ">
+                  <div
+                    onClick={() => handleLink(`/blog/${blog._id}`)}
+                    className="w-1/4 my-1 cursor-pointer">
                     <img
                       src={blog.thumbnail}
                       alt="thumbnail"
