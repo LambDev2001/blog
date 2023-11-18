@@ -143,7 +143,7 @@ const commentCtrl = {
       if (!comment) return res.json({ msg: "Comment not found" });
       if (comment.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
 
-      await Comments.findOneAndDelete({ _id: idComment });
+      await Comments.delete({ _id: idComment });
 
       io.to(comment.idBlog).emit("delete-comment", idComment);
       return res.status(200).json({ msg: "Delete comment successfully" });

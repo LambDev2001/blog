@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import mongooseDelete from "mongoose-delete";
+mongoose.plugin(mongooseDelete);
 
 const blogSchema = new mongoose.Schema(
   {
@@ -45,5 +47,9 @@ const blogSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+mongoose.plugin(mongooseDelete, {
+  overrideMethods: "all",
+});
 
 export default mongoose.model("blog", blogSchema);

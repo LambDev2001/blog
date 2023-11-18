@@ -8,6 +8,8 @@ import Categories from "../models/categoryModel.js";
 import Likes from "../models/likeModel.js";
 import Views from "../models/viewModel.js";
 
+import sendMail from "../config/sendMail.js";
+
 const reportCtrl = {
   // auth
   deleteReport: async (req, res) => {
@@ -20,7 +22,7 @@ const reportCtrl = {
 
       if (idUser !== report.idUser || !admin)
         return res.json({ msg: "You do not have permission to delete this report" });
-      await Reports.findOneAndDelete({ _id: id });
+      await Reports.delete({ _id: id });
 
       return res.status(200).json({ msg: "Delete report success" });
     } catch (err) {
@@ -133,10 +135,14 @@ const reportCtrl = {
           report.comment.author = await Users.findById(report.comment.idUser).select(
             "-__v -password -createdAt -updatedAt -status -friends -report"
           );
-          
-          let allComments = await Comments.find({ idBlog: report.comment.idBlog, status: "normal", replyCM: "" })
-          .select("idUser message createdAt updatedAt")
-          .sort({ createdAt: -1 });
+
+          let allComments = await Comments.find({
+            idBlog: report.comment.idBlog,
+            status: "normal",
+            replyCM: "",
+          })
+            .select("idUser message createdAt updatedAt")
+            .sort({ createdAt: -1 });
 
           allComments = await Promise.all(
             allComments.map(async (comment) => {
@@ -150,7 +156,6 @@ const reportCtrl = {
           );
 
           report.comments = allComments;
-          
 
           break;
       }
@@ -163,7 +168,9 @@ const reportCtrl = {
 
   getReports: async (req, res) => {
     try {
-      let reports = await Reports.find().select("-__v");
+      let reports = await Reports.find({ deleted: { $in: [null, false] } })
+        .select("-__v")
+        .sort({ createdAt: -1 });
 
       reports = await Promise.all(
         reports.map(async (report) => {
@@ -191,29 +198,34 @@ const reportCtrl = {
       const report = await Reports.findOne({ _id: idReport });
       if (!report) return res.json({ msg: "Report not found" });
 
-      // switch (report.type) {
-      //   case "blog":
-      //     await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
-      //     break;
-      //   case "comment":
-      //     break;
-      //   case "group":
-      //     break;
-      // }
+      switch (report.type) {
+        case "blog":
+          await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
+          break;
+        case "comment":
+          await Comments.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
+
+          break;
+      }
       const author = await Users.findById({ _id: idAuthor });
       ++author.report;
-      if (author.report > 3 && author.report < 10 && author.status !== 1) author.status = 1;
-      if (author.report > 10 && author.report < 20 && author.status !== 1) author.status = 2;
-      if (author.report > 20) author.status = 3;
+      if (author.report > 0 && author.report < 10 && author.status !== 1) author.status = 1;
+      if (author.report > 2 && author.report < 20 && author.status !== 1) author.status = 2;
+      if (author.report > 4) author.status = 3;
       author.status = 3;
       if (author.status === 3) {
-        console.log("send mail");
+        sendMail({
+          typeMail: "ban",
+          to: author.account,
+          subject: "Your account has been banned",
+          txt: "You has been violated many time. We need to ban you. You can contact us for complain or support remove your account ban.",
+        });
         author.ban = "Because you have reported so many times.";
       }
 
       author.save();
 
-      // await Reports.findOneAndDelete({ _id: idReport });
+      await Reports.delete({ _id: idReport });
 
       return res.status(200).json({ msg: "Accept report success" });
     } catch (err) {
@@ -235,16 +247,12 @@ const reportCtrl = {
         case "blog":
           await Blogs.findOneAndUpdate({ _id: report.ids }, { $pull: { report: report._id } });
           break;
-        case "comment":
-          break;
-        case "group":
-          break;
       }
 
-      const res = await Reports.findOneAndDelete({ _id: idReport });
+      const res = await Reports.delete({ _id: idReport });
       if (!res) return res.json({ msg: "Report not found" });
 
-      return res.status(200).json({ msg: "Accept report success" });
+      return res.status(200).json({ msg: "Decline report success" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

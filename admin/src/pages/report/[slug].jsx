@@ -163,10 +163,10 @@ const Report = () => {
               </div>
             </div>
           </div>
-          {comments.length > 0 && report && (
+          {report.comments.length > 0 && report && (
             <Comment
               idBlog={report.comment.idBlog}
-              comments={comments}
+              comments={report.comments}
               idReport={report.comment._id}
             />
           )}

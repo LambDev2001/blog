@@ -9,7 +9,7 @@ const TablePermit = ({ data, handleDeletePermit }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("day");
+  const [sortField, setSortField] = useState("createdAt");
   const color = useSelector((state) => state.themeReducer.themeColor);
   const itemsPerPage = 6;
 
@@ -56,7 +56,7 @@ const TablePermit = ({ data, handleDeletePermit }) => {
             <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("username")}>
               Username
             </th>
-            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("day")}>
+            <th className="w-1/6 py-3 cursor-pointer" onClick={() => handleSort("createdAt")}>
               Day create
             </th>
 

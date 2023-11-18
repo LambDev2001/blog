@@ -281,7 +281,7 @@ const blogCtrl = {
       if (ownerBlog.idUser !== req.user.id && !isAdmin) {
         return res.json({ msg: "You are not owner" });
       }
-      const blog = await Blogs.findOneAndDelete({ _id: idBlog });
+      const blog = await Blogs.delete({ _id: idBlog });
       if (!blog) return res.json({ msg: "Blog not found" });
 
       await Likes.deleteMany({ idBlog: idBlog });

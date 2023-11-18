@@ -16,7 +16,7 @@ const Policies = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("account");
+  const [sortField, setSortField] = useState("createdAt");
   const [editingIndex, setEditingIndex] = useState(-1);
   const [modal, setModal] = useState(false);
   const token = useSelector((state) => state.authReducer.accessToken);

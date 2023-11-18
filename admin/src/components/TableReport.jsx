@@ -10,7 +10,7 @@ const TableInfo = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortField, setSortField] = useState("account");
+  const [sortField, setSortField] = useState("updateAt");
   const color = useSelector((state) => state.themeReducer.themeColor);
   const history = useHistory();
   const itemsPerPage = 8;

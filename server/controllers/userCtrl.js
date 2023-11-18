@@ -10,6 +10,7 @@ import Blogs from "../models/blogModel.js";
 import Reports from "../models/reportModel.js";
 import Views from "../models/viewModel.js";
 import Rooms from "../models/roomModel.js";
+import sendMail from "../config/sendMail.js";
 
 const userCtrl = {
   // none auth
@@ -314,7 +315,12 @@ const userCtrl = {
       user.ban = reason;
       user.status = 3;
       user.save();
-      console.log("Send mail");
+      sendMail({
+        typeMail: "ban",
+        to: user.account,
+        subject: "Your account has been banned",
+        txt: `We ban you because <strong>${reason}</strong>. We need to ban you. You can contact us for complain or support remove your account ban.`,
+      });
 
       return res.status(200).json({ msg: "Ban user success" });
     } catch (err) {
@@ -330,7 +336,12 @@ const userCtrl = {
       user.ban = "";
       user.status = 2;
       user.save();
-      console.log("Send mail");
+      sendMail({
+        typeMail: "ban",
+        to: user.account,
+        subject: "Your account has been remove",
+        txt: `We remove ban you. After that you can login again. If you violate any our policy, we will ban this account forever.`,
+      });
 
       return res.status(200).json({ msg: "Remove ban user success" });
     } catch (err) {

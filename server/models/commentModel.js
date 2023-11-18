@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import mongooseDelete from "mongoose-delete";
+mongoose.plugin(mongooseDelete);
 
 const commentSchema = new mongoose.Schema(
   {
@@ -30,5 +32,9 @@ const commentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+commentSchema.plugin(mongooseDelete, {
+  overrideMethods: "all",
+})
 
 export default mongoose.model("comment", commentSchema);

@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import mongooseDelete from "mongoose-delete";
+mongoose.plugin(mongooseDelete);
 
 const categorySchema = new mongoose.Schema(
   {
@@ -8,5 +10,9 @@ const categorySchema = new mongoose.Schema(
     },
   }
 );
+
+categorySchema.plugin(mongooseDelete, {
+  overrideMethods: "all",
+})
 
 export default mongoose.model("category", categorySchema);

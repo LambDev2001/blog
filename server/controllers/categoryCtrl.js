@@ -107,7 +107,7 @@ const categoryCtrl = {
   deleteCategory: async (req, res) => {
     try {
       const { idCategory } = req.params;
-      await Categories.findOneAndDelete({ _id: idCategory });
+      await Categories.delete({ _id: idCategory });
 
       return res.status(200).json({ msg: "Delete category successfully" });
     } catch (err) {
