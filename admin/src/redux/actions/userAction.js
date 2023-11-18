@@ -165,3 +165,15 @@ export const unBan = (idUser, token) => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const sendMail =
+  ({ to, subject, content, token }) =>
+  async (dispatch) => {
+    try {
+      const res = await postAPI(`send-mail/${to}`, {  subject, txt: content }, token);
+      await ResErrorData(res.data, dispatch);
+      dispatch({ type: "ALERT", payload: { type: "success", msg: res.data.msg } });
+    } catch (err) {
+      console.error(err);
+    }
+  };

@@ -3,15 +3,19 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { FaCircleUser } from "react-icons/fa6";
+import { IoMail } from "react-icons/io5";
 
 import Pagination from "./global/Pagination";
+import ModalSendCustomMail from "./modal/ModalSendCustomMail";
 
 const TableInfo = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("createdAt");
+  const [toSendMail, setToSendMail] = useState(null);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const token = useSelector((state) => state.authReducer.accessToken);
   const history = useHistory();
   const itemsPerPage = 6;
 
@@ -53,6 +57,10 @@ const TableInfo = ({ data }) => {
     setSortField(field); // Set the sorting field
   };
 
+  const handleSendMail = (to) => {
+    setToSendMail(to);
+  };
+
   return (
     <div className={`${color.outside} my-2 p-1 rounded-lg overflow-hidden`}>
       <table className="w-full bg-white table-fixed rounded-lg overflow-hidden">
@@ -92,13 +100,23 @@ const TableInfo = ({ data }) => {
                 </div>
               </td>
               {/* <td className="py-2">{result.report.length}</td> */}
-              <td className="py-2">
-                <FaCircleUser
-                  size={30}
-                  className="mx-auto cursor-pointer"
-                  style={{ marginLeft: "auto" }}
-                  onClick={() => history.push(`/user/${result._id}`)}
-                />
+              <td className="py-2 ">
+                <div className="flex items-center justify-around w-100">
+                  <div></div>
+                  <div></div>
+                  <IoMail
+                    size={30}
+                    className=" cursor-pointer"
+                    onClick={() => handleSendMail(result.account)}
+                  />
+                  <FaCircleUser
+                    size={30}
+                    className=" cursor-pointer"
+                    onClick={() => history.push(`/user/${result._id}`)}
+                  />
+                  <div></div>
+                  <div></div>
+                </div>
               </td>
             </tr>
           ))}
@@ -110,6 +128,9 @@ const TableInfo = ({ data }) => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
+      )}
+      {toSendMail && (
+        <ModalSendCustomMail to={toSendMail} token={token} handleOpen={setToSendMail} />
       )}
     </div>
   );

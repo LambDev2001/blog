@@ -199,6 +199,8 @@ const authCtrl = {
     try {
       const { to } = req.params;
       const { subject, txt } = req.body;
+      console.log(to, subject, txt);
+      
       sendMail({ typeMail: "custom", to, subject, txt });
 
       return res.status(200).json({ msg: "Send mail successfully" });

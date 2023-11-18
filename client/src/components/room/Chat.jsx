@@ -47,6 +47,33 @@ const Chat = ({ themeColor, data }) => {
   const renderFile = (file) => {
     const fileType = getFileType(file);
 
+    if (fileType === "mp4") {
+      return (
+        <div key={file} className="relative h-auto w-auto max-h-[240px] max-w-[240px] mx-1">
+          <video
+            id="video"
+            width="320"
+            height="240"
+            onMouseOver={(e) => (e.target.controls = true)}
+            onMouseOut={(e) => (e.target.controls = false)}
+            onPlay={(e) => (e.target.nextSibling.style.display = "none")}
+            onPause={(e) => (e.target.nextSibling.style.display = "flex")}>
+            <source src={file} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            onClick={() => document.getElementById("video").play()}>
+            <img
+              src="https://res.cloudinary.com/dfuaq9ggj/image/upload/v1700325023/blog/play-video-icon-20_fgdjfn.png"
+              alt="Play"
+              className="w-10 h-10"
+            />
+          </div>
+        </div>
+      );
+    }
+
     if (isImage(fileType)) {
       return (
         <div key={file} className="relative h-auto w-auto max-h-[100px] max-w-[100px] mx-1">

@@ -43,8 +43,12 @@ const validate = (name, value, sub = "") => {
       return required(name, value) || minLength(name, value, 10) || maxLength(name, value, 200);
     case "thumbnail":
       return required(name, value);
+
+    // Mail
     case "content":
       return required(name, value) || minLength(name, value, 10);
+    case "subject":
+      return required(name, value) || minLength(name, value, 10) || maxLength(name, value, 500);
 
     // Room
     case "nameRoom":
