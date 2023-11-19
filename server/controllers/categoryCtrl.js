@@ -6,25 +6,12 @@ const categoryCtrl = {
   // none
   searchCategory: async (req, res) => {
     try {
-      const categories = await Categories.aggregate([
-        {
-          $search: {
-            index: "searchCategory",
-            autocomplete: {
-              query: `${req.query.search}`,
-              path: "name",
-            },
-          },
-        },
-        { $sort: { createdAt: -1 } },
-        { $limit: 5 },
-        {
-          $project: {
-            _id: 1,
-            name: 1,
-          },
-        },
-      ]);
+      const categories = await Categories.find({
+        name: { $regex: new RegExp(req.query.search), $options: "i" },
+      })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select("_id name");
 
       if (categories.length < 1) return res.json({ msg: "No Category." });
 

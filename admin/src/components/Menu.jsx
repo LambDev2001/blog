@@ -14,6 +14,7 @@ import { BsLayersHalf } from "react-icons/bs";
 import { GrUserAdmin } from "react-icons/gr";
 
 import { logoutAdmin } from "../redux/actions/authAction";
+import { getNotification } from "../redux/actions/reportAction";
 
 const Menu = () => {
   const [menu, setMenu] = useState(false);
@@ -22,21 +23,26 @@ const Menu = () => {
   const token = useSelector((state) => state.authReducer.accessToken);
   const openMenu = useSelector((state) => state.menuReducer);
   const color = useSelector((state) => state.themeReducer.themeColor);
+  const notifications = useSelector((state) => state.notificationReducer);
   const history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getNotification(token));
+  }, [token, dispatch]);
 
   const logo = {
     img: "https://res.cloudinary.com/dfuaq9ggj/image/upload/v1697772495/blog/ckov65p4msb127rlsnd0_sjbmvx.png",
     name: "AniRealm",
   };
   const listFunctions = [
-    [LuGauge, "Dashboard", [["/"]], "admin"],
-    [LuUser, "Manager User", [["/all-users"]], "admin"],
-    [GrUserAdmin, "Manager Permit", [["/all-permits"]], "admin"],
-    [LuTags, "Manager Categories", [["/categories"]], "admin"],
-    [LiaHandshakeSolid, "Manager Policies", [["/policies"]], "admin"],
-    [LiaFileAltSolid, "Manager Blog", [["/blogs"]], "permit"],
-    [LuFileWarning, "Manager Reports", [["/reports"]], "permit"],
+    [LuGauge, "Dashboard", [["/"]], 0, "admin"],
+    [LuUser, "Manager User", [["/all-users"]], 0, "admin"],
+    [GrUserAdmin, "Manager Permit", [["/all-permits"]], 0, "admin"],
+    [LuTags, "Manager Categories", [["/categories"]], 0, "admin"],
+    [LiaHandshakeSolid, "Manager Policies", [["/policies"]], 0, "admin"],
+    [LiaFileAltSolid, "Manager Blog", [["/blogs"]], notifications.countBlogs, "permit"],
+    [LuFileWarning, "Manager Reports", [["/reports"]], notifications.countReports, "permit"],
     [
       BsLayersHalf,
       "Theme",
@@ -44,6 +50,8 @@ const Menu = () => {
         ["Button", "/buttons"],
         ["color", "/colors"],
       ],
+      0,
+
       "permit",
     ],
   ];
@@ -125,7 +133,7 @@ const Menu = () => {
 
         {/* menu */}
         <div className={`${color.outside} p-1 my-2`}>
-          {listFunctions.map(([Icon, future, listUrl, role], index) => (
+          {listFunctions.map(([Icon, future, listUrl, count, role], index) => (
             <div key={index}>
               {!!user && (user.role === "admin" || user.role === role) && (
                 <div
@@ -137,7 +145,7 @@ const Menu = () => {
                   <div
                     className={`p-2 cursor-pointer d-flex align-items-center w-100 ${
                       index === active && color.active
-                    } rounded-lg overflow-hidden`}
+                    } rounded-lg overflow-hidden relative`}
                     onClick={() => handleActive(index)}>
                     {/* main icon */}
                     <Icon className="w-[40px] h-[40px]" />
@@ -155,6 +163,13 @@ const Menu = () => {
                       <div className="d-flex align-items-center justify-content-between w-100">
                         <p className="mx-3">{future}</p>
                         {index !== active ? <LiaAngleLeftSolid /> : <LiaAngleDownSolid />}
+                      </div>
+                    )}
+
+                    {/* count notification */}
+                    {count > 0 && (
+                      <div className="absolute top-2 right-2 text-xs rounded-full bg-red-600 text-white w-[16px] h-[16px] text-center">
+                        {count <= 99 ? count : "99+"}
                       </div>
                     )}
                   </div>

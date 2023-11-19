@@ -50,9 +50,15 @@ const Header = () => {
   };
 
   const handleSearch = async (e) => {
-    if (e.target.value === "" || e.target.value.length < 2) return setData([]);
-    const res = await dispatch(searchAll({ value: e.target.value, type: selectedOption, token }));
-    setData(res);
+    try {
+      e.preventDefault();
+      if (e.target.value === "" || e.target.value.length < 2) return setData([]);
+      const res = await dispatch(searchAll({ value: e.target.value, type: selectedOption, token }));
+
+      setData(res ? res : []);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleLink = (to) => {
@@ -75,7 +81,7 @@ const Header = () => {
       </div>
 
       {/* search */}
-      { !!token &&
+      {!!token && (
         <div className={`${themeColor.sub} my-auto w-50 relative`}>
           <input
             type="text"
@@ -98,7 +104,7 @@ const Header = () => {
             <GoSearch color={isDarkMode === "black" ? "white" : "black"} size={28} />
           </div>
         </div>
-      }
+      )}
 
       {/* End */}
       <div className="my-auto mx-3 flex">

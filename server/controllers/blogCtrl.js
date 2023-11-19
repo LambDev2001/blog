@@ -12,29 +12,43 @@ const blogCtrl = {
   // none auth
   searchBlog: async (req, res) => {
     try {
-      const blogs = await Blogs.aggregate([
-        {
-          $search: {
-            index: "searchBlog",
-            autocomplete: {
-              query: `${req.query.search}`,
-              path: "title",
-            },
-          },
-        },
-        { $sort: { createdAt: -1 } },
-        { $limit: 5 },
-        {
-          $project: {
-            title: 1,
-            description: 1,
-            thumbnail: 1,
-            createdAt: 1,
-          },
-        },
-      ]);
+      // const blogs = await Blogs.aggregate([
+      //   // {
+      //   //   $search: {
+      //   //     index: "searchBlog",
+      //   //     autocomplete: {
+      //   //       query: `${req.query.search}`,
+      //   //       path: "title",
+      //   //     },
+      //   //   },
+      //   // },
+      //   {
+      //     $search: {
+      //       index: "searchBlog", // optional, defaults to "default"
+      //       autocomplete: {
+      //         query: `${req.query.search}`,
+      //         path: "title",
+      //       },
+      //     },
+      //   },
+      //   { $sort: { createdAt: -1 } },
+      //   { $limit: 5 },
+      //   {
+      //     $project: {
+      //       title: 1,
+      //       description: 1,
+      //       thumbnail: 1,
+      //       createdAt: 1,
+      //     },
+      //   },
+      // ]);
 
-      if (blogs.length < 1) return res.json({ msg: "No Blogs." });
+      const blogs = await Blogs.find({
+        title: { $regex: new RegExp(req.query.search), $options: "i" },
+      })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select("title description thumbnail createdAt");
 
       return res.status(200).json(blogs);
     } catch (err) {

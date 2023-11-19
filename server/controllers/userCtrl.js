@@ -67,49 +67,17 @@ const userCtrl = {
 
   searchUser: async (req, res) => {
     try {
-      var users = await Users.aggregate([
-        {
-          $search: {
-            index: "searchUser",
-            autocomplete: {
-              query: `${req.query.search}`,
-              path: "username",
-            },
-          },
-        },
-        { $sort: { createdAt: -1 } },
-        { $limit: 10 },
-        {
-          $project: {
-            username: 1,
-            account: 1,
-            avatar: 1,
-          },
-        },
-      ]);
+      var users = await Users.find({
+        $or: [
+          { username: { $regex: new RegExp(req.query.search), $options: "i" } },
+          { account: { $regex: new RegExp(req.query.search), $options: "i" } },
+        ],
+      })
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .select("username account avatar");
 
-      if (users.length < 1) {
-        users = await Users.aggregate([
-          {
-            $search: {
-              index: "searchUser",
-              autocomplete: {
-                query: `${req.query.search}`,
-                path: "account",
-              },
-            },
-          },
-          { $sort: { createdAt: -1 } },
-          { $limit: 10 },
-          {
-            $project: {
-              username: 1,
-              account: 1,
-              avatar: 1,
-            },
-          },
-        ]);
-      }
+      if (!users) return res.json([]);
 
       return res.status(200).json(users);
     } catch (err) {

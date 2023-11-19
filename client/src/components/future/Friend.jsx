@@ -27,7 +27,6 @@ const Friend = () => {
     setHoveredItem(null);
   };
 
-
   return (
     <div
       className={`${themeColor.sub} ${themeColor.border} ${themeColor.text} border-1 shadow-lg m-2 p-1 rounded-lg`}>
@@ -36,9 +35,11 @@ const Friend = () => {
         onClick={() => history.push(`/friends/${user._id}`)}>
         <div className="relative inline-block">
           Friends
-          <div className="absolute -top-1 -right-4 text-xs rounded-full bg-red-600 text-white w-[16px] h-[16px] text-center">
-            {reqFriends.length <= 99 ? reqFriends.length : "99+"}
-          </div>
+          {reqFriends.length > 0 && (
+            <div className="absolute -top-1 -right-4 text-xs rounded-full bg-red-600 text-white w-[16px] h-[16px] text-center">
+              {reqFriends.length <= 99 ? reqFriends.length : "99+"}
+            </div>
+          )}
         </div>
       </div>
       {user &&

@@ -15,6 +15,7 @@ router.post("/report", user, reportCtrl.createReport);
 router.patch("/report/:idReport", user, reportCtrl.editReport);
 
 // permit
+router.get("/notifications", permit, reportCtrl.getNotifications);
 router.get("/report/:idReport", permit, reportCtrl.getReport);
 router.get("/reports", permit, reportCtrl.getReports);
 

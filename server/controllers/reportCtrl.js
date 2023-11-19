@@ -11,6 +11,16 @@ import Views from "../models/viewModel.js";
 import sendMail from "../config/sendMail.js";
 
 const reportCtrl = {
+  getNotifications: async (req, res) => {
+    try {
+      const reports = await Reports.countDocuments();
+      const blogs = await Blogs.countDocuments({ status: "waiting" });
+      return res.status(200).json({ countReports: reports, countBlogs: blogs });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   // auth
   deleteReport: async (req, res) => {
     try {

@@ -1,6 +1,16 @@
 import { getAPI, postAPI } from "../../utils/FetchData";
 import ResErrorData from "../../utils/ResErrorData";
 
+export const getNotification = (token) => async (dispatch) => {
+  try {
+    const res = await getAPI(`notifications`, token);
+    ResErrorData(res.data, dispatch);
+    dispatch({ type: "GET_NOTIFICATIONS", payload: res.data });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getReport = (idReport, token) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING", payload: { loading: true } });
