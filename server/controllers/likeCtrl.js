@@ -22,8 +22,8 @@ const likeCtrl = {
         { like: true },
         { upsert: true, new: true }
       );
-
-      return res.status(200).json({ msg: "Like is success" });
+      
+      return res.status(200).json({ msg: "" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -49,7 +49,7 @@ const likeCtrl = {
         { upsert: true, new: true }
       );
 
-      return res.status(200).json({ msg: "Dislike is success" });
+      return res.status(200).json({ msg: "" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

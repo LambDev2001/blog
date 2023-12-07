@@ -12,37 +12,6 @@ const blogCtrl = {
   // none auth
   searchBlog: async (req, res) => {
     try {
-      // const blogs = await Blogs.aggregate([
-      //   // {
-      //   //   $search: {
-      //   //     index: "searchBlog",
-      //   //     autocomplete: {
-      //   //       query: `${req.query.search}`,
-      //   //       path: "title",
-      //   //     },
-      //   //   },
-      //   // },
-      //   {
-      //     $search: {
-      //       index: "searchBlog", // optional, defaults to "default"
-      //       autocomplete: {
-      //         query: `${req.query.search}`,
-      //         path: "title",
-      //       },
-      //     },
-      //   },
-      //   { $sort: { createdAt: -1 } },
-      //   { $limit: 5 },
-      //   {
-      //     $project: {
-      //       title: 1,
-      //       description: 1,
-      //       thumbnail: 1,
-      //       createdAt: 1,
-      //     },
-      //   },
-      // ]);
-
       const blogs = await Blogs.find({
         title: { $regex: new RegExp(req.query.search), $options: "i" },
       })
@@ -132,7 +101,7 @@ const blogCtrl = {
 
           const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
 
-          const category = await Categories.findOne({
+          const category = await Categories.findOneWithDeleted({
             _id: blog.category,
           });
 
@@ -187,7 +156,7 @@ const blogCtrl = {
             "-password -__v -report -status -friends"
           );
 
-          const category = await Categories.findById(blog.category);
+          const category = await Categories.findOneWithDeleted(blog.category);
 
           const likes = await Likes.count({
             idBlog: blog._id,
@@ -261,7 +230,7 @@ const blogCtrl = {
 
       const { view, viewMonthly } = await Views.findOne({ idBlog: blog._id });
 
-      const category = await Categories.findOne({
+      const category = await Categories.findOneWithDeleted({
         _id: blog.category,
       });
 
@@ -295,13 +264,23 @@ const blogCtrl = {
       if (ownerBlog.idUser !== req.user.id && !isAdmin) {
         return res.json({ msg: "You are not owner" });
       }
+      const comments = await Comments.find({ idBlog: idBlog });
+
       const blog = await Blogs.delete({ _id: idBlog });
       if (!blog) return res.json({ msg: "Blog not found" });
 
-      await Likes.deleteMany({ idBlog: idBlog });
-      await Comments.deleteMany({ idBlog: idBlog });
-      await Reports.deleteMany({ ids: idBlog });
-      await Views.deleteMany({ idBlog: idBlog });
+      const reports = await Promise.all(
+        await comments.map(async (comment) => {
+          const report = await Reports.findOne({ ids: comment._id });
+          return report._id;
+        })
+      );
+      reports.map(async (report) => {
+        await Reports.findByIdAndDelete({ _id: report });
+      })
+      await Likes.delete({ idBlog: idBlog });
+      await Comments.delete({ idBlog: idBlog });
+      await Views.delete({ idBlog: idBlog });
 
       return res.status(200).json({ msg: "Blog deleted" });
     } catch (err) {
@@ -321,7 +300,7 @@ const blogCtrl = {
             "-password -__v -report -status -friends"
           );
 
-          const category = await Categories.findById(blog.category);
+          const category = await Categories.findOneWithDeleted({ _id: blog.category });
 
           const likes = await Likes.count({
             idBlog: blog._id,
@@ -394,7 +373,7 @@ const blogCtrl = {
             "-password -__v -report -status -friends"
           );
 
-          const category = await Categories.findById(blog.category);
+          const category = await Categories.findOneWithDeleted({ _id: blog.category });
 
           const likes = await Likes.count({
             idBlog: blog._id,
@@ -468,7 +447,7 @@ const blogCtrl = {
             "-password -__v -report -status -friends"
           );
 
-          const category = await Categories.findById(blog.category);
+          const category = await Categories.findOneWithDeleted({ _id: blog.category });
 
           const likes = await Likes.count({
             idBlog: blog._id,
@@ -548,7 +527,7 @@ const blogCtrl = {
                 "-password -__v -report -status -friends"
               );
 
-              const category = await Categories.findById(blog.category);
+              const category = await Categories.findOneWithDeleted({ _id: blog.category });
 
               const likes = await Likes.count({
                 idBlog: blog._id,
@@ -629,7 +608,7 @@ const blogCtrl = {
                 "-password -__v -report -status -friends"
               );
 
-              const category = await Categories.findById(blog.category);
+              const category = await Categories.findOneWithDeleted({ _id: blog.category });
 
               const likes = await Likes.count({
                 idBlog: blog._id,

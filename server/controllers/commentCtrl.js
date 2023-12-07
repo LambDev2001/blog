@@ -1,5 +1,6 @@
 import Comments from "../models/commentModel.js";
 import Users from "../models/userModel.js";
+import Reports from "../models/reportModel.js";
 import { io } from "../server.js";
 
 const commentCtrl = {
@@ -144,6 +145,7 @@ const commentCtrl = {
       if (comment.idUser !== req.user.id) return res.json({ msg: "You are not owner" });
 
       await Comments.delete({ _id: idComment });
+      await Reports.deleteMany({ ids: idComment });
 
       io.to(comment.idBlog).emit("delete-comment", idComment);
       return res.status(200).json({ msg: "Delete comment successfully" });

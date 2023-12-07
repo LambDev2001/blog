@@ -43,7 +43,7 @@ const Weather = () => {
             placeholder="Enter city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            className={`${themeColor.input} p-2 rounded-md w-100 focus:outline-none hover:bg-white`}
+            className={`${themeColor.input} p-2 rounded-md w-100 focus:outline-none`}
           />
         </div>
 

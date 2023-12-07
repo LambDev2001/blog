@@ -3,7 +3,7 @@ const ResErrorData = async (data, dispatch) => {
     await dispatch({ type: "ALERT", payload: { type: "danger", msg: data.err } });
     return;
   }
-  if (data.msg) {
+  if (data.msg && data.msg !== "") {
     await dispatch({ type: "ALERT", payload: { type: "success", msg: data.msg } });
   }
 };

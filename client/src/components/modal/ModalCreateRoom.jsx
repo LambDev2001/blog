@@ -65,7 +65,7 @@ const ModalCreateRoom = ({ themeColor, dispatch, token, handleOpenModal }) => {
               name="nameRoom"
               value={room.nameRoom}
               onChange={(e) => handleChangeInput(e)}
-              className={`${themeColor.input}  text-white w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
+              className={`${themeColor.input}  w-100 py-2 px-3 rounded-md shadow focus:outline-none`}
             />
             <div className="text-red-500 text-md">{errors.nameRoom}</div>
           </div>
@@ -109,13 +109,13 @@ const ModalCreateRoom = ({ themeColor, dispatch, token, handleOpenModal }) => {
         {/* button */}
         <div className="flex justify-end">
           <button
-            className="mx-2 py-2 px-3 text-white bg-red-500 hover:bg-red-600 rounded-lg"
+            className="mx-2 py-2 px-3 bg-red-500 hover:bg-red-600 rounded-lg"
             onClick={() => handleOpenModal()}>
             Cancel
           </button>
           <button
             type="submit"
-            className="ml-2 py-2 px-3 text-white bg-green-500 hover:bg-green-600 rounded-lg">
+            className="ml-2 py-2 px-3 bg-green-500 hover:bg-green-600 rounded-lg">
             Send
           </button>
         </div>

@@ -15,7 +15,7 @@ const sendMail = async ({ typeMail, to, subject, txt, url = "" }) => {
       contentMail = {
         subject: "Forgot your Blog account?",
         html: `<div style="max-width: 700px; margin: auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%; background-color: #f9f9f9; color: #333;">
-                  <h2 style="text-align: center; text-transform: uppercase; color: teal;">Mail from AniReam</h2>
+                  <h2 style="text-align: center; color: teal;">Mail from AniRealm</h2>
                   <p>This is email about forgot your password! Click the button below to reset your password.</p>
               
                   <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${txt}</a>
@@ -31,7 +31,7 @@ const sendMail = async ({ typeMail, to, subject, txt, url = "" }) => {
       contentMail = {
         subject: "Register your Blog account",
         html: `<div style="max-width: 700px; margin: auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%; background-color: #f9f9f9; color: #333;">
-                  <h2 style="text-align: center; text-transform: uppercase; color: teal;">Mail from AniReam</h2>
+                  <h2 style="text-align: center; color: teal;">Mail from AniRealm</h2>
                   <p>Congratulation! Just click the button below to validate your email address.</p>
               
                   <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${txt}</a>
@@ -47,7 +47,7 @@ const sendMail = async ({ typeMail, to, subject, txt, url = "" }) => {
       contentMail = {
         subject,
         html: `<div style="max-width: 700px; margin: auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%; background-color: #f9f9f9; color: #333;">
-              <h2 style="text-align: center; text-transform: uppercase; color: teal;">Mail from AniReam</h2>
+              <h2 style="text-align: center; color: teal;">Mail from AniRealm</h2>
               <p>Your account has been banned</p>
               ${txt}
               <hr>
@@ -60,7 +60,7 @@ const sendMail = async ({ typeMail, to, subject, txt, url = "" }) => {
       contentMail = {
         subject,
         html: `<div style="max-width: 700px; margin: auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%; background-color: #f9f9f9; color: #333;">
-              <h2 style="text-align: center; text-transform: uppercase; color: teal;">Mail from AniReam</h2>
+              <h2 style="text-align: center; color: teal;">Mail from AniRealm</h2>
               <p>This is content from admin</p>
               ${txt}
               <hr>

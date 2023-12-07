@@ -1,56 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const PlaceAutocomplete = () => {
-  const [input, setInput] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+import Header from "../components/global/Header";
+import StatisticalBlog from "../components/dashboard/StatisticalBlog";
+import PieChart from "../components/dashboard/PieChart";
+import LineChart from "../components/dashboard/LineChart";
+import Card from "../components/global/Card";
+import { getDashboard } from "../redux/actions/dashboardAction";
+import AdminRouteWrapper from "../utils/AdminRouteWrapper";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
+const Dashboard = () => {
+  const token = useSelector((state) => state.authReducer.accessToken);
+  const data = useSelector((state) => state.dashboardReducer);
+  const color = useSelector((state) => state.themeReducer.themeColor);
+  const user = useSelector((state) => state.authReducer.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      const response = await axios.get('https://place-autocomplete1.p.rapidapi.com/autocomplete/json', {
-        params: {
-          input,
-          radius: 500
-        },
-        headers: {
-          'X-RapidAPI-Key': 'ee76a14853msh4e63a069f0979c9p1ee302jsna05ff117a937',
-          'X-RapidAPI-Host': 'place-autocomplete1.p.rapidapi.com'
-        }
-      });
-      setSuggestions(response.data.predictions);
-    };
-
-    if (input.length > 2) {
-      fetchSuggestions();
+    if (!!user && user.role === "permit") {
+      history.push("/index-permit");
     }
-  }, [input]);
+  }, [user, history]);
 
-  const handleChange = (event) => {
-    setInput(event.target.value);
-  };
-
-  const handleSelect = (suggestion) => {
-    setInput(suggestion.place_id);
-    // Update the address field in your React application here
-  };
+  useEffect(() => {
+    dispatch(getDashboard(token));
+  }, [dispatch, token]);
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Enter an address"
-        value={input}
-        onChange={handleChange}
-      />
-      <ul>
-        {suggestions.map((suggestion) => (
-          <li key={suggestion.place_id} onClick={() => handleSelect(suggestion)}>
-            {suggestion.description}
-          </li>
-        ))}
-      </ul>
+      <AdminRouteWrapper />
+      <Header content="Dashboard" />
+
+      <StatisticalBlog data={data} />
+      <div
+        className={`${color.outside} rounded-lg shadow-md p-2 my-2 flex flex-wrap justify-around`}>
+        <div className="w-[32%]">
+          <PieChart data={data} />
+        </div>
+        <div className="w-[60%] min-w-[600px]">
+          <LineChart data={data} />
+        </div>
+      </div>
+
+      <div className={`${color.outside} rounded-lg shadow-md p-4`}>
+        <h2 className="text-2xl font-semibold mb-4">Top Blogs Mosts Views</h2>
+        <div className={` rounded-lg shadow-md flex flex-wrap`}>
+          {data.topBlogs && data.topBlogs.map((blog) => <Card blog={blog} key={blog._id} />)}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default PlaceAutocomplete;
+export default Dashboard;

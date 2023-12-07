@@ -11,7 +11,8 @@ const ModalDeleteBlog = ({ themeColor, token, dispatch, handleOpen, idBlog }) =>
   return (
     <div
       className="fixed inset-0 flex justify-center z-[99999]"
-      style={{ backgroundColor: "rgba(179, 193, 159, 0.29)" }}>
+      style={{ backgroundColor: "rgba(179, 193, 159, 0.29)", opacity: "0.5" }}>
+      
       <div
         className={`${themeColor.main} ${themeColor.border} border-1 w-96 h-[200px] p-6 rounded-lg shadow-md`}>
         <p className="text-xl font-semibold mb-4">Confirm Deletion</p>

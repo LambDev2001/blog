@@ -116,17 +116,20 @@ const userCtrl = {
       );
 
       allFriends = await Promise.all(
-        allFriends.map(async (user) => {
+        allFriends.map(async (user) => {         
           let room = await Rooms.findOne({
             nameRoom: "Friend Chat",
-            member: { $in: [user._id, idUser] },
+            member: { $all: [user._id, idUser] },
           });
+          if(!room) room = await Rooms.create({ nameRoom: "Friend Chat", idUser: user._id, member: [user._id, idUser] });
           return { ...user._doc, room: room._id };
         })
       );
 
       return res.status(200).json(allFriends);
     } catch (err) {
+      console.log(err);
+      
       return res.status(500).json({ msg: err.message });
     }
   },

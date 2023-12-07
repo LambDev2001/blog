@@ -133,7 +133,7 @@ const User = () => {
                   <div
                     className="px-3 py-2 rounded-md shadow-md bg-green-500 inline-block cursor-pointer"
                     onClick={handleUnBan}>
-                    remove ban
+                    Remove Ban
                   </div>
                 )}
               </div>
